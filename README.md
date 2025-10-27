@@ -249,7 +249,21 @@ void ImGuiLayer::render(entt::registry& r){
 
 ---
 
-## 12) Build (CMake) — outline
+
+
+## 12) Install Prep
+```Install Qt6 & development essentials
+sudo apt update
+sudo apt install build-essential cmake libgl1-mesa-dev
+sudo apt install qt6-base-dev qt6-base-dev-tools qt6-tools-dev
+```
+```Additional libraries you will need
+sudo apt install libqt6opengl6 libqt6openglwidgets6
+```
+
+---
+
+## 13) Build (CMake) — outline
 ```cmake
 cmake_minimum_required(VERSION 3.22)
 project(plantsim LANGUAGES CXX)
@@ -278,7 +292,7 @@ target_link_libraries(plantsim PRIVATE Qt6::Widgets Qt6::OpenGL)
 
 ---
 
-## 13) Minimal `main.cpp`
+## 14) Minimal `main.cpp`
 ```cpp
 #include <QApplication>
 #include "app/MainWindow.hpp"
@@ -291,7 +305,7 @@ int main(int argc, char** argv){
 
 ---
 
-## 14) Minimal `MainWindow` & sim wiring
+## 15) Minimal `MainWindow` & sim wiring
 ```cpp
 // MainWindow.hpp
 class MainWindow : public QMainWindow {
@@ -320,7 +334,7 @@ MainWindow::MainWindow(){
 
 ---
 
-## 15) First systems (implementations)
+## 16) First systems (implementations)
 ```cpp
 // Systems.cpp (snippets)
 void ControlSystem(entt::registry& r, float dt){
@@ -374,7 +388,7 @@ void AlarmSystem(entt::registry& r){
 
 ---
 
-## 16) Executive demo script (5 minutes)
+## 17) Executive demo script (5 minutes)
 1. Load **"staffing_12h_vs_8h.json"**.
 2. Show baseline KPIs (throughput, energy/ton, alarms/hr) for 30 sim days.
 3. Drag **Shift length** 12h → 8h and **Training** 0.6 → 0.8; rerun Monte Carlo (N=100).
@@ -383,7 +397,7 @@ void AlarmSystem(entt::registry& r){
 
 ---
 
-## 17) Testing & determinism
+## 18) Testing & determinism
 - **Unit tests** for each system (PID, valve travel, tank balance)
 - **Golden runs**: same seed → same KPI curves (guard with CI)
 - **Fuzz**: scenario JSON parser
@@ -391,7 +405,7 @@ void AlarmSystem(entt::registry& r){
 
 ---
 
-## 18) Roadmap
+## 19) Roadmap
 - v0.1: Steep→Mill slice; live plots; KPI table; save/load scenarios
 - v0.2: Thermal/energy model; simple utilities; alarm matrix view
 - v0.3: Human‑factors Monte Carlo; report export; preset library
@@ -400,12 +414,12 @@ void AlarmSystem(entt::registry& r){
 
 ---
 
-## 19) Licensing & safety disclaimer
+## 20) Licensing & safety disclaimer
 This tool is an aid for *proposal evaluation and training*, not a safety‑rated control system. Real‑world changes require engineering review, MOC, and site approvals.
 
 ---
 
-## 20) How to describe on a résumé
+## 21) How to describe on a résumé
 > Built a Qt/EnTT/ImPlot digital‑twin sandbox enabling executives to preview process and staffing proposals. Implemented deterministic real‑time ECS, human‑factors analytics, and Monte Carlo reporting. Demonstrated 30–60% estimated reduction in process‑change validation time across pilot scenarios.
 
 
