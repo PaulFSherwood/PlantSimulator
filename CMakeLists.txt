@@ -3,6 +3,11 @@ project(ExecSim LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Enable Qt's codegen
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORRC ON)
+
 find_package(Qt6 COMPONENTS Widgets REQUIRED)
 
 include(FetchContent)

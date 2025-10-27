@@ -15,7 +15,7 @@ void SimCore::loadDefaultScenario() {
   registry_.emplace<ValveActuator>(e);                 // defaults
   registry_.emplace<Tank>(e, 0.30f, 2.0f, 0.f, 0.f);
   registry_.emplace<Pipe>(e, 1.0f);
-  registry_.emplace<PID>(e, 2.0f, 0.5f, 0.0f, 0.60f);  // level control
+  registry_.emplace<PID>(e, 2.0f, 0.5f, 0.0f, 0.80f);  // level control
   registry_.emplace<Alarmable>(e);
 }
 

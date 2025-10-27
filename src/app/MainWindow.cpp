@@ -3,6 +3,9 @@
 #include <QToolBar>
 #include <QAction>
 
+#include <entt/entt.hpp>
+#include "../sim/Components.hpp"
+
 MainWindow::MainWindow(QWidget* parent)
   : QMainWindow(parent) {
   // Simple UI shell
