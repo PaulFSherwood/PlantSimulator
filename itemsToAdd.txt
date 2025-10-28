@@ -21,3 +21,42 @@ UI / KPIs
 
 Analytics
     Optional Monte Carlo runner (vary fatigue/noise → confidence bands on KPIs)
+
+Notes for Production and working areas.
+CORE PRODUCTION:
+  Grain Receiving & Storage - truck / rail pits, silos, dust collection, conveyors.
+  Steeping - SO2/temperature control, tanks, heat exchangers, pH dosing.
+  Milling/Grinding - wet mills, screen, pumps, classifiers.
+  Germ Seperation & Oil - hydrocyclones, presses, hexane systems (if present).
+  Fiber Seperation - screens, dewatering, dryers.
+  Gluten Seperation - Centrifuges, dryers.
+  Starch Slurry/Refining - filters, ion exchange, evaporators.
+  Derivative Units (site dependent) - Dextrose, HFCS, Maltodextrin, Acids/Alcohols, Bioprocess/Fermentation, Ethanol Distillation, CO2 Recovery.
+  Packaging & Loadout - baggin, bulk, tote, rail, truck
+
+SITE UTILITIES (where many techs live)
+  Boilers/Steam Plant - DA tank, feedwater, PRVs, condensate return.
+  Ammonia Refrigeration (PSM) - compressors, condensers, vessels, purges.
+  Cooling Towers/Chilled Water
+  Compressed Air & Instrument Air - dryers, receivers, distribution.
+  Water Treatment - softening, RO, chemical dosing.
+  Wastewater (WWTP) - DAF, aeration, clarifiers, digesters.
+  Electrical Power - mains, switchgear, MCCs, VFDs, UPS, generators.
+  Controls/OT - DCS/PLC/SCADA, SIS, HMIs, historians, networks.
+
+SUPPORT & COMPLIANCE
+  Maintenance Shops - mechanical, electrical, instrumentation, reliability (vibration/IR/ultrasound).
+  EHS/PSM - MOC, LOTO, permits (should add a lazy factor or task completion rate to personel), relief devices, walkdowns.
+  Quality Labs - QA/QC, micro
+  Warehouse/Stores - spares, PM kitting.
+  Operations Control Room - console ops, alarms, procedures.
+  IT/Networking - OT firewalls, switches, servers.
+  Security/Admin/Training.
+
+
+HumanFactorSystem: 
+- Production - RECIEVING, STEEPING, MILLING, GERM_OIL, FIBER, GLUTEN, STARCH, DERIVATIVES, FERMENTATION, DISTILLATION, PACKAGING, LOADOUT 
+- Utilities - STEAM, REFRIGERATION, COOLING, COMP_AIR, WATER_TREAT, WASTEWATER, ELECTRICAL, CONTROLS 
+- Support - MECH_SHOP, ELEC_SHOP, INSTR_SHOP, RELIABILITY, LAB, EHS_PSM, WAREHOUSE, CONTROL_ROOM, IT_OT
+
+
