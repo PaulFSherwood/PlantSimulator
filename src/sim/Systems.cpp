@@ -45,12 +45,25 @@ void HydraulicsSystem(entt::registry& r, float dt) {
 }
 
 void AlarmSystem(entt::registry& r) {
+  // View of all entities that have BOTH Tanks and Alarmable
   auto v = r.view<Tank, Alarmable>();
+
+  // Iterate entities
   for (auto e : v) {
+
+    // Get components by reference (no copies)
     auto& t = v.get<Tank>(e);
     auto& a = v.get<Alarmable>(e);
+
+    // Compute instantaneous alarm states from current level vs setpoints
+    const bool hi_now = (tank.level > alm.hiSP);
+    const bool lo_now = (tank.level < alm.loSP);
+
+    // Update non-latched "present" alarms
     a.hi = t.level > a.hiSP;
     a.lo = t.level < a.loSP;
+
+    // Latch: once true, stays true until someone clears alm.latched elsewhere
     a.latched = a.latched || a.hi || a.lo;
   }
 }
