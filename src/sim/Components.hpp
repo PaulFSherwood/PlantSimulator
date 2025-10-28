@@ -1,4 +1,6 @@
 #pragma once
+#include <chrono>
+using HoursF = std::chrono::duration<float, std::ratio<3600>>;
 
 // Plain-old ECS data (no methods)
 struct Pump {
@@ -36,4 +38,19 @@ struct PID {
 struct Alarmable {
   bool  hi{false}, lo{false}, latched{false};
   float hiSP{0.90f}, loSP{0.10f};
+};
+
+struct HumanFactor {
+    HoursF shift_length_hours{8.0f};
+    bool training{false};
+    bool optimal_staff_number_on_shift{true};
+    bool fatigue{false};
+    int staff_on_shift{10};
+};
+
+struct AlarmResponse {
+    bool pending{false};
+    float ack_delay_s{1.0f};
+    float repair_time_s{1.0f};
+    float days_since_inspection{20.0f};
 };

@@ -1,0 +1,23 @@
+Items to add
+
+Components.hpp
+    HumanFactors (shift_length_hours, training, fatigue, staff_on_shift)
+    AlarmResponse (pending, ack_delay_s, repair_time_s)
+
+Systems.cpp
+    HumanFactorsSystem (compute fatigue from shift length/training; output reaction-time multiplier)
+    ResponseSystem (if alarm active → start/advance ack + repair timers using multiplier; clear when done)
+    (Minor) extend AlarmSystem to raise actionable alarms
+
+SimCore
+    Tick order: … → Hydraulics/Thermal → AlarmSystem → HumanFactorsSystem → ResponseSystem → Analytics
+
+Scenario (loader/default)
+    Seed site-level HumanFactors (12h vs 8h, training 0.6→0.8, staff count)
+
+UI / KPIs
+    Sliders: shift length, training, staff_on_shift
+    KPIs: alarms/hour, median ack time, MTTR, downtime minutes, throughput delta
+
+Analytics
+    Optional Monte Carlo runner (vary fatigue/noise → confidence bands on KPIs)

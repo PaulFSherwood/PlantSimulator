@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget* parent)
   setCentralWidget(kpiLabel_);
   statusBar()->showMessage("Ready");
 
-  connect(&sim_, &SimCore::frameReady, this, &MainWindow::onFrameReady);
+  connect(&sim_, &SimCore::frameReady, this, &MainWindow::onFrameReady);        // Plant Brain
   connect(actStart, &QAction::triggered, this, [this] { sim_.start(50.f); });
   connect(actStop,  &QAction::triggered, this, [this] { sim_.stop();       });
 
