@@ -67,3 +67,8 @@ void AlarmSystem(entt::registry& r) {
     a.latched = a.latched || a.hi || a.lo;
   }
 }
+
+void HumanFactorsSystem(entt::registry& r) {
+    // View all humans that work in production area
+
+}
