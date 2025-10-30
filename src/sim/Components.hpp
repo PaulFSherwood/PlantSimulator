@@ -40,17 +40,27 @@ struct Alarmable {
   float hiSP{0.90f}, loSP{0.10f};
 };
 
-struct HumanFactor {
-    HoursF shift_length_hours{8.0f};
-    bool training{false};
-    bool optimal_staff_number_on_shift{true};
-    bool fatigue{false};
+struct HumanFactors {
+    float training{0.70f};
+    float fatigue{0.20f};
+    float shift_length_hours{8.0f};
     int staff_on_shift{10};
+    float reaction_time_mult{1.0f};
+    bool optimal_staff_number_on_shift{true};
 };
 
 struct AlarmResponse {
-    bool pending{false};
-    float ack_delay_s{1.0f};
+    bool active{false};
+    bool acknowledged{false};
+    float ack_timer_s{1.0f};
     float repair_time_s{1.0f};
-    float days_since_inspection{20.0f};
+    float ack_delay_target_s{1.0f};
+    float repair_time_target_s{120.0f};
 };
+
+struct SiteKPI {
+  int alarms_raised{0};
+  int alarms_active{0};
+  float downtime_s{0.0f};
+};
+

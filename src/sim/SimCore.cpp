@@ -34,6 +34,26 @@ void SimCore::onTick() {
   ActuatorSystem(registry_, dt_);
   HydraulicsSystem(registry_, dt_);
   AlarmSystem(registry_);
+  HumanFactorsSystem(registry_, dt_);
+  ResponseSystem(registry_, dt_);
+  AnalyticsSystem(registry_, dt_);
   ++step_;
   emit frameReady();
+}
+
+void SimCore::loadDefaultScenario() {
+  // Equipement entity
+  auto e = registry_.create();
+  registry_.emplace<Pump>(e, true, 1.8f, 0.f);
+  registry_.emplace<ValveActuator>(e);
+  registry_.emplace<Tank>(e, 0.30f, 2.0f, 0.f, 0.f);
+  registry_.emplace<Pipe>(e, 1.0f);
+  registry_.emplace<PID>(e, 2.0f, 0.5f, 0.0f, 0.60f);
+  registry_.emplace<Alarmable>(e);
+  registry_.emplace<AlarmResponse>(e, false, false, 0.f, 0.f, 8.0f, 90.0f);
+
+  // Site singleton (human factors + KPIs)
+  auto site = registry_.create();
+  registry_.emplace<HumanFactors>(site, 0.70f, 0.20f, 8.0f, 90.0f); // faster demo
+  registry_.emplace<SiteKPI>(site);
 }
