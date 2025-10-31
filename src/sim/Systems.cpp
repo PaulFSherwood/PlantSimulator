@@ -53,26 +53,26 @@ void AlarmSystem(entt::registry& r) {
   for (auto e : v) {
 
     // Get components by reference (no copies)
-    auto& t = v.get<Tank>(e);
-    auto& a = v.get<Alarmable>(e);
+    auto& tank = v.get<Tank>(e);
+    auto& alarm = v.get<Alarmable>(e);
 
     // Compute instantaneous alarm states from current level vs setpoints
-    const bool hi_now = (tank.level > alm.hiSP);
-    const bool lo_now = (tank.level < alm.loSP);
+    const bool hi_now = (tank.level > alarm.hiSP);
+    const bool lo_now = (tank.level < alarm.loSP);
 
     // Update non-latched "present" alarms
-    a.hi = t.level > a.hiSP;
-    a.lo = t.level < a.loSP;
+    alarm.hi = tank.level > alarm.hiSP;
+    alarm.lo = tank.level < alarm.loSP;
 
     // Latch: once true, stays true until someone clears alm.latched elsewhere
-    a.latched = a.latched || a.hi || a.lo;
+    alarm.latched = alarm.latched || alarm.hi || alarm.lo;
   }
 }
 
 void HumanFactorsSystem(entt::registry& r, float /*dt*/) {
     // View all humans that work in production area
   auto v = r.view<HumanFactors>();
-  for (auot e : v) {
+  for (auto e : v) {
     auto& hf = v.get<HumanFactors>(e);
 
     // Simple, tunable model: 
@@ -80,7 +80,7 @@ void HumanFactorsSystem(entt::registry& r, float /*dt*/) {
     float f_fatigue   = 1.0f + 0.6f * std::clamp(hf.fatigue, 0.0f, 1.0f);
     float f_shift     = 1.0f + 0.15f * std::clamp((hf.shift_length_hours - 8.0f) / 4.0f, -1.0f, 1.0f);
     float f_training  = 1.0f - 0.4f * std::clamp(hf.training, 0.0f, 1.0f);
-    float f_staff     = 1.0f - 0.05f * std::clamp(0, hf.staff_on_shift - 3);
+    float f_staff     = 1.0f - 0.05f * std::clamp(0, hf.staff_on_shift, 3);
 
     float mult = f_fatigue * f_shift * f_training * f_staff;
     hf.reaction_time_mult = std::clamp(mult, 0.5f, 2.0f);
@@ -92,7 +92,7 @@ void ResponseSystem(entt::registry& r, float dt) {
   // Get site multiplier (default 1.0 if none)
   float rt_mult = 1.0f;
   if (auto site = r.view<HumanFactors>(); !site.empty()) {
-    rt_mult = site.get<HumanFactors>(*site.begine()).reaction_time_mult;
+    rt_mult = site.get<HumanFactors>(*site.begin()).reaction_time_mult;
   }
 
   // Optionally grap KPIs (singleton)  // should this be here?
@@ -110,9 +110,9 @@ void ResponseSystem(entt::registry& r, float dt) {
     // Rising edge of alarm -> start response
     if (alarm_now && !ar.active) {
       ar.active = true;
-      ar.acknowlege = false;
+      ar.acknowledged = false;
       ar.ack_timer_s  = std::max(0.0f, ar.ack_delay_target_s * rt_mult);
-      ar.repair_timer_s = std::max(0.0f, ar.repair_time_target_s * rt_mult);
+      ar.repair_time_s = std::max(0.0f, ar.repair_time_target_s * rt_mult);
       if (kpi_ptr) { kpi_ptr->alarms_raised++; kpi_ptr->alarms_active++; }
     }
 

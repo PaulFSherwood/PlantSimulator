@@ -1,6 +1,6 @@
-#include "SimCore.hpp"
+#include "sim/SimCore.hpp"
 #include "Components.hpp"
-#include "Systems.hpp"
+#include "sim/Systems.hpp"
 #include <algorithm>
 
 SimCore::SimCore(QObject* parent) : QObject(parent) {
@@ -9,14 +9,20 @@ SimCore::SimCore(QObject* parent) : QObject(parent) {
 }
 
 void SimCore::loadDefaultScenario() {
-  // One entity with Pump + Valve + Tank + PID + Alarmable + Pipe
+  // Equipement entity
   auto e = registry_.create();
   registry_.emplace<Pump>(e, true, 1.8f, 0.f);
-  registry_.emplace<ValveActuator>(e);                 // defaults
+  registry_.emplace<ValveActuator>(e);
   registry_.emplace<Tank>(e, 0.30f, 2.0f, 0.f, 0.f);
   registry_.emplace<Pipe>(e, 1.0f);
-  registry_.emplace<PID>(e, 2.0f, 0.5f, 0.0f, 0.80f);  // level control
+  registry_.emplace<PID>(e, 2.0f, 0.5f, 0.0f, 0.60f);
   registry_.emplace<Alarmable>(e);
+  registry_.emplace<AlarmResponse>(e, false, false, 0.f, 0.f, 8.0f, 90.0f);
+
+  // Site singleton (human factors + KPIs)
+  auto site = registry_.create();
+  registry_.emplace<HumanFactors>(site, 0.70f, 0.20f, 8.0f, 90.0f); // faster demo
+  registry_.emplace<SiteKPI>(site);
 }
 
 void SimCore::start(float hz) {
@@ -41,19 +47,3 @@ void SimCore::onTick() {
   emit frameReady();
 }
 
-void SimCore::loadDefaultScenario() {
-  // Equipement entity
-  auto e = registry_.create();
-  registry_.emplace<Pump>(e, true, 1.8f, 0.f);
-  registry_.emplace<ValveActuator>(e);
-  registry_.emplace<Tank>(e, 0.30f, 2.0f, 0.f, 0.f);
-  registry_.emplace<Pipe>(e, 1.0f);
-  registry_.emplace<PID>(e, 2.0f, 0.5f, 0.0f, 0.60f);
-  registry_.emplace<Alarmable>(e);
-  registry_.emplace<AlarmResponse>(e, false, false, 0.f, 0.f, 8.0f, 90.0f);
-
-  // Site singleton (human factors + KPIs)
-  auto site = registry_.create();
-  registry_.emplace<HumanFactors>(site, 0.70f, 0.20f, 8.0f, 90.0f); // faster demo
-  registry_.emplace<SiteKPI>(site);
-}
