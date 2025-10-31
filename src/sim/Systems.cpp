@@ -146,3 +146,16 @@ void ResponseSystem(entt::registry& r, float dt) {
 void AnalyticsSystem(entt::registry& /*r*/, float /*dt*/) {
   // Intentionally minimal for now.
 }
+
+void HeatExchangerSystem(entt::registry& r, float dt) {
+  auto view = r.view<HeatExchanger, PID, ValveActuator>();
+  for (auto e : view) {
+  // do math to figure send proper outputs.
+    auto& he    = view.get<HeatExchanger>(e);
+    auto& pid   = view.get<PID>(e);
+    auto& v     = view.get<ValveActuator>(e);
+
+    float delta = std::clamp(pid.out - v.pos, (-v.speed*dt)+he.flow_rate, (v.speed*dt)+he.flow_rate);
+    he.comp_outlet_stream += delta;
+  }
+}

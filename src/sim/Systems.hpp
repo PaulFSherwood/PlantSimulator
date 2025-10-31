@@ -8,5 +8,6 @@ void AlarmSystem(entt::registry& r);
 void HumanFactorsSystem(entt::registry& r, float dt);
 void ResponseSystem(entt::registry& r, float dt);
 void AnalyticsSystem(entt::registry& r, float dt);
+void HeatExchangerSystem(entt::registry& r, float dt);
 
 // (Thermal, Failures, HumanFactors, Analytics can be added later)

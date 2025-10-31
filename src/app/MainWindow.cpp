@@ -41,6 +41,7 @@ void MainWindow::onFrameReady() {
   float rt_mult = 1.0f;
   int alarms_active = 0;
   float downtime_min = 0.0f;
+  float heat_ex_status = 0.0f;
 
   if (auto v = r.view<HumanFactors>(); !v.empty()) {
     rt_mult = v.get<HumanFactors>(*v.begin()).reaction_time_mult;
@@ -50,14 +51,25 @@ void MainWindow::onFrameReady() {
     alarms_active = k.alarms_active;
     downtime_min = k.downtime_s / 60.0f;
   }
+//  if (auto vhe = r.view<HeatExchanger>(); !vhe.empty()) {
+//    const auto& khe = vhe.get<HeatExchanger>(*vhe.begin());
+//    heat_ex_status = khe.comp_outlet_stream;
+//  }
+
+  auto vhe = r.view<HeatExchanger>();
+  if (!vhe.empty()) {
+    const auto e = *vhe.begin();
+    heat_ex_status = vhe.get<HeatExchanger>(e).comp_outlet_stream;
+  }
 
   kpiLabel_->setText(
-    QString("Tank level: %1 (0..1)\n Pumps running: %2\n Alarms active: %3\n Downtime: %4 min\n Reaction-time x: %5\n Step: %6")
+    QString("Tank level: %1 (0..1)\n Pumps running: %2\n Alarms active: %3\n Downtime: %4 min\n Reaction-time x: %5\n Step: %6\nHeatExchange: %7")
       .arg(level, 0, 'f', 3)
       .arg(pumpsRunning)
       .arg(alarms_active)
       .arg(downtime_min, 0, 'f', 2)
       .arg(rt_mult, 0, 'f', 2)
       .arg(sim_.step())
+      .arg(heat_ex_status, 0, 'f', 2)
       );
 }

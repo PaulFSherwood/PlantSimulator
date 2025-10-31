@@ -1,5 +1,7 @@
 #pragma once
 #include <chrono>
+#include <entt/entt.hpp>
+
 using HoursF = std::chrono::duration<float, std::ratio<3600>>;
 
 // Plain-old ECS data (no methods)
@@ -64,3 +66,11 @@ struct SiteKPI {
   float downtime_s{0.0f};
 };
 
+struct HeatExchanger {
+  float flow_rate{1.0f};
+  float comp_inlet_stream{1.0f};
+  float comp_outlet_stream{1.0f};
+  float temp{70.0};
+  float pressure{1.0f};
+  bool powerOn{true};
+};
