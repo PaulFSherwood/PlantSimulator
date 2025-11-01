@@ -17,6 +17,12 @@ void SimCore::loadDefaultScenario() {
   registry_.emplace<Pipe>(e, 1.0f);
   registry_.emplace<PID>(e, 2.0f, 0.5f, 0.0f, 0.60f);
   registry_.emplace<HeatExchanger>(e, true, 1.0f, 1.0f, 1.0f, 70.0f, 1.0f);
+  registry_.emplace<Boiler>(e, 1.0f, 10.0f, 120.0f, 90.0f);
+  registry_.emplace<RefrigerationCompressor>(e, 50.0f, 50.0f, 1.0f, 120.0f);
+  registry_.emplace<CoolingTower>(e, 1500.0f, 160.0f, 20.0f);
+  registry_.emplace<AirSystem>(e, 1.0f, 1.0f, true);
+  registry_.emplace<WaterTreatment>(e, 10.0f, 10.0f, 10.0f);
+  registry_.emplace<Wastewater>(e, 10.0f, 10.0f, 10.0f, 10.0f);
   registry_.emplace<Alarmable>(e);
   registry_.emplace<AlarmResponse>(e, false, false, 0.f, 0.f, 8.0f, 90.0f);
 

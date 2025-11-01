@@ -164,12 +164,13 @@ void HeatExchangerSystem(entt::registry& r, float dt) {
 
 void UtilitySystem(entt::registry& r, float dt) {
     // update process balance (e.g., cooling vs. demand, steam vs. pressure).
+
 }
 
 void BoilerSystem(entt::registry& r, float dt) {
-    // etc., could be added later for detail.
+    // added later for detail.
 }
 
 void RefrigSystem(entt::registry& r, float dt) {
-    // etc., could be added later for detail.
+    // added later for detail.
 }

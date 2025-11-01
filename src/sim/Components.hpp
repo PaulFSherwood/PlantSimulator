@@ -97,8 +97,8 @@ struct CoolingTower {
 
 struct AirSystem {
     float pressure{1.0f};
-    float dryer_status{};
-    float dewpoint{};
+    float dewpoint{1.0f};
+    float dryer_status{true};
 };
 
 struct WaterTreatment {
@@ -112,4 +112,4 @@ struct Wastewater {
     float flow_out{10.0f};
     float DO{10.0f};
     float pH{10.0f};
-}
+};
