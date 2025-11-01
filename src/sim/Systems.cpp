@@ -70,76 +70,72 @@ void AlarmSystem(entt::registry& r) {
 }
 
 void HumanFactorsSystem(entt::registry& r, float /*dt*/) {
-    // View all humans that work in production area
-  auto v = r.view<HumanFactors>();
-  for (auto e : v) {
-    auto& hf = v.get<HumanFactors>(e);
+    auto v = r.view<HumanFactors>();
+    for (auto e : v) {
+        auto& hf = v.get<HumanFactors>(e);
 
-    // Simple, tunable model: 
-    // [fatigue ^ or > slower; longer shifts > slower; training ^ or > faster; more staff > faster ]
-    float f_fatigue   = 1.0f + 0.6f * std::clamp(hf.fatigue, 0.0f, 1.0f);
-    float f_shift     = 1.0f + 0.15f * std::clamp((hf.shift_length_hours - 8.0f) / 4.0f, -1.0f, 1.0f);
-    float f_training  = 1.0f - 0.4f * std::clamp(hf.training, 0.0f, 1.0f);
-    float f_staff     = 1.0f - 0.05f * std::clamp(0, hf.staff_on_shift, 3);
+        const float f_fatigue  = 1.0f + 0.6f  * std::clamp(hf.fatigue,  0.0f, 1.0f);
+        const float f_shift    = 1.0f + 0.15f * std::clamp((hf.shift_length_hours - 8.0f) / 4.0f, -1.0f, 1.0f);
+        const float f_training = 1.0f - 0.4f  * std::clamp(hf.training, 0.0f, 1.0f);
+        const float f_staff    = 1.0f - 0.05f * std::max(0, hf.staff_on_shift - 3); // more staff → faster
 
-    float mult = f_fatigue * f_shift * f_training * f_staff;
-    hf.reaction_time_mult = std::clamp(mult, 0.5f, 2.0f);
-  }
+        float mult = f_fatigue * f_shift * f_training * f_staff;
+        hf.reaction_time_mult = std::clamp(mult, 0.5f, 2.0f);
+    }
 }
 
 // Drive acknowlege + repair timers for each alarmable thing, scaled by human factors.
 void ResponseSystem(entt::registry& r, float dt) {
-  // Get site multiplier (default 1.0 if none)
-  float rt_mult = 1.0f;
-  if (auto site = r.view<HumanFactors>(); !site.empty()) {
-    rt_mult = site.get<HumanFactors>(*site.begin()).reaction_time_mult;
-  }
+    float rt_mult = 1.0f;
+    if (auto site = r.view<HumanFactors>(); !site.empty())
+        rt_mult = site.get<HumanFactors>(*site.begin()).reaction_time_mult;
 
-  // Optionally grap KPIs (singleton)  // should this be here?
-  SiteKPI* kpi_ptr = nullptr;
-  if (auto vk = r.view<SiteKPI>();  !vk.empty()) kpi_ptr = &vk.get<SiteKPI>(*vk.begin());
-  
-  // Iterate over all alarmable entities that also have a response state 
-  auto v = r.view<Alarmable, AlarmResponse>();
-  for (auto e : v) {
-    auto& a = v.get<Alarmable>(e);
-    auto& ar = v.get<AlarmResponse>(e);
+    SiteKPI* kpi_ptr = nullptr;
+    if (auto vk = r.view<SiteKPI>(); !vk.empty())
+        kpi_ptr = &vk.get<SiteKPI>(*vk.begin());
 
-    const bool alarm_now = (a.hi || a.lo);
+    auto v = r.view<Alarmable, AlarmResponse>();
+    for (auto e : v) {
+        auto& a  = v.get<Alarmable>(e);
+        auto& ar = v.get<AlarmResponse>(e);
 
-    // Rising edge of alarm -> start response
-    if (alarm_now && !ar.active) {
-      ar.active = true;
-      ar.acknowledged = false;
-      ar.ack_timer_s  = std::max(0.0f, ar.ack_delay_target_s * rt_mult);
-      ar.repair_time_s = std::max(0.0f, ar.repair_time_target_s * rt_mult);
-      if (kpi_ptr) { kpi_ptr->alarms_raised++; kpi_ptr->alarms_active++; }
-    }
+        const bool alarm_now = (a.hi || a.lo);
 
-    if (ar.active) {
-      // Downtime accruse while active 
-      if (kpi_ptr) kpi_ptr->downtime_s += dt;
-
-      // acknowlege, then repair
-      if (!ar.acknowledged) {
-        ar.ack_timer_s = std::max(0.0f, ar.ack_timer_s - dt);
-        if (ar.ack_timer_s <= 0.0f) {
-          // Repair complete: clear alarm & response (simple model)
-          a.latched = false;
-          ar.active = false;
-          ar.acknowledged = false;
-          if (kpi_ptr && kpi_ptr->alarms_active > 0) kpi_ptr->alarms_active--;
+        // Rising edge → start response
+        if (alarm_now && !ar.active) {
+            ar.active        = true;
+            ar.acknowledged  = false;
+            ar.ack_timer_s   = std::max(0.0f, ar.ack_delay_target_s   * rt_mult);
+            ar.repair_time_s = std::max(0.0f, ar.repair_time_target_s * rt_mult);
+            if (kpi_ptr) { kpi_ptr->alarms_raised++; kpi_ptr->alarms_active++; }
         }
-      }
-    }
 
-    // If alarm condition cleared before we started -> ensure not stuck active
-    if (!alarm_now && !a.latched && ar.active && !ar.acknowledged && ar.ack_timer_s > 0.0f) {
-      // Allow auto-clear if it was a transient pre-ack blip
-      ar.active = false;
-      if (kpi_ptr && kpi_ptr->alarms_active > 0) kpi_ptr->alarms_active--;
+        if (ar.active) {
+            if (kpi_ptr) kpi_ptr->downtime_s += dt;
+
+            if (!ar.acknowledged) {
+                ar.ack_timer_s = std::max(0.0f, ar.ack_timer_s - dt);
+                if (ar.ack_timer_s <= 0.0f) {
+                    ar.acknowledged = true;           // now begin repair phase
+                }
+            } else {
+                ar.repair_time_s = std::max(0.0f, ar.repair_time_s - dt);
+                if (ar.repair_time_s <= 0.0f) {
+                    // repair done → clear
+                    a.latched = false;
+                    ar.active = false;
+                    ar.acknowledged = false;
+                    if (kpi_ptr && kpi_ptr->alarms_active > 0) kpi_ptr->alarms_active--;
+                }
+            }
+        }
+
+        // Transient clear before ack → allow auto-cancel
+        if (!alarm_now && !a.latched && ar.active && !ar.acknowledged && ar.ack_timer_s > 0.0f) {
+            ar.active = false;
+            if (kpi_ptr && kpi_ptr->alarms_active > 0) kpi_ptr->alarms_active--;
+        }
     }
-  }
 }
 
 // (Optional) place for rolling aggregates: MVP just exists for future use.
@@ -148,14 +144,32 @@ void AnalyticsSystem(entt::registry& /*r*/, float /*dt*/) {
 }
 
 void HeatExchangerSystem(entt::registry& r, float dt) {
-  auto view = r.view<HeatExchanger, PID, ValveActuator>();
-  for (auto e : view) {
-  // do math to figure send proper outputs.
-    auto& he    = view.get<HeatExchanger>(e);
-    auto& pid   = view.get<PID>(e);
-    auto& v     = view.get<ValveActuator>(e);
+    auto v = r.view<HeatExchanger, ValveActuator>();
+    for (auto e : v) {
+        auto& hx = v.get<HeatExchanger>(e);
+        auto& va = v.get<ValveActuator>(e);
 
-    float delta = std::clamp(pid.out - v.pos, (-v.speed*dt)+he.flow_rate, (v.speed*dt)+he.flow_rate);
-    he.comp_outlet_stream += delta;
-  }
+        if (!hx.power_on) continue;
+
+        // Target = inlet modulated by valve opening (0..1)
+        const float target = hx.comp_inlet_stream * std::clamp(va.pos, 0.0f, 1.0f);
+
+        // First-order approach: dY = (dt / tau_eff) * (target - current)
+        const float tau_eff = std::max(0.1f, hx.tau_s / std::max(0.1f, hx.flow_rate));
+        const float alpha   = std::clamp(dt / tau_eff, 0.0f, 1.0f);
+
+        hx.comp_outlet_stream += alpha * (target - hx.comp_outlet_stream);
+    }
+}
+
+void UtilitySystem(entt::registry& r, float dt) {
+    // update process balance (e.g., cooling vs. demand, steam vs. pressure).
+}
+
+void BoilerSystem(entt::registry& r, float dt) {
+    // etc., could be added later for detail.
+}
+
+void RefrigSystem(entt::registry& r, float dt) {
+    // etc., could be added later for detail.
 }

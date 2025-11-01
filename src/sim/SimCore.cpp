@@ -16,13 +16,13 @@ void SimCore::loadDefaultScenario() {
   registry_.emplace<Tank>(e, 0.30f, 2.0f, 0.f, 0.f);
   registry_.emplace<Pipe>(e, 1.0f);
   registry_.emplace<PID>(e, 2.0f, 0.5f, 0.0f, 0.60f);
-  registry_.emplace<HeatExchanger>(e, 1.0f, 1.0f, 1.0f, 70.0, 1.0f, true);
+  registry_.emplace<HeatExchanger>(e, true, 1.0f, 1.0f, 1.0f, 70.0f, 1.0f);
   registry_.emplace<Alarmable>(e);
   registry_.emplace<AlarmResponse>(e, false, false, 0.f, 0.f, 8.0f, 90.0f);
 
   // Site singleton (human factors + KPIs)
   auto site = registry_.create();
-  registry_.emplace<HumanFactors>(site, 0.70f, 0.20f, 8.0f, 90.0f); // faster demo
+  registry_.emplace<HumanFactors>(site, 0.70f, 0.20f, 8.0f, 3, 1.0f);  // training, fatigue, shift, staff, mult
   registry_.emplace<SiteKPI>(site);
 }
 
@@ -36,6 +36,7 @@ void SimCore::stop() {
   timer_.stop();
 }
 
+// Control → Actuator → Hydraulics → HeatExchanger → Alarm → HumanFactors → Response → Analytics
 void SimCore::onTick() {
   ControlSystem(registry_, dt_);
   ActuatorSystem(registry_, dt_);

@@ -43,12 +43,11 @@ struct Alarmable {
 };
 
 struct HumanFactors {
-    float training{0.70f};
-    float fatigue{0.20f};
-    float shift_length_hours{8.0f};
-    int staff_on_shift{10};
-    float reaction_time_mult{1.0f};
-    bool optimal_staff_number_on_shift{true};
+    float training{0.70f};           // 0..1 (higher = better)
+    float fatigue{0.20f};            // 0..1 (higher = worse)
+    float shift_length_hours{8.0f};  // typical 8..12
+    int   staff_on_shift{3};         // responders available
+    float reaction_time_mult{1.0f};  // computed each tick (0.5..2.0)
 };
 
 struct AlarmResponse {
@@ -67,10 +66,50 @@ struct SiteKPI {
 };
 
 struct HeatExchanger {
-  float flow_rate{1.0f};
-  float comp_inlet_stream{1.0f};
-  float comp_outlet_stream{1.0f};
-  float temp{70.0};
-  float pressure{1.0f};
-  bool powerOn{true};
+    bool  power_on{true};            // enabled?
+    float comp_inlet_stream{1.0f};   // arbitrary units (input)
+    float comp_outlet_stream{1.0f};  // arbitrary units (output)
+    float flow_rate{1.0f};           // 0..∞ (higher = faster response)
+    float tau_s{5.0f};               // time constant (seconds)
+    float temp{70.0f};               // placeholder for future thermal use
+    float pressure{1.0f};            // placeholder for future hydraulic check
 };
+
+struct Boiler {
+    float pressure{1.0f};
+    float steam_flow{10.0f};
+    float feedwater_temp{120.0f};
+    float efficiency{90.0f};
+};
+
+struct RefrigerationCompressor {
+    float suction{50.0f};
+    float discharge_pressure{50.0f};
+    float load{1.0f};
+    float motor_kW{120.0f};
+};
+
+struct CoolingTower {
+    float fan_speed{1500.0f};
+    float approach_temp{160.0f};
+    float cycles{20.0f};
+};
+
+struct AirSystem {
+    float pressure{1.0f};
+    float dryer_status{};
+    float dewpoint{};
+};
+
+struct WaterTreatment {
+    float RO_pressure{10.0f};
+    float hardness{10.0f};
+    float chemical_dose{10.0f};
+};
+
+struct Wastewater {
+    float flow_in{10.0f};
+    float flow_out{10.0f};
+    float DO{10.0f};
+    float pH{10.0f};
+}
