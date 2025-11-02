@@ -98,7 +98,7 @@ struct CoolingTower {
 struct AirSystem {
     float pressure{1.0f};
     float dewpoint{1.0f};
-    float dryer_status{true};
+    bool dryer_status{true};
 };
 
 struct WaterTreatment {
@@ -112,4 +112,31 @@ struct Wastewater {
     float flow_out{10.0f};
     float DO{10.0f};
     float pH{10.0f};
+};
+
+// Bus / singleton Helpers
+struct SteamHeader {
+    float pressure{10.0f};
+    float steam_supply_flow{10.0f};
+    float steam_demand_flow{10.0f};
+    float unmet_demand_flow{10.0f};
+};
+
+struct ChilledWaterLoop {
+    float supply_temp{60.0f};
+    float return_temp{10.0f};
+    float cooling_supply_kw{10.0f};
+    float cooling_demand_kw{10.0f};
+    float unmet_cooling_kw{10.0f};
+};
+
+// Consumers
+struct SteamLoad {
+    float demand_flow{10.0f};
+    float granted_flow{10.0f};
+};
+
+struct CoolingLoad {
+    float demand_kw{10.0f};
+    float granted_kw{10.0f};
 };

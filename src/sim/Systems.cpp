@@ -162,6 +162,26 @@ void HeatExchangerSystem(entt::registry& r, float dt) {
     }
 }
 
+void Steam(entt::registry& r, float dt) {
+    auto v = r.view<SteamLoad>();
+    for (auto e : v) {
+        auto& hh = v.get<SteamLoad>(e);
+
+        if (!hh.demand_flow) continue;
+        hh.granted_flow += hh.granted_flow;
+    }
+}
+
+void Cooling(entt::registry& r, float dt) {
+    auto v = r.view<CoolingLoad>();
+    for (auto e : v) {
+        auto hc = v.get<CoolingLoad>(e);
+
+        if (!hc.demand_kw) continue;
+        hc.granted_kw += hc.demand_kw;
+    }
+}
+
 void UtilitySystem(entt::registry& r, float dt) {
     // update process balance (e.g., cooling vs. demand, steam vs. pressure).
 

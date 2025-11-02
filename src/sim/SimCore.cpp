@@ -23,6 +23,10 @@ void SimCore::loadDefaultScenario() {
   registry_.emplace<AirSystem>(e, 1.0f, 1.0f, true);
   registry_.emplace<WaterTreatment>(e, 10.0f, 10.0f, 10.0f);
   registry_.emplace<Wastewater>(e, 10.0f, 10.0f, 10.0f, 10.0f);
+  registry_.emplace<SteamHeader>(e, 10.0f, 10.0f, 10.0f, 10.0f);
+  registry_.emplace<ChilledWaterLoop>(e, 60.0f, 10.0f, 10.0f, 10.0f, 10.0f);
+  registry_.emplace<SteamLoad>(e, 10.0f, 10.0f);
+  registry_.emplace<CoolingLoad>(e, 10.0f, 10.0f);
   registry_.emplace<Alarmable>(e);
   registry_.emplace<AlarmResponse>(e, false, false, 0.f, 0.f, 8.0f, 90.0f);
 
@@ -48,6 +52,11 @@ void SimCore::onTick() {
   ActuatorSystem(registry_, dt_);
   HydraulicsSystem(registry_, dt_);
   HeatExchangerSystem(registry_, dt_);
+  Steam(registry_, dt_);
+  Cooling(registry_, dt_);
+  UtilitySystem(registry_, dt_);
+  BoilerSystem(registry_, dt_);
+  RefrigSystem(registry_, dt_);
   AlarmSystem(registry_);
   HumanFactorsSystem(registry_, dt_);
   ResponseSystem(registry_, dt_);
