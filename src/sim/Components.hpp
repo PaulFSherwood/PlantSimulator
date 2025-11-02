@@ -76,28 +76,28 @@ struct HeatExchanger {
 };
 
 struct Boiler {
-    float pressure{1.0f};
-    float steam_flow{10.0f};
+    float pressure{10.0f};
+    float steam_flow{0.0f};
     float feedwater_temp{120.0f};
-    float efficiency{90.0f};
+    float efficiency{0.90f};
 };
 
 struct RefrigerationCompressor {
-    float suction{50.0f};
-    float discharge_pressure{50.0f};
-    float load{1.0f};
-    float motor_kW{120.0f};
+    float suction{3.5f};
+    float discharge_pressure{12.0f};
+    float load{0.0f};
+    float motor_kW{0.0f};
 };
 
 struct CoolingTower {
-    float fan_speed{1500.0f};
-    float approach_temp{160.0f};
-    float cycles{20.0f};
+    float fan_speed{0.0f};
+    float approach_temp{5.0f};
+    float cycles{3.0f};
 };
 
 struct AirSystem {
-    float pressure{1.0f};
-    float dewpoint{1.0f};
+    float pressure{7.0f};
+    float dewpoint{-20.0f};
     bool dryer_status{true};
 };
 

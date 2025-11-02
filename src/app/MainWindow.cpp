@@ -63,13 +63,13 @@ void MainWindow::onFrameReady() {
   }
 
   kpiLabel_->setText(
-    QString("Tank level: %1 (0..1)\n Pumps running: %2\n Alarms active: %3\n Downtime: %4 min\n Reaction-time x: %5\n Step: %6\nHeatExchange: %7")
-      .arg(level, 0, 'f', 3)
-      .arg(pumpsRunning)
-      .arg(alarms_active)
-      .arg(downtime_min, 0, 'f', 2)
-      .arg(rt_mult, 0, 'f', 2)
-      .arg(sim_.step())
-      .arg(heat_ex_status, 0, 'f', 2)
+      QString("Tank level: %1 (0..1)\nPumps running: %2\nAlarms active: %3\nDowntime: %4 min\nReaction-time x: %5\nStep: %6\nHeatExchange: %7")
+          .arg(level, 0, 'f', 3)
+          .arg(pumpsRunning)
+          .arg(alarms_active)
+          .arg(downtime_min, 0, 'f', 2)
+          .arg(rt_mult, 0, 'f', 2)
+          .arg(sim_.step())
+          .arg(heat_ex_status, 0, 'f', 2)
       );
 }

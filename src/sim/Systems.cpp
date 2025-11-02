@@ -162,25 +162,86 @@ void HeatExchangerSystem(entt::registry& r, float dt) {
     }
 }
 
-void Steam(entt::registry& r, float dt) {
-    auto v = r.view<SteamLoad>();
-    for (auto e : v) {
-        auto& hh = v.get<SteamLoad>(e);
+// void Steam(entt::registry& r, float dt) {
+//     auto v = r.view<SteamLoad>();
+//     for (auto e : v) {
+//         auto& hh = v.get<SteamLoad>(e);
 
-        if (!hh.demand_flow) continue;
-        hh.granted_flow += hh.granted_flow;
+//         if (!hh.demand_flow) continue;
+//         hh.granted_flow += hh.granted_flow;
+//     }
+// }
+
+// void Cooling(entt::registry& r, float dt) {
+//     auto v = r.view<CoolingLoad>();
+//     for (auto e : v) {
+//         auto hc = v.get<CoolingLoad>(e);
+
+//         if (!hc.demand_kw) continue;
+//         hc.granted_kw += hc.demand_kw;
+//     }
+// }
+
+void Steam(entt::registry& r, float /*dt*/) {
+    // Get the site bus; if missing, nothing to do.
+    auto v = r.view<SteamHeader>();
+    if (v.empty()) return;
+    auto e_site = *v.begin();
+    auto &bus = v.get<SteamHeader>(e_site);
+
+    // 1) Collect demand
+    float total_demand = 0.0f;
+    auto vload = r.view<SteamLoad>();
+    for (auto e : vload) {
+        const auto &ld = vload.get<SteamLoad>(e);
+        total_demand += std::max(0.0f, ld.demand_flow);
+    }
+    bus.steam_demand_flow = total_demand;
+
+    // 2) For now: supply meets demand (no curtailment yet)
+    bus.steam_supply_flow = total_demand;
+    bus.unmet_demand_flow = std::max(0.0f, bus.steam_demand_flow - bus.steam_supply_flow);
+
+    // Crude pressure surrogate: base + small gain*(supply - demand)
+    bus.pressure = std::max(0.0f, 10.0f + 0.1f * (bus.steam_supply_flow - bus.steam_demand_flow));
+
+    // 3) Allocate back to loads (fully met for MVP)
+    for (auto e : vload) {
+        auto &ld = vload.get<SteamLoad>(e);
+        ld.granted_flow = std::min(ld.demand_flow, bus.steam_supply_flow); // MVP: no pro-rata yet
     }
 }
 
-void Cooling(entt::registry& r, float dt) {
-    auto v = r.view<CoolingLoad>();
-    for (auto e : v) {
-        auto hc = v.get<CoolingLoad>(e);
+void Cooling(entt::registry& r, float /*dt*/) {
+    auto v = r.view<ChilledWaterLoop>();
+    if (v.empty()) return;
+    auto e_site = *v.begin();
+    auto &loop = v.get<ChilledWaterLoop>(e_site);
 
-        if (!hc.demand_kw) continue;
-        hc.granted_kw += hc.demand_kw;
+    // 1) Collect demand
+    float total_demand = 0.0f;
+    auto vload = r.view<CoolingLoad>();
+    for (auto e : vload) {
+        const auto &ld = vload.get<CoolingLoad>(e);
+        total_demand += std::max(0.0f, ld.demand_kw);
+    }
+    loop.cooling_demand_kw = total_demand;
+
+    // 2) For now: supply meets demand (later tie to CoolingTower/ambient)
+    loop.cooling_supply_kw = total_demand;
+    loop.unmet_cooling_kw  = std::max(0.0f, loop.cooling_demand_kw - loop.cooling_supply_kw);
+
+    // Crude temps: with supply == demand, hold nominal supply/return
+    loop.supply_temp = 7.0f;   // °C
+    loop.return_temp = 12.0f;  // °C
+
+    // 3) Allocate
+    for (auto e : vload) {
+        auto &ld = vload.get<CoolingLoad>(e);
+        ld.granted_kw = std::min(ld.demand_kw, loop.cooling_supply_kw);
     }
 }
+
 
 void UtilitySystem(entt::registry& r, float dt) {
     // update process balance (e.g., cooling vs. demand, steam vs. pressure).

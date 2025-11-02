@@ -16,24 +16,27 @@ void SimCore::loadDefaultScenario() {
   registry_.emplace<Tank>(e, 0.30f, 2.0f, 0.f, 0.f);
   registry_.emplace<Pipe>(e, 1.0f);
   registry_.emplace<PID>(e, 2.0f, 0.5f, 0.0f, 0.60f);
-  registry_.emplace<HeatExchanger>(e, true, 1.0f, 1.0f, 1.0f, 70.0f, 1.0f);
-  registry_.emplace<Boiler>(e, 1.0f, 10.0f, 120.0f, 90.0f);
+  registry_.emplace<HeatExchanger>(e, true, 1.0f, 1.0f, 1.0f, 5.0f, 70.0f, 1.0f);
+  registry_.emplace<Boiler>(e, 1.0f, 10.0f, 120.0f, 0.90f);               // efficiency as fraction 0..1
   registry_.emplace<RefrigerationCompressor>(e, 50.0f, 50.0f, 1.0f, 120.0f);
-  registry_.emplace<CoolingTower>(e, 1500.0f, 160.0f, 20.0f);
-  registry_.emplace<AirSystem>(e, 1.0f, 1.0f, true);
-  registry_.emplace<WaterTreatment>(e, 10.0f, 10.0f, 10.0f);
-  registry_.emplace<Wastewater>(e, 10.0f, 10.0f, 10.0f, 10.0f);
-  registry_.emplace<SteamHeader>(e, 10.0f, 10.0f, 10.0f, 10.0f);
-  registry_.emplace<ChilledWaterLoop>(e, 60.0f, 10.0f, 10.0f, 10.0f, 10.0f);
-  registry_.emplace<SteamLoad>(e, 10.0f, 10.0f);
-  registry_.emplace<CoolingLoad>(e, 10.0f, 10.0f);
+  registry_.emplace<CoolingTower>(e, 0.0f, 5.0f, 3.0f);                   // normalized fan_speed 0..1
+  registry_.emplace<AirSystem>(e, 7.0f, -20.0f, true);
+  registry_.emplace<WaterTreatment>(e, 10.0f, 1.0f, 50.0f);
+  registry_.emplace<Wastewater>(e, 10.0f, 10.0f, 2.0f, 7.0f);
+  registry_.emplace<SteamLoad>(e, 5.0f, 0.0f);
+  registry_.emplace<CoolingLoad>(e, 25.0f, 0.0f);
   registry_.emplace<Alarmable>(e);
   registry_.emplace<AlarmResponse>(e, false, false, 0.f, 0.f, 8.0f, 90.0f);
 
-  // Site singleton (human factors + KPIs)
+
+  // Site singleton (human factors + KPIs + process buses)
   auto site = registry_.create();
-  registry_.emplace<HumanFactors>(site, 0.70f, 0.20f, 8.0f, 3, 1.0f);  // training, fatigue, shift, staff, mult
+  registry_.emplace<HumanFactors>(site, 0.70f, 0.20f, 8.0f, 3, 1.0f);
   registry_.emplace<SiteKPI>(site);
+
+  // Put SteamHeader / ChilledWaterLoop on the site (not the equipment)
+  registry_.emplace<SteamHeader>(site, 10.0f, 0.0f, 0.0f, 0.0f);
+  registry_.emplace<ChilledWaterLoop>(site, 7.0f, 12.0f, 0.0f, 0.0f, 0.0f);
 }
 
 void SimCore::start(float hz) {
@@ -46,7 +49,7 @@ void SimCore::stop() {
   timer_.stop();
 }
 
-// Control → Actuator → Hydraulics → HeatExchanger → Alarm → HumanFactors → Response → Analytics
+// Control → Actuator → Hydraulics → HeatExchanger → Steam → Cooling → UtilitySystem → BoilerSystem → RefrigSystem → Alarm → HumanFactors → Response → Analytics
 void SimCore::onTick() {
   ControlSystem(registry_, dt_);
   ActuatorSystem(registry_, dt_);
