@@ -59,6 +59,7 @@ Session.vim
 # ==================================================
 # 📘 LaTeX
 # ==================================================
+# ===== LaTeX build artifacts =====
 *.aux
 *.fdb_latexmk
 *.fls
@@ -67,4 +68,20 @@ Session.vim
 *.toc
 *.out
 *.bbl
-*.*
+*.blg
+*.nav
+*.snm
+*.vrb
+*.lof
+*.lot
+*.idx
+*.ilg
+*.ind
+*.dvi
+*.ps
+*.tmp
+*.bcf
+*.run.xml
+# Keep only .tex and .pdf
+!*.tex
+!*.pdf
