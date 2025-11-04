@@ -1,0 +1,63 @@
+Level 1 - Block Diagram (Executive Overview)
+Goal: boxes for process, arrows for flow.
+
+# LaTeX code:
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{positioning, arrows.meta}
+
+\begin{document}
+\begin{tikzpicture}[
+  process/.style={rectangle, rounded corners, draw=blue!50, fill=blue!10, very thick, minimum width=3cm, minimum height=1cm, align=center},
+  util/.style={rectangle, draw=orange!70!black, fill=orange!10, thick, minimum width=3cm, minimum height=1cm, align=center},
+  arrow/.style={-Latex, thick}
+  ]
+
+\node[process] (recv) {Receiving \\ \& Storage};
+\node[process, right=2.5cm of recv] (steep) {Steeping};
+\node[process, right=2.5cm of steep] {Milling / \\ Seperation};
+\node[process, right=2.5cm of mill] (refine) {Refining / \\ Syrup};
+\node[process, right=2.5cm of refine] (pack) {Packaging / \\ Loadout};
+
+\node[util, below=1.5cm of steep] (steam) {Steam Plant};
+\node[util, below=1.5cm of mill] (cool) {Cooling Tower};
+\node[util, below=1.5cm of refine] (water) {Wastewater};
+
+\draw[arrow] (recv) -- (steep);
+\draw[arrow] (steep) -- (mill);
+\draw[arrow] (mill) -- (refine);
+\draw[arrow] (refine) -- (pack);
+
+\draw[arrow, dashed, orange!80!black] (steam) -- (steep);
+\draw[arrow, dashed, orange!80!black] (cool) -- (mill);
+\draw[arrow, dashed, orange!80!black] (waste) -- (refine);
+
+\end{tikzpicture}
+\end{document}
+
+
+Output: Executive level slide.
+
+
+Level 2 - Process Schematic (Engineer / Superivsor View)
+
+# LaTeX code:
+\documentclass[tikz,border=10pt]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows.meta, positioning}
+
+\begin{document}
+\begin{tikzpicture}[
+  tank/.style={cylinder, draw=blue!70!black, aspect=0.25, shape border rotate=90, minimum height=2cm, minimum width=1cm, fill=blue!10},
+  pump/.style={circle, draw=black, fill=gray!20, minimum size=0.8cm},
+  hex/.style={diamond, draw=red!70!black, fill=red!10, minimum size=1cm},
+  valve/.style={regular polygon, regular polygon sides=3, draw=black, fill=white, minimum size=0.4cm, rotate=90},
+  arrow/.style={-Latex, think}
+  ]
+
+\node[tank] (tank1) {T-101};
+\node[valve, right=0.7cm of tank1] (valve1) {};
+\node[pump, right=0.7cm of valv1] (pump1) {P-101};
+\node[hex, right=0.9cm of pump1] (hx1) {HX-101};
+
+\draw[arrow] (
