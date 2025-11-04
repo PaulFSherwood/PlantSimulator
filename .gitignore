@@ -1,34 +1,70 @@
-# build artifacts
-/build*/
-/out*/
-/dist*/
-/cmake-build-*/
-/CMakeFiles/
-/CMakeCache.txt
-/Makefile
-/*.user
-*.obj
+# ==================================================
+# 🧩 C++ / CMake / Qt Project
+# ==================================================
+build*/
+bin/
+lib/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
 *.o
-*.pdb
-*.ilk
-*.dll
-*.so
-*.dylib
+*.obj
 *.a
-*.lib
+*.so
+*.dll
 *.exe
-*.app
+*.out
+*.log
 
-# Qt/Creator
+# --- Qt-specific ---
 *.pro.user
-*.qbs.user
+*.pro.user.*
+*.qmake.stash
+*.qmake.cache
 *.qmlc
 *.jsc
-moc_*
-qrc_*
-ui_*
+*.moc
+moc_*.cpp
+ui_*.h
+qrc_*.cpp
+*_autogen/
+*.qrc.dep
+*.qtdslog
+*.qtc-gdbinit
+*.qm
+*.qch
+*.qhc
 
-# IDEs
+# ==================================================
+# 🧠 IDEs / Editors
+# ==================================================
+# VS Code
 .vscode/
-.idea/
+*.code-workspace
+.history/
 
+# Qt Creator
+.qtcreator/
+*.autosave
+
+# Vim
+*.swp
+*.swo
+*.swx
+*.un~
+Session.vim
+.viminfo
+
+# ==================================================
+# 📘 LaTeX
+# ==================================================
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex.gz
+*.toc
+*.out
+*.bbl
+*.*
