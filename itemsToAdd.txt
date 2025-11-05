@@ -60,3 +60,32 @@ HumanFactorSystem:
 - Support - MECH_SHOP, ELEC_SHOP, INSTR_SHOP, RELIABILITY, LAB, EHS_PSM, WAREHOUSE, CONTROL_ROOM, IT_OT
 
 
+ECS / Simulation Terms
+ECS System           Real-World Section
+------------------|---------------------------------------
+ReceivingSystem      Grain handling, cleaning
+SteepingSystem       Heat exchangers, tanks, valves
+MillingSystem        Pumps, screens, separators
+OilSystem            Germ presses and tanks
+FiberSystem          Filters, dryers
+GlutenSystem         Centrifuges
+StarchSystem         Washing, Refining
+SweetenerSystem      Enzyme and reactor loops
+EthanolSystem        Fermentation, Distillation
+BoilerSystem         Steam, condensate, pressure
+CoolingSystem        Cooling tower, chillers
+WaterSystem          Water treatment, RO
+WastewaterSystem     DAF, aeration, clarifiers
+ControlSystem        PID, alarms, response, human factors.
+
+Cron
+   ╚═> Cleaning
+           ╚═> Storage
+                   ╚═> Steeping
+                           ╚═> Milling
+                                ╠═> Germ   ══> Oil   ══> Feed
+                                ╠═> Fiber  ══> Feed
+                                ╠═> Gluten ══> Feed
+                                ╚═> Starch ══> (Sweeteners | Ethanol | Modified Starch)
+
+

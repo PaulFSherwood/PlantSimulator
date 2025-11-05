@@ -1,0 +1,128 @@
+\documentclass[12pt]{article}
+\usepackage{lingmacros}
+\usepackage{tree-dvips}
+\usepackage{float}
+\begin{document}
+
+\section{Level 1 - Cargill Corn Wet-Mill Process Overview}
+
+\subsection{Grain Handling}
+
+Goal: Receive, clean, and prepare core for steeping
+
+{
+\begin{table}[H]
+\begin{tabular}{|l|l|lll}
+\cline{1-2}
+Step                   & Description                                                                                                          &  &  &  \\ \cline{1-2}
+Truck / Rail Receiving & \begin{tabular}[c]{@{}l@{}}Core is weighed, sampled for \\ moisture and quality, and \\ unloaded.\end{tabular}       &  &  &  \\ \cline{1-2}
+Cleaning               & \begin{tabular}[c]{@{}l@{}}Scalpers, magnets, and \\ aspirators remove debris, cob, \\ stones, and dust\end{tabular} &  &  &  \\ \cline{1-2}
+Storage / Silos        & \begin{tabular}[c]{@{}l@{}}Clean corn stored and metered to \\ the steep tanks\end{tabular}                          &  &  &  \\ \cline{1-2}
+Dust Collection        & \begin{tabular}[c]{@{}l@{}}Protects workers and air quality\end{tabular}                          &  &  &  \\ \cline{1-2}
+\end{tabular}
+\end{table}
+}
+
+\subsection{Steeping}
+
+Goal: Soften kernels, loosen gluten and germ bonds.
+
+\begin{table}[H]
+\begin{tabular}{lllll}
+\cline{1-3}
+\multicolumn{1}{|l|}{Step}                                                      & \multicolumn{1}{l|}{Inputs}                                                                                          & \multicolumn{1}{l|}{Outputs}                                                                                  &  &  \\ \cline{1-3}
+\multicolumn{1}{|l|}{Steep Tanks}                                               & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}Hot water ($\sim$50c)\\ + dilute sulfur\\ dioxide (SO2)\end{tabular}} & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}Steep liquor (solubles\\ for feed) + soaked corn\end{tabular}} &  &  \\ \cline{1-3}
+\multicolumn{1}{|l|}{\begin{tabular}[c]{@{}l@{}}Heat\\ Exchangers\end{tabular}} & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}Maintain temp via\\ steam and cooling\\ control\end{tabular}}         & \multicolumn{1}{l|}{-}                                                                                        &  &  \\ \cline{1-3}
+\end{tabular}
+\end{table}
+
+\subsection{Milling \& Separation}
+
+Goal: Physically break down corn and seperate its fractions.
+
+\begin{table}[H]
+\begin{tabular}{|l|l|l|ll}
+\cline{1-3}
+Step                                                          & Description                                                                                        & Main Products                                               &  &  \\ \cline{1-3}
+\begin{tabular}[c]{@{}l@{}}Crude / Wet\\ Milling\end{tabular} & \begin{tabular}[c]{@{}l@{}}Attrition mills\\ rupture kernels.\end{tabular}                         & Mash                                                        &  &  \\ \cline{1-3}
+\begin{tabular}[c]{@{}l@{}}Germ\\ Separation\end{tabular}     & \begin{tabular}[c]{@{}l@{}}Hydrocyclones or\\ screens float off\\ germ (light phase).\end{tabular} & \begin{tabular}[c]{@{}l@{}}Germ (oil\\ source)\end{tabular} &  &  \\ \cline{1-3}
+\begin{tabular}[c]{@{}l@{}}Germ\\ Pressing\end{tabular}       & \begin{tabular}[c]{@{}l@{}}Oil extracted; press\\ cake sent to feed.\end{tabular}                  & Corn oil                                                    &  &  \\ \cline{1-3}
+\begin{tabular}[c]{@{}l@{}}Fiber\\ Separation\end{tabular}    & \begin{tabular}[c]{@{}l@{}}Screens remove\\ hulls and fiber.\end{tabular}                          & Fiber (feed)                                                &  &  \\ \cline{1-3}
+\begin{tabular}[c]{@{}l@{}}Gluten\\ Separation\end{tabular}   & \begin{tabular}[c]{@{}l@{}}Centrifuge isolate\\ gluten protein\end{tabular}                        & Gluten (feed)                                               &  &  \\ \cline{1-3}
+\begin{tabular}[c]{@{}l@{}}Starch\\ Refining\end{tabular}     & \begin{tabular}[c]{@{}l@{}}Washing, filtering\\ ion exchange.\end{tabular}                         & Pure starch\\ slury                                         &  &  \\ \cline{1-3}
+\end{tabular}
+\end{table}
+
+\subsection{Startch Conversion \& Finishing (depends on product line)}
+
+Goal: Different trains run in parallel depending on the business.
+
+A: Sweetener Line
+\begin{table}[H]
+\begin{tabular}{|l|l|l|ll}
+\cline{1-3}
+Step                                                                 & Description                                                                                        & Output                                                      &  &  \\ \cline{1-3}
+\begin{tabular}[c]{@{}l@{}}Liquefaction\end{tabular}                 & \begin{tabular}[c]{@{}l@{}}Enzymes\\ convert starch\\  $\rightarrow$ dextrin\end{tabular}          & Dextrin                                                     &  &  \\ \cline{1-3}
+\begin{tabular}[c]{@{}l@{}}Saccharification\end{tabular}             & \begin{tabular}[c]{@{}l@{}}Enzymes\\ convert dextrin\\ $\rightarrow$ glucose\end{tabular}          & \begin{tabular}[c]{@{}l@{}}Glucose syrup\end{tabular}       &  &  \\ \cline{1-3}
+\begin{tabular}[c]{@{}l@{}}Isomerization\end{tabular}                & \begin{tabular}[c]{@{}l@{}}Converts\\ glucose $\rightarrow$\\ fructose\end{tabular}                & HFCS                                                        &  &  \\ \cline{1-3}
+\begin{tabular}[c]{@{}l@{}}Evaporation /\\ Filtration\end{tabular}   & \begin{tabular}[c]{@{}l@{}}Concentrate\\ and purify\end{tabular}                                   & HFCS 42/55\\ syrup                                          &  &  \\ \cline{1-3}
+\end{tabular}
+\end{table}
+
+B: Ethanol Line
+\begin{table}[H]
+\begin{tabular}{|l|l|l|ll}
+\cline{1-3}
+Step                                                                 & Description                                                                        & Output                                                               &  &  \\ \cline{1-3}
+\begin{tabular}[c]{@{}l@{}}Fermentation\end{tabular}                 & \begin{tabular}[c]{@{}l@{}}Glucose $\rightarrow$\\ Ethanol + CO2\end{tabular}      & Beer (8-12 \%)                                                       &  &  \\ \cline{1-3}
+\begin{tabular}[c]{@{}l@{}}Distillation /\\ Dehydration\end{tabular} & \begin{tabular}[c]{@{}l@{}}Separate\\ ethanol,\\ recover CO2\end{tabular}          & \begin{tabular}[c]{@{}l@{}}Fuel / Industrial\\ ethanol\end{tabular}  &  &  \\ \cline{1-3}
+\begin{tabular}[c]{@{}l@{}}DDGS Drying\end{tabular}                  & \begin{tabular}[c]{@{}l@{}}Solids $\rightarrow$ animal feed\end{tabular}           & \begin{tabular}[c]{@{}l@{}}Dried Distillers\\ Grain\end{tabular}     &  &  \\ \cline{1-3}
+\end{tabular}
+\end{table}
+
+C: Food \& Industrial Starch Line 
+\begin{table}[H]
+\begin{tabular}{|l|l|l|ll}
+\cline{1-3}
+Step                                                           & Description                                                                     & Output                &  &  \\ \cline{1-3}
+\begin{tabular}[c]{@{}l@{}}Drying /\\ Modifying\end{tabular}   & \begin{tabular}[c]{@{}l@{}}Physical or\\ chemical\\ modification\end{tabular}   & \begin{tabular}[c]{@{}l@{}}Native / modified\\starch\end{tabular}          &  &  \\ \cline{1-3}
+\begin{tabular}[c]{@{}l@{}}Packaging\end{tabular}              & \begin{tabular}[c]{@{}l@{}}Baggin, bulk\\ loadout \end{tabular}                 & \begin{tabular}[c]{@{}l@{}}Flour, starch, or\\syrup products\end{tabular}  &  &  \\ \cline{1-3}
+\end{tabular}
+\end{table}
+
+\subsection{Utilities \& Support Systems}
+
+These run plant-wide -- they're what your simulation already models!
+
+\begin{table}[H]
+\begin{tabular}{|l|l|lll}
+\cline{1-2}
+System                    & Function                              &  &  &  \\ \cline{1-2}
+Boilers / Stream Plant    & Provide process heat.                 &  &  &  \\ \cline{1-2}
+Cooling Towers / Chillers & Remove process heat.                  &  &  &  \\ \cline{1-2}
+Air Compressors           & Supply instrument and plant air.      &  &  &  \\ \cline{1-2}
+Water Treatment / RO      & Provide clean water.                  &  &  &  \\ \cline{1-2}
+Wastewater (WWTP)         & Treat process and sanitary effluent.  &  &  &  \\ \cline{1-2}
+Electrical Distribution   & Power MCCs, VFDs, controls            &  &  &  \\ \cline{1-2}
+DCS / PLC / SCADA         & Control loops, alarms, trending       &  &  &  \\ \cline{1-2}
+Quality Lab               & Verify product specs.                 &  &  &  \\ \cline{1-2}
+Maintenance / EHS         & Reliability and compliance.           &  &  &  \\ \cline{1-2}
+\end{tabular}
+\end{table}
+
+\subsection{Product Handling}
+
+\begin{table}[H]
+\begin{tabular}{|l|l|lll}
+\cline{1-2}
+Evaporators / Dryers    & Concentrate liquid or dry solids.     &  &  &  \\ \cline{1-2}
+Packaging               & Bulk rail, truck, or bagging lines.   &  &  &  \\ \cline{1-2}
+Warehousing \& Shipping & Final QA and outbound logistics.      &  &  &  \\ \cline{1-2}
+\end{tabular}
+\end{table}
+
+
+
+
+\end{document}
+
