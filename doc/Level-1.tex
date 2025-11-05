@@ -4,11 +4,13 @@
 
 \begin{document}
 \begin{tikzpicture}[
-  process/.style={rectangle, rounded corners, draw=blue!50, fill=blue!10, very thick, minimum width=3cm, minimum height=1cm, align=center},
-  util/.style={rectangle, draw=orange!70!black, fill=orange!10, thick, minimum width=3cm, minimum height=1cm, align=center},
+  yshift=-3cm, % moves everything down
+  process/.style={rectangle, rounded corners, draw=blue!50, fill=blue!10,
+                  very thick, minimum width=3cm, minimum height=1cm, align=center},
+  util/.style={rectangle, draw=orange!70!black, fill=orange!10,
+               thick, minimum width=3cm, minimum height=1cm, align=center},
   arrow/.style={-Latex, thick}
 ]
-
 \node[process] (recv) {Receiving \\ \& Storage};
 \node[process, right=2.5cm of recv] (steep) {Steeping};
 \node[process, right=2.5cm of steep] (mill) {Milling / \\ Separation};
@@ -27,6 +29,5 @@
 \draw[arrow, dashed, orange!80!black] (steam) -- (steep);
 \draw[arrow, dashed, orange!80!black] (cool) -- (mill);
 \draw[arrow, dashed, orange!80!black] (waste) -- (refine);
-
 \end{tikzpicture}
 \end{document}
