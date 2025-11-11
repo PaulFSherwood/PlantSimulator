@@ -25,6 +25,9 @@ add_executable(execsim
   src/sim/Components.hpp
   src/sim/Systems.hpp src/sim/Systems.cpp
   src/sim/SimCore.hpp src/sim/SimCore.cpp
+  src/sim/Loader.cpp
+  src/sim/Loader.hpp
+  library/plant_default.json
 )
 target_include_directories(execsim PRIVATE src)
 target_link_libraries(execsim PRIVATE Qt6::Widgets EnTT::EnTT)

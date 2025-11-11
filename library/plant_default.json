@@ -1,0 +1,7 @@
+{
+  "components": [
+    { "type": "Pump", "running": true, "dp_nominal": 1.8 },
+    { "type": "Tank", "level": 0.3, "area": 2.0 },
+    { "type": "HeatExchanger", "power_on": true, "flow_rate": 1.0 }
+  ]
+}
