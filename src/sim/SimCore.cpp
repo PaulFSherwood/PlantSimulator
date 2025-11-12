@@ -10,36 +10,36 @@ SimCore::SimCore(QObject* parent) : QObject(parent) {
   timer_.setTimerType(Qt::PreciseTimer);
 }
 
-// void SimCore::loadDefaultScenario() {
-//   // Equipement entity
-//   auto e = registry_.create();
-//   registry_.emplace<Pump>(e, true, 1.8f, 0.f);
-//   registry_.emplace<ValveActuator>(e);
-//   registry_.emplace<Tank>(e, 0.30f, 2.0f, 0.f, 0.f);
-//   registry_.emplace<Pipe>(e, 1.0f);
-//   registry_.emplace<PID>(e, 2.0f, 0.5f, 0.0f, 0.60f);
-//   registry_.emplace<HeatExchanger>(e, true, 1.0f, 1.0f, 1.0f, 5.0f, 70.0f, 1.0f);
-//   registry_.emplace<Boiler>(e, 1.0f, 10.0f, 120.0f, 0.90f);               // efficiency as fraction 0..1
-//   registry_.emplace<RefrigerationCompressor>(e, 50.0f, 50.0f, 1.0f, 120.0f);
-//   registry_.emplace<CoolingTower>(e, 0.0f, 5.0f, 3.0f);                   // normalized fan_speed 0..1
-//   registry_.emplace<AirSystem>(e, 7.0f, -20.0f, true);
-//   registry_.emplace<WaterTreatment>(e, 10.0f, 1.0f, 50.0f);
-//   registry_.emplace<Wastewater>(e, 10.0f, 10.0f, 2.0f, 7.0f);
-//   registry_.emplace<SteamLoad>(e, 5.0f, 0.0f);
-//   registry_.emplace<CoolingLoad>(e, 25.0f, 0.0f);
-//   registry_.emplace<Alarmable>(e);
-//   registry_.emplace<AlarmResponse>(e, false, false, 0.f, 0.f, 8.0f, 90.0f);
+void SimCore::loadDefaultScenario() {
+  // Equipement entity
+  auto e = registry_.create();
+  registry_.emplace<Pump>(e, true, 1.8f, 0.f);
+  registry_.emplace<ValveActuator>(e);
+  registry_.emplace<Tank>(e, 0.30f, 2.0f, 0.f, 0.f);
+  registry_.emplace<Pipe>(e, 1.0f);
+  registry_.emplace<PID>(e, 2.0f, 0.5f, 0.0f, 0.60f);
+  registry_.emplace<HeatExchanger>(e, true, 1.0f, 1.0f, 1.0f, 5.0f, 70.0f, 1.0f);
+  registry_.emplace<Boiler>(e, 1.0f, 10.0f, 120.0f, 0.90f);               // efficiency as fraction 0..1
+  registry_.emplace<RefrigerationCompressor>(e, 50.0f, 50.0f, 1.0f, 120.0f);
+  registry_.emplace<CoolingTower>(e, 0.0f, 5.0f, 3.0f);                   // normalized fan_speed 0..1
+  registry_.emplace<AirSystem>(e, 7.0f, -20.0f, true);
+  registry_.emplace<WaterTreatment>(e, 10.0f, 1.0f, 50.0f);
+  registry_.emplace<Wastewater>(e, 10.0f, 10.0f, 2.0f, 7.0f);
+  registry_.emplace<SteamLoad>(e, 5.0f, 0.0f);
+  registry_.emplace<CoolingLoad>(e, 25.0f, 0.0f);
+  registry_.emplace<Alarmable>(e);
+  registry_.emplace<AlarmResponse>(e, false, false, 0.f, 0.f, 8.0f, 90.0f);
 
 
-//   // Site singleton (human factors + KPIs + process buses)
-//   auto site = registry_.create();
-//   registry_.emplace<HumanFactors>(site, 0.70f, 0.20f, 8.0f, 3, 1.0f);
-//   registry_.emplace<SiteKPI>(site);
+  // Site singleton (human factors + KPIs + process buses)
+  auto site = registry_.create();
+  registry_.emplace<HumanFactors>(site, 0.70f, 0.20f, 8.0f, 3, 1.0f);
+  registry_.emplace<SiteKPI>(site);
 
-//   // Put SteamHeader / ChilledWaterLoop on the site (not the equipment)
-//   registry_.emplace<SteamHeader>(site, 10.0f, 0.0f, 0.0f, 0.0f);
-//   registry_.emplace<ChilledWaterLoop>(site, 7.0f, 12.0f, 0.0f, 0.0f, 0.0f);
-// }
+  // Put SteamHeader / ChilledWaterLoop on the site (not the equipment)
+  registry_.emplace<SteamHeader>(site, 10.0f, 0.0f, 0.0f, 0.0f);
+  registry_.emplace<ChilledWaterLoop>(site, 7.0f, 12.0f, 0.0f, 0.0f, 0.0f);
+}
 
 void SimCore::start(float hz) {
   dt_ = 1.0f / std::max(1.0f, hz);
@@ -70,14 +70,14 @@ void SimCore::onTick() {
   emit frameReady();
 }
 
-void SimCore::loadDefaultScenario() {
-    if (!Loader::loadPlant("plant_default.json", registry_)) {
-        qDebug() << "Failed to load JSON, loading fallback";
-    }
+// void SimCore::loadDefaultScenario() {
+//     if (!Loader::loadPlant("plant_default.json", registry_)) {
+//         qDebug() << "Failed to load JSON, loading fallback";
+//     }
 
-    // Site singletons
-    auto site = registry_.create();
-    registry_.emplace<HumanFactors>(site, 0.7f, 0.2f, 8.0f, 3, 1.0f);
-    registry_.emplace<SiteKPI>(site);
+//     // Site singletons
+//     auto site = registry_.create();
+//     registry_.emplace<HumanFactors>(site, 0.7f, 0.2f, 8.0f, 3, 1.0f);
+//     registry_.emplace<SiteKPI>(site);
 
-}
+// }

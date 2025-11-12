@@ -1,75 +1,101 @@
 #include "MainWindow.hpp"
-#include <QStatusBar>
-#include <QToolBar>
-#include <QAction>
-
-#include <entt/entt.hpp>
 #include "../sim/Components.hpp"
 
+#include <QToolBar>
+#include <QStatusBar>
+#include <QAction>
+#include <QPen>
+#include <QBrush>
+#include <QColor>
+#include <cmath>
+
 MainWindow::MainWindow(QWidget* parent)
-  : QMainWindow(parent) {
-  // Simple UI shell
-  auto* tb = addToolBar("Sim");
-  auto* actStart = tb->addAction("Start");
-  auto* actStop  = tb->addAction("Stop");
-  kpiLabel_ = new QLabel("KPIs will appear here…", this);
-  setCentralWidget(kpiLabel_);
-  statusBar()->showMessage("Ready");
+    : QMainWindow(parent)
+{
+    auto* tb = addToolBar("Sim");
+    auto* actStart = tb->addAction("Start");
+    auto* actStop  = tb->addAction("Stop");
+    statusBar()->showMessage("Ready");
 
-  connect(&sim_, &SimCore::frameReady, this, &MainWindow::onFrameReady);        // Plant Brain
-  connect(actStart, &QAction::triggered, this, [this] { sim_.start(50.f); });
-  connect(actStop,  &QAction::triggered, this, [this] { sim_.stop();       });
+    // --- Scene and View setup ---
+    scene_ = new QGraphicsScene(this);
+    view_ = new QGraphicsView(scene_, this);
+    view_->setRenderHint(QPainter::Antialiasing);
+    setCentralWidget(view_);
 
-  // Load a tiny in-memory/default scenario
-  sim_.loadDefaultScenario();
-  sim_.start(50.f); // start ticking
+    // --- Connect simulation ---
+    connect(&sim_, &SimCore::frameReady, this, &MainWindow::onFrameReady);
+    connect(actStart, &QAction::triggered, this, [this] { sim_.start(50.f); });
+    connect(actStop,  &QAction::triggered, this, [this] { sim_.stop(); });
+
+    sim_.loadDefaultScenario();
+    sim_.start(50.f);
+
+    createVisuals();
+}
+
+void MainWindow::createVisuals() {
+    auto& r = sim_.reg();
+
+    int index = 0;
+    const double spacing = 200.0;
+
+    for (auto e : r.view<Pump, Tank, HeatExchanger>()) {
+        // Determine label (component name)
+        QString name = "Entity " + QString::number(index + 1);
+
+        // Layout position
+        double x = 50.0 + index * spacing;
+        double y = 100.0;
+
+        // --- Draw rectangle ---
+        auto rect = scene_->addRect(
+            QRectF(x, y, 140, 80),
+            QPen(Qt::black),
+            QBrush(QColor(220, 235, 250))
+            );
+        rect->setPen(QPen(Qt::darkBlue, 2));
+        rect->setBrush(QBrush(QColor(200, 230, 255)));
+        rect->setRect(QRectF(x, y, 140, 80));
+        rect->setData(0, QVariant::fromValue(static_cast<int>(e)));
+
+        // --- Add text ---
+        auto text = scene_->addText(name);
+        text->setPos(x + 10, y + 10);
+
+        visuals_[e] = {rect, text};
+        index++;
+    }
+}
+
+void MainWindow::updateVisuals() {
+    auto& r = sim_.reg();
+
+    for (auto& [e, vis] : visuals_) {
+        QString info;
+
+        if (auto* t = r.try_get<Tank>(e))
+            info += QString("Lvl: %1\n").arg(t->level, 0, 'f', 2);
+
+        if (auto* p = r.try_get<Pump>(e))
+            info += QString("Flow: %1\n").arg(p->flow, 0, 'f', 2);
+
+        if (auto* hx = r.try_get<HeatExchanger>(e))
+            info += QString("HX Out: %1\n").arg(hx->comp_outlet_stream, 0, 'f', 2);
+
+        vis.text->setPlainText(info);
+
+        // Optional color cue for dynamic values
+        QColor fill = QColor(180, 220, 250);
+        if (auto* t = r.try_get<Tank>(e)) {
+            if (t->level > 0.8) fill = QColor(255, 180, 180);
+            else if (t->level < 0.2) fill = QColor(180, 255, 180);
+        }
+        vis.rect->setBrush(QBrush(fill));
+    }
 }
 
 void MainWindow::onFrameReady() {
-  // Pull a couple of KPIs from the registry (very simple for the first build)
-  auto& r = sim_.reg();
-
-  // Tank level (first tank for now)
-  float level = 0.f;
-  if (auto vt = r.view<Tank>(); !vt.empty()) level = vt.get<Tank>(*vt.begin()).level;
-
-  // Pumps running
-  int pumpsRunning = 0;
-  for(auto vp = r.view<Pump>(); auto e : vp) if (vp.get<Pump>(e).running) pumpsRunning++;
-
-  // Human factors + KPIs (site singletons)
-  float rt_mult = 1.0f;
-  int alarms_active = 0;
-  float downtime_min = 0.0f;
-  float heat_ex_status = 0.0f;
-
-  if (auto v = r.view<HumanFactors>(); !v.empty()) {
-    rt_mult = v.get<HumanFactors>(*v.begin()).reaction_time_mult;
-  }
-  if (auto vk = r.view<SiteKPI>(); !vk.empty()) {
-    const auto& k = vk.get<SiteKPI>(*vk.begin());
-    alarms_active = k.alarms_active;
-    downtime_min = k.downtime_s / 60.0f;
-  }
-//  if (auto vhe = r.view<HeatExchanger>(); !vhe.empty()) {
-//    const auto& khe = vhe.get<HeatExchanger>(*vhe.begin());
-//    heat_ex_status = khe.comp_outlet_stream;
-//  }
-
-  auto vhe = r.view<HeatExchanger>();
-  if (!vhe.empty()) {
-    const auto e = *vhe.begin();
-    heat_ex_status = vhe.get<HeatExchanger>(e).comp_outlet_stream;
-  }
-
-  kpiLabel_->setText(
-      QString("Tank level: %1 (0..1)\nPumps running: %2\nAlarms active: %3\nDowntime: %4 min\nReaction-time x: %5\nStep: %6\nHeatExchange: %7")
-          .arg(level, 0, 'f', 3)
-          .arg(pumpsRunning)
-          .arg(alarms_active)
-          .arg(downtime_min, 0, 'f', 2)
-          .arg(rt_mult, 0, 'f', 2)
-          .arg(sim_.step())
-          .arg(heat_ex_status, 0, 'f', 2)
-      );
+    updateVisuals();
+    scene_->update();
 }

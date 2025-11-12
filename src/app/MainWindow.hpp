@@ -1,16 +1,32 @@
 #pragma once
 #include <QMainWindow>
-#include <QLabel>
-#include <QTimer>
+#include <QGraphicsView>
+#include <QGraphicsScene>
+#include <QGraphicsRectItem>
+#include <QGraphicsTextItem>
 #include "../sim/SimCore.hpp"
 
 class MainWindow : public QMainWindow {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  MainWindow(QWidget* parent=nullptr);
+    explicit MainWindow(QWidget* parent = nullptr);
+
 private slots:
-  void onFrameReady();
+    void onFrameReady();
+
 private:
-  SimCore sim_;
-  QLabel* kpiLabel_{nullptr}; // simple visible output for now
+    SimCore sim_;
+
+    QGraphicsView* view_{nullptr};
+    QGraphicsScene* scene_{nullptr};
+
+    // For tracking entity graphics
+    struct EntityVisual {
+        QGraphicsRectItem* rect;
+        QGraphicsTextItem* text;
+    };
+    std::unordered_map<entt::entity, EntityVisual> visuals_;
+
+    void createVisuals();
+    void updateVisuals();
 };
