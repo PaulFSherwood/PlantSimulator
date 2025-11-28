@@ -21,7 +21,9 @@ MainWindow::MainWindow(QWidget* parent)
     scene_ = new QGraphicsScene(this);
     view_ = new QGraphicsView(scene_, this);
     view_->setRenderHint(QPainter::Antialiasing);
+    view_->setBackgroundBrush(Qt::white);
     setCentralWidget(view_);
+
 
     // --- Connect simulation ---
     connect(&sim_, &SimCore::frameReady, this, &MainWindow::onFrameReady);
@@ -36,30 +38,34 @@ MainWindow::MainWindow(QWidget* parent)
 
 void MainWindow::createVisuals() {
     auto& r = sim_.reg();
+    scene_->clear();
+    visuals_.clear();
 
     int index = 0;
     const double spacing = 200.0;
 
-    for (auto e : r.view<Pump, Tank, HeatExchanger>()) {
-        // Determine label (component name)
-        QString name = "Entity " + QString::number(index + 1);
+    // Iterate over ALL entities
+    for (auto e : r.view<entt::entity>()) {
 
-        // Layout position
+        bool hasComponent =
+            r.any_of<Pump>(e) ||
+            r.any_of<Tank>(e) ||
+            r.any_of<HeatExchanger>(e);
+
+        if (!hasComponent)
+            continue;
+
+        QString name = "Entity " + QString::number(index + 1);
         double x = 50.0 + index * spacing;
         double y = 100.0;
 
-        // --- Draw rectangle ---
         auto rect = scene_->addRect(
             QRectF(x, y, 140, 80),
-            QPen(Qt::black),
-            QBrush(QColor(220, 235, 250))
+            QPen(Qt::darkBlue, 2),
+            QBrush(QColor(200, 230, 255))
             );
-        rect->setPen(QPen(Qt::darkBlue, 2));
-        rect->setBrush(QBrush(QColor(200, 230, 255)));
-        rect->setRect(QRectF(x, y, 140, 80));
         rect->setData(0, QVariant::fromValue(static_cast<int>(e)));
 
-        // --- Add text ---
         auto text = scene_->addText(name);
         text->setPos(x + 10, y + 10);
 
@@ -67,6 +73,7 @@ void MainWindow::createVisuals() {
         index++;
     }
 }
+
 
 void MainWindow::updateVisuals() {
     auto& r = sim_.reg();
@@ -85,15 +92,18 @@ void MainWindow::updateVisuals() {
 
         vis.text->setPlainText(info);
 
-        // Optional color cue for dynamic values
+        // Adaptive coloring
         QColor fill = QColor(180, 220, 250);
+
         if (auto* t = r.try_get<Tank>(e)) {
-            if (t->level > 0.8) fill = QColor(255, 180, 180);
+            if (t->level > 0.8)      fill = QColor(255, 180, 180);
             else if (t->level < 0.2) fill = QColor(180, 255, 180);
         }
-        vis.rect->setBrush(QBrush(fill));
+
+        vis.rect->setBrush(fill);
     }
 }
+
 
 void MainWindow::onFrameReady() {
     updateVisuals();
