@@ -29,7 +29,6 @@ void PlantScene::build(const PlantModel& m)
         items_[id] = item;
     }
 
-
     // Draw arrows
     for (auto it = m.edges_.begin(); it != m.edges_.end(); ++it) {
         const QString& a = it.key();
@@ -47,7 +46,6 @@ void PlantScene::build(const PlantModel& m)
                     QPen(Qt::black, 2));
         }
     }
-
 }
 
 void PlantScene::updateValues(const PlantModel& m)

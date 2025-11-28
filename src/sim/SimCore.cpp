@@ -22,7 +22,6 @@ void SimCore::loadDefaultScenario() {
     registry_.emplace<SiteKPI>(site);
 }
 
-
 void SimCore::start(float hz) {
   dt_ = 1.0f / std::max(1.0f, hz);
   int interval_ms = static_cast<int>(dt_ * 1000.0f);

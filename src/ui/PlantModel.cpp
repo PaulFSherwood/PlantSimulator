@@ -43,12 +43,8 @@ bool PlantModel::loadFromFile(const QString& path)
             edges_[n.id].push_back(s);   // works with QVector<QString>
         }
 
-
         nodes_[n.id] = n;
     }
-
-
-
 
     return true;
 }
