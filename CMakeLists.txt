@@ -29,10 +29,14 @@ add_executable(execsim
   src/sim/Loader.hpp
   library/plant_default.json
   src/ui/PlantItem.hpp
-  src/ui/PumpItem.hpp
-  src/ui/TankItem.hpp
-  src/ui/HeatExchangerItem.hpp
   src/ui/PlantLayout.hpp
+  src/ui/PlantNode.hpp
+  src/ui/PlantModel.hpp
+  src/ui/PlantModel.cpp
+  src/ui/PlantItem.cpp
+  src/ui/PlantLayout.cpp
+  src/ui/PlantScene.hpp
+  src/ui/PlantScene.cpp
 )
 target_include_directories(execsim PRIVATE src)
 target_link_libraries(execsim PRIVATE Qt6::Widgets EnTT::EnTT)

@@ -18,27 +18,35 @@ bool Loader::loadPlant(const std::string& path, entt::registry& reg) {
     if (!j.contains("components")) return false;
 
     for (auto& c : j["components"]) {
+        std::string id = c.value("id", "");
         std::string type = c.value("type", "");
+
         auto e = reg.create();
 
+        // Store ID
+        // (You will add: simCore.entityFromId[id] = e; outside)
+        // but for now, we just return e.
+
         if (type == "Pump")
-            reg.emplace<Pump>(e, c.value("running", true),
-                              c.value("dp_nominal", 1.8f),
-                              c.value("flow", 0.0f));
+            reg.emplace<Pump>(e, c["params"].value("running", true),
+                              c["params"].value("dp_nominal", 1.8f),
+                              0.0f);
 
         else if (type == "Tank")
-            reg.emplace<Tank>(e, c.value("level", 0.3f),
-                              c.value("area", 2.0f),
+            reg.emplace<Tank>(e, c["params"].value("level", 0.3f),
+                              c["params"].value("area", 2.0f),
                               0.f, 0.f);
 
         else if (type == "HeatExchanger")
-            reg.emplace<HeatExchanger>(e, c.value("power_on", true),
-                                       c.value("comp_inlet_stream", 1.0f),
-                                       c.value("comp_outlet_stream", 1.0f),
-                                       c.value("flow_rate", 1.0f),
-                                       c.value("tau_s", 5.0f),
-                                       c.value("temp", 70.0f),
-                                       c.value("pressure", 1.0f));
+            reg.emplace<HeatExchanger>(e,
+                                       c["params"].value("power_on", true),
+                                       c["params"].value("comp_inlet_stream", 1.0f),
+                                       c["params"].value("comp_outlet_stream", 1.0f),
+                                       c["params"].value("flow_rate", 1.0f),
+                                       c["params"].value("tau_s", 5.0f),
+                                       c["params"].value("temp", 70.0f),
+                                       c["params"].value("pressure", 1.0f));
     }
+
     return true;
 }

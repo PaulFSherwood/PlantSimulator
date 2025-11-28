@@ -1,10 +1,10 @@
 #pragma once
 #include <QMainWindow>
 #include <QGraphicsView>
-#include <QGraphicsScene>
-#include <QGraphicsRectItem>
-#include <QGraphicsTextItem>
 #include "../sim/SimCore.hpp"
+#include "../ui/PlantScene.hpp"
+#include "../ui/PlantModel.hpp"
+#include "../ui/PlantLayout.hpp"
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -18,15 +18,6 @@ private:
     SimCore sim_;
 
     QGraphicsView* view_{nullptr};
-    QGraphicsScene* scene_{nullptr};
-
-    // For tracking entity graphics
-    struct EntityVisual {
-        QGraphicsRectItem* rect;
-        QGraphicsTextItem* text;
-    };
-    std::unordered_map<entt::entity, EntityVisual> visuals_;
-
-    void createVisuals();
-    void updateVisuals();
+    PlantScene* pscene_{nullptr};
+    PlantModel model_;
 };

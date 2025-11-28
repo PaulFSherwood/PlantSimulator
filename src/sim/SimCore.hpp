@@ -2,6 +2,7 @@
 #include <QObject>
 #include <QTimer>
 #include <entt/entt.hpp>
+#include "../ui/PlantModel.hpp"
 
 class SimCore : public QObject {
   Q_OBJECT
@@ -10,9 +11,12 @@ public:
   void loadDefaultScenario();
   void start(float hz=50.f);
   void stop();
+  void updateModel(PlantModel& model);
 
   entt::registry& reg() { return registry_; }
   quint64 step() const { return step_; }
+
+  std::unordered_map<std::string, entt::entity> entityFromId;
 
 signals:
   void frameReady();

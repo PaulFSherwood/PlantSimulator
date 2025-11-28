@@ -1,23 +1,18 @@
 #pragma once
 #include <QGraphicsRectItem>
 #include <QGraphicsTextItem>
+#include "../sim/Components.hpp"
+#include "PlantNode.hpp"
 
 class PlantItem : public QGraphicsRectItem {
 public:
-    PlantItem(const QString& label, const QColor& color, QGraphicsItem* parent = nullptr)
-        : QGraphicsRectItem(parent)
-    {
-        setRect(0, 0, 140, 80);
-        setBrush(color);
-        setPen(QPen(Qt::black, 2));
+    PlantItem(const PlantNode& node);
 
-        label_ = new QGraphicsTextItem(label, this);
-        label_->setDefaultTextColor(Qt::black);
-        label_->setPos(10, 10);
-    }
+    void updateFromNode(const PlantNode& node);
 
-    virtual void updateState() {} // overridden by subclasses
+    QString id;
+    QString type;
 
-protected:
-    QGraphicsTextItem* label_{nullptr};
+private:
+    QGraphicsTextItem* text_;
 };
