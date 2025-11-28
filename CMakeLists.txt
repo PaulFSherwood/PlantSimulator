@@ -38,6 +38,14 @@ add_executable(execsim
   src/ui/PlantScene.hpp
   src/ui/PlantScene.cpp
 )
+
+# Copy JSON plant file to build directory
+configure_file(
+    library/plant_default.json
+    plant_default.json
+    COPYONLY
+)
+
 target_include_directories(execsim PRIVATE src)
 target_link_libraries(execsim PRIVATE Qt6::Widgets EnTT::EnTT)
 

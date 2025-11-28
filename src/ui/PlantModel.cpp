@@ -9,12 +9,15 @@ bool PlantModel::loadFromFile(const QString& path)
     if (!f.open(QIODevice::ReadOnly))
         return false;
 
+    qDebug() << "Loading plant JSON...";
     QByteArray data = f.readAll();
     QJsonDocument doc = QJsonDocument::fromJson(data);
     if (!doc.isObject()) return false;
 
     auto root = doc.object();
     auto arr = root["components"].toArray();
+    qDebug() << "Components:" << root["components"].toArray().size();
+    qDebug() << "Connections:" << root["connections"].toArray().size();
 
     for (auto compVal : arr) {
         auto comp = compVal.toObject();
@@ -43,6 +46,9 @@ bool PlantModel::loadFromFile(const QString& path)
 
         nodes_[n.id] = n;
     }
+
+
+
 
     return true;
 }

@@ -7,14 +7,20 @@ void PlantLayout::computeLayout(PlantModel& m)
 
     // find roots (nodes that no one outputs to)
     QHash<QString, bool> hasInput;
-    for (auto& [a, outs] : m.edges_) {
-        for (auto& b : outs)
+    for (auto it = m.edges_.begin(); it != m.edges_.end(); ++it) {
+        const QString& a = it.key();
+        const QList<QString>& outs = it.value();
+
+        for (const QString& b : outs)
             hasInput[b] = true;
     }
 
     std::vector<QString> roots;
-    for (auto& [id, node] : m.nodes_) {
-        if (!hasInput[id])
+    for (auto it = m.nodes_.begin(); it != m.nodes_.end(); ++it) {
+        const QString& id = it.key();
+        // const PlantNode& node = it.value();  // unused but available
+
+        if (!hasInput.contains(id))
             roots.push_back(id);
     }
 
@@ -26,13 +32,13 @@ void PlantLayout::computeLayout(PlantModel& m)
         std::vector<QString> next;
         int row = 0;
 
-        for (auto& id : frontier) {
+        for (const QString& id : frontier) {
             m.col_[id] = col;
             m.row_[id] = row++;
             visited.insert(id);
 
-            for (auto& o : m.edges_[id]) {
-                if (!visited.count(o))
+            for (const QString& o : m.edges_[id]) {
+                if (!visited.contains(o))
                     next.push_back(o);
             }
         }

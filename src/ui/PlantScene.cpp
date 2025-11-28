@@ -14,11 +14,14 @@ void PlantScene::build(const PlantModel& m)
     const int Y_SPACING = 160;
 
     // Create components
-    for (auto& [id, node] : m.nodes_) {
+    for (auto it = m.nodes_.begin(); it != m.nodes_.end(); ++it) {
+        const QString& id = it.key();
+        const PlantNode& node = it.value();
+
         auto* item = new PlantItem(node);
 
-        double x = m.col_.at(id) * X_SPACING;
-        double y = m.row_.at(id) * Y_SPACING;
+        double x = m.col_[id] * X_SPACING;
+        double y = m.row_[id] * Y_SPACING;
 
         item->setPos(x, y);
         addItem(item);
@@ -26,27 +29,32 @@ void PlantScene::build(const PlantModel& m)
         items_[id] = item;
     }
 
+
     // Draw arrows
-    for (auto& [a, outs] : m.edges_) {
+    for (auto it = m.edges_.begin(); it != m.edges_.end(); ++it) {
+        const QString& a = it.key();
+        const QList<QString>& outs = it.value();
+
         auto* A = items_[a];
         QPointF aCenter = A->sceneBoundingRect().center();
 
-        for (auto& b : outs) {
+        for (const QString& b : outs) {
             auto* B = items_[b];
             QPointF bCenter = B->sceneBoundingRect().center();
 
-            auto* line = addLine(
-                aCenter.x(), aCenter.y(),
-                bCenter.x(), bCenter.y(),
-                QPen(Qt::black, 2)
-                );
+            addLine(aCenter.x(), aCenter.y(),
+                    bCenter.x(), bCenter.y(),
+                    QPen(Qt::black, 2));
         }
     }
+
 }
 
 void PlantScene::updateValues(const PlantModel& m)
 {
-    for (auto& [id, node] : m.nodes_) {
+    for (auto it = m.nodes_.cbegin(); it != m.nodes_.cend(); ++it) {
+        const QString& id = it.key();
+        const PlantNode& node = it.value();
         items_[id]->updateFromNode(node);
     }
 }
