@@ -6,7 +6,10 @@
 
 using json = nlohmann::json;
 
-bool Loader::loadPlant(const std::string& path, entt::registry& reg) {
+bool Loader::loadPlant(const std::string& path,
+                       entt::registry& reg,
+                       std::unordered_map<std::string, entt::entity>& entityFromId)
+{
     std::ifstream in(path);
     if (!in.is_open()) {
         std::cerr << "Could not open " << path << "\n";
@@ -15,38 +18,47 @@ bool Loader::loadPlant(const std::string& path, entt::registry& reg) {
 
     json j;
     in >> j;
-    if (!j.contains("components")) return false;
+    if (!j.contains("components"))
+        return false;
 
-    for (auto& c : j["components"]) {
-        std::string id = c.value("id", "");
+    for (auto& c : j["components"])
+    {
+        std::string id   = c.value("id", "");
         std::string type = c.value("type", "");
 
-        auto e = reg.create();
+        // Create ECS entity
+        entt::entity e = reg.create();
 
-        // Store ID
-        // (You will add: simCore.entityFromId[id] = e; outside)
-        // but for now, we just return e.
+        // Store mapping id → entity
+        if (!id.empty())
+            entityFromId[id] = e;
 
-        if (type == "Pump")
-            reg.emplace<Pump>(e, c["params"].value("running", true),
-                              c["params"].value("dp_nominal", 1.8f),
+        auto& params = c["params"];
+
+        if (type == "Pump") {
+            reg.emplace<Pump>(e,
+                              params.value("running",    true),
+                              params.value("dp_nominal", 1.8f),
                               0.0f);
-
-        else if (type == "Tank")
-            reg.emplace<Tank>(e, c["params"].value("level", 0.3f),
-                              c["params"].value("area", 2.0f),
+        }
+        else if (type == "Tank") {
+            reg.emplace<Tank>(e,
+                              params.value("level", 0.3f),
+                              params.value("area",  2.0f),
                               0.f, 0.f);
-
-        else if (type == "HeatExchanger")
+        }
+        else if (type == "HeatExchanger") {
             reg.emplace<HeatExchanger>(e,
-                                       c["params"].value("power_on", true),
-                                       c["params"].value("comp_inlet_stream", 1.0f),
-                                       c["params"].value("comp_outlet_stream", 1.0f),
-                                       c["params"].value("flow_rate", 1.0f),
-                                       c["params"].value("tau_s", 5.0f),
-                                       c["params"].value("temp", 70.0f),
-                                       c["params"].value("pressure", 1.0f));
+                                       params.value("power_on",            true),
+                                       params.value("comp_inlet_stream",   1.0f),
+                                       params.value("comp_outlet_stream",  1.0f),
+                                       params.value("flow_rate",           1.0f),
+                                       params.value("tau_s",               5.0f),
+                                       params.value("temp",                70.0f),
+                                       params.value("pressure",            1.0f));
+        }
     }
 
     return true;
 }
+

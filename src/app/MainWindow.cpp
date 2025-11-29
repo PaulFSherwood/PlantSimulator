@@ -31,6 +31,8 @@ MainWindow::MainWindow(QWidget* parent)
     connect(&sim_, &SimCore::frameReady, this, &MainWindow::onFrameReady);
     sim_.loadDefaultScenario();
     sim_.start(50.f);
+    // qDebug() << "Entities in registry after default scenario =" << registry_.alive();
+
 
     connect(actStart, &QAction::triggered, this, [this] { sim_.start(50.f); });
     connect(actStop,  &QAction::triggered, this, [this] { sim_.stop(); });
@@ -42,4 +44,8 @@ void MainWindow::onFrameReady() {
 
     // Update scene text
     pscene_->updateValues(model_);
+
+    // layout_->updateItems(model_);
+    // qDebug() << "FrameReady";
+
 }

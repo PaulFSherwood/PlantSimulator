@@ -10,29 +10,29 @@ PlantItem::PlantItem(const PlantNode& node)
     type(node.type)
 {
     setPen(QPen(Qt::black, 2));
-    setBrush(QColor("#dcecff"));
+    setBrush(QColor(50,50,60));
 
     text_ = new QGraphicsTextItem(this);
     updateFromNode(node);
 }
 
-void PlantItem::updateFromNode(const PlantNode& node)
+void PlantItem::updateFromNode(const PlantNode& n)
 {
-    QString t = node.type + "\n";
-    // numeric params
-    for (auto it = node.dparams.constBegin(); it != node.dparams.constEnd(); ++it) {
-        const QString& k = it.key();
-        double v = it.value();
-        // render parameter text here...
+    QString txt = QString("[%1]\n").arg(n.type);
+
+    for (auto it = n.dparams.cbegin(); it != n.dparams.cend(); ++it) {
+        txt += QString("%1: %2\n").arg(it.key()).arg(it.value(), 0, 'f', 2);
+    }
+    for (auto it = n.bparams.cbegin(); it != n.bparams.cend(); ++it) {
+        txt += QString("%1: %2\n").arg(it.key()).arg(it.value() ? "true" : "false");
     }
 
-    // boolean params
-    for (auto it = node.bparams.constBegin(); it != node.bparams.constEnd(); ++it) {
-        const QString& k = it.key();
-        bool v = it.value();
-        // render boolean values here...
+    if (!text_) {
+        text_ = new QGraphicsTextItem(this);
+        text_->setDefaultTextColor(Qt::white);
+        text_->setPos(10, 10);
     }
 
-    text_->setPlainText(t);
-    text_->setPos(10, 10);
+    text_->setPlainText(txt);
 }
+
