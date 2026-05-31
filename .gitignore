@@ -94,3 +94,8 @@ Session.vim
 .venv/
 __pycache__/
 *.pyc
+.env
+.env.*
+.DS_Store
+.idea/
+.vscode/
