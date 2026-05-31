@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card-grid">
+  {% for name, status, detail in [("Dryer Line 1", "Warning", "Outlet moisture drifting high"), ("Auger 2", "Critical", "Bearing temp above limit"), ("Wet Bin Fan", "Running", "Normal"), ("Packaging Line", "Running", "Normal")] %}
+  <article class="equipment-card">
+    <div class="panel-header"><h2>{{ name }}</h2><span class="tag {{ 'critical' if status == 'Critical' else 'warning' if status == 'Warning' else 'ok' }}">{{ status }}</span></div>
+    <p>{{ detail }}</p>
+    <div class="sensor-row"><span>Runtime</span><strong>{{ 200 + loop.index * 74 }} hrs</strong></div>
+    <div class="sensor-row"><span>Motor Current</span><strong>{{ 5 + loop.index }}.{{ loop.index }} A</strong></div>
+    <div class="sensor-row"><span>Bearing Temp</span><strong>{{ 98 + loop.index * 11 }}°F</strong></div>
+  </article>
+  {% endfor %}
+</section>
+{% endblock %}

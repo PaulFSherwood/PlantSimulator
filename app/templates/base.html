@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page.title if page else title }} | PlantOps</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='css/plantops.css') }}">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <link class="brand-logo" rel="stylesheet" href="/static/css/plantops.css?v=2" alt="PlantOps logo">
+            <div>
+                <div class="brand-title">Plant<span>Ops</span></div>
+                <div class="brand-subtitle">SIMULATOR</div>
+            </div>
+      </div>
+
+      <nav class="nav-list" aria-label="Main navigation">
+        {% for item in nav_items %}
+          <a class="nav-item {% if active_path == item.endpoint %}active{% endif %}" href="{{ item.endpoint }}">
+            <img class="nav-icon" src="{{ url_for('static', path='icons/' ~ item.icon ~ '.svg') }}" alt="">
+            <span>{{ item.label }}</span>
+          </a>
+        {% endfor %}
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <h1>{{ page.title if page else title }}</h1>
+          <p>{{ page.subtitle if page else '' }}</p>
+        </div>
+        <div class="topbar-status">
+          <span class="status-pill ok">{{ status }}</span>
+          <span class="status-pill neutral">{{ shift }}</span>
+        </div>
+      </header>
+
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+  <script src="{{ url_for('static', path='js/plantops.js') }}"></script>
+</body>
+</html>

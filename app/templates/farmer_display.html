@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="farmer-board">
+  <div class="farmer-header"><h2>{{ plant_name }}</h2><span>Receiving: OPEN</span></div>
+  <div class="farmer-grid">
+    <div><span>Current Ticket</span><strong>184</strong></div>
+    <div><span>Commodity</span><strong>Corn</strong></div>
+    <div><span>Moisture</span><strong>18.4%</strong></div>
+    <div><span>Assigned Pit</span><strong>Pit 2</strong></div>
+    <div><span>Estimated Wait</span><strong>22 min</strong></div>
+    <div><span>Status</span><strong>Unloading</strong></div>
+  </div>
+  <div class="farmer-message">Please remain in your vehicle until called. Pit 1 closed for maintenance.</div>
+</section>
+{% endblock %}

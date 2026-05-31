@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="metric-grid">
+    <article class="metric-card">
+        <div class="metric-icon profit-icon">$</div>
+        <div>
+            <p class="metric-label">Estimated Profit Today</p>
+            <h2>$8,950</h2>
+            <p class="metric-note">After downtime and energy estimate</p>
+        </div>
+    </article>
+
+    <article class="metric-card">
+        <div class="metric-icon warning-icon">!</div>
+        <div>
+            <p class="metric-label">Lost Profit Opportunity</p>
+            <h2>$3,400</h2>
+            <p class="metric-note">Recoverable if bottleneck clears</p>
+        </div>
+    </article>
+
+    <article class="metric-card">
+        <div class="metric-icon throughput-icon">↗</div>
+        <div>
+            <p class="metric-label">Throughput</p>
+            <h2>215 tons/hr</h2>
+            <p class="metric-note">Current rolling average</p>
+        </div>
+    </article>
+
+    <article class="metric-card">
+        <div class="metric-icon uptime-icon">✓</div>
+        <div>
+            <p class="metric-label">Uptime</p>
+            <h2>87.6%</h2>
+            <p class="metric-note">Current shift</p>
+        </div>
+    </article>
+</section>
+
+<section class="dashboard-layout">
+    <main class="dashboard-main">
+        <section class="panel process-panel">
+            <div class="panel-header">
+                <div>
+                    <h2>Process Flow Overview</h2>
+                    <p>Receiving hopper to packaging line</p>
+                </div>
+                <span class="live-dot">Live</span>
+            </div>
+
+            <div class="process-flow-css">
+                <div class="process-step">
+                    <div class="bin css-bin" style="--fill: 44%;">
+                        <div class="bin-fill"></div>
+                        <div class="bin-shine"></div>
+                    </div>
+                    <h3>Receiving Hopper</h3>
+                    <p>45 ton/hr</p>
+                    <span class="status-text good-text">95%</span>
+                </div>
+
+                <div class="flow-arrow">→</div>
+
+                <div class="process-step">
+                    <div class="bin css-bin wet-bin" style="--fill: 68%;">
+                        <div class="bin-fill"></div>
+                        <div class="bin-shine"></div>
+                    </div>
+                    <h3>Wet Bin</h3>
+                    <p>Level: 68%</p>
+                    <span>18.2% Moisture</span>
+                </div>
+
+                <div class="flow-arrow">→</div>
+
+                <div class="process-step">
+                    <div class="css-dryer">
+                        <div class="dryer-fire"></div>
+                    </div>
+                    <h3>Dryer</h3>
+                    <p>Temp: 285°F</p>
+                    <span class="status-text warning-text">Outlet: 12.1%</span>
+                </div>
+
+                <div class="flow-arrow">→</div>
+
+                <div class="process-step">
+                    <div class="bin css-bin dry-bin" style="--fill: 42%;">
+                        <div class="bin-fill"></div>
+                        <div class="bin-shine"></div>
+                    </div>
+                    <h3>Dry Bin</h3>
+                    <p>Level: 42%</p>
+                    <span>12.0% Moisture</span>
+                </div>
+
+                <div class="flow-arrow">→</div>
+
+                <div class="process-step">
+                    <div class="css-packager">
+                        <div class="package-box"></div>
+                        <div class="conveyor-belt"></div>
+                    </div>
+                    <h3>Packaging Line</h3>
+                    <p>280 bag/hr</p>
+                    <span class="status-text good-text">Running</span>
+                </div>
+            </div>
+
+            <div class="info-banner">
+                <strong>Current Bottleneck:</strong> Dryer Line 1
+                <span>Limiting overall production by ~22%</span>
+            </div>
+        </section>
+
+        <section class="lower-grid">
+            <article class="panel">
+                <div class="panel-header">
+                    <h2>Equipment At A Glance</h2>
+                    <a href="/equipment">View all</a>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Equipment</th>
+                            <th>Status</th>
+                            <th>Runtime</th>
+                            <th>Health</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Receiving Hopper</td>
+                            <td><span class="dot good-dot"></span>Running</td>
+                            <td>3.2 h</td>
+                            <td><span class="health good-health" style="--health: 96%;"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Wet Bin Auger</td>
+                            <td><span class="dot good-dot"></span>Running</td>
+                            <td>3.2 h</td>
+                            <td><span class="health good-health" style="--health: 94%;"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Dryer Line 1</td>
+                            <td><span class="dot warn-dot"></span>Warning</td>
+                            <td>3.2 h</td>
+                            <td><span class="health warn-health" style="--health: 78%;"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Auger 3</td>
+                            <td><span class="dot warn-dot"></span>Warning</td>
+                            <td>1.1 h</td>
+                            <td><span class="health warn-health" style="--health: 62%;"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </article>
+
+            <article class="panel">
+                <div class="panel-header">
+                    <h2>Owner Summary</h2>
+                    <span class="status-pill danger">1 Critical / 2 Warnings</span>
+                </div>
+
+                <div class="summary-list">
+                    <div>
+                        <span>Current bottleneck</span>
+                        <strong>Dryer Line 1</strong>
+                    </div>
+                    <div>
+                        <span>Highest maintenance risk</span>
+                        <strong>Auger 2 bearing temperature</strong>
+                    </div>
+                    <div>
+                        <span>Projected end-of-day output</span>
+                        <strong>1,720 tons / 2,000 ton goal</strong>
+                    </div>
+                    <div>
+                        <span>Recommended action</span>
+                        <strong>Inspect dryer airflow and pre-stage bearing kit</strong>
+                    </div>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <aside class="dashboard-rail">
+        <section class="panel compact-panel">
+            <div class="panel-header">
+                <h2>Active Alarms</h2>
+                <a href="/alarms">View all</a>
+            </div>
+
+            <div class="alarm-list">
+                <div class="alarm-item critical">
+                    <strong>High Temperature</strong>
+                    <span>Dryer Outlet Temp</span>
+                    <em>2 min ago</em>
+                </div>
+                <div class="alarm-item high">
+                    <strong>High Vibration</strong>
+                    <span>Auger 3 Bearing</span>
+                    <em>5 min ago</em>
+                </div>
+                <div class="alarm-item medium">
+                    <strong>High Motor Load</strong>
+                    <span>Conveyor 2 Drive</span>
+                    <em>10 min ago</em>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel compact-panel">
+            <div class="panel-header">
+                <h2>LOTO Status</h2>
+                <a href="/loto">View all</a>
+            </div>
+
+            <div class="loto-summary">
+                <div>
+                    <strong>1</strong>
+                    <span>Locked Out</span>
+                </div>
+                <div>
+                    <strong>0</strong>
+                    <span>Tagged Out</span>
+                </div>
+                <div>
+                    <strong>0</strong>
+                    <span>Verification</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel compact-panel profit-summary">
+            <div class="panel-header">
+                <h2>Profit Summary</h2>
+                <a href="/reports">Details</a>
+            </div>
+
+            <p>Estimated end of day</p>
+            <h2>$12,450</h2>
+            <span>If current rate continues</span>
+
+            <hr>
+
+            <p>Potential with optimization</p>
+            <h2 class="blue-number">$20,150</h2>
+            <span>Eliminate downtime + clear bottleneck</span>
+        </section>
+    </aside>
+</section>
+{% endblock %}

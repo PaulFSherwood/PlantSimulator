@@ -1,0 +1,4 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="panel"><div class="panel-header"><h2>Active Alarms</h2><span class="tag critical">3 Active</span></div><div class="table-wrap"><table><tr><th>Severity</th><th>Equipment</th><th>Alarm</th><th>Age</th><th>Ack</th></tr><tr><td><span class="tag critical">Critical</span></td><td>Auger 2</td><td>Bearing temperature high</td><td>18 min</td><td>No</td></tr><tr><td><span class="tag warning">Warning</span></td><td>Dryer Line 1</td><td>Outlet moisture high</td><td>31 min</td><td>Yes</td></tr><tr><td><span class="tag warning">Warning</span></td><td>Truck Scale</td><td>Queue wait above target</td><td>42 min</td><td>No</td></tr></table></div></section>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="panel">
+  <div class="panel-header"><h2>Plant Flow</h2><span class="tag ok">Auto Mode</span></div>
+  <div class="process-flow">
+    {% for node in ["Truck Scale", "Dump Pit", "Wet Bin", "Dryer", "Dry Bin", "Packaging", "Shipping"] %}
+      <div class="process-node {% if node == 'Dryer' %}warning{% endif %}">
+        <div class="node-title">{{ node }}</div>
+        <div class="node-status">{{ "Bottleneck" if node == "Dryer" else "Running" }}</div>
+      </div>
+      {% if not loop.last %}<div class="flow-arrow">→</div>{% endif %}
+    {% endfor %}
+  </div>
+</section>
+<section class="panel"><h2>Material Movement</h2><p class="muted">Animated flow and equipment interlocks will be wired to the simulator engine in the next phase.</p></section>
+{% endblock %}

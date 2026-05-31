@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="metric-grid">
+  <article class="metric-card"><span>Target</span><strong>2,000 tons</strong><small>Daily goal</small></article>
+  <article class="metric-card"><span>Actual</span><strong>1,184 tons</strong><small>As of current shift</small></article>
+  <article class="metric-card warning"><span>Forecast</span><strong>1,720 tons</strong><small>Below target</small></article>
+  <article class="metric-card"><span>Line Speed</span><strong>84%</strong><small>Average available speed</small></article>
+</section>
+<section class="panel"><h2>Production Schedule</h2><div class="table-wrap"><table><tr><th>Area</th><th>Status</th><th>Rate</th><th>Constraint</th></tr><tr><td>Receiving</td><td>Open</td><td>260 tons/hr</td><td>Truck queue</td></tr><tr><td>Dryer</td><td>Limited</td><td>180 tons/hr</td><td>High inlet moisture</td></tr><tr><td>Packaging</td><td>Running</td><td>92%</td><td>None</td></tr></table></div></section>
+{% endblock %}

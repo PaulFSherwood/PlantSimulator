@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="panel"><div class="panel-header"><h2>LOTO Workflow</h2><span class="tag critical">Safety Critical</span></div><ol class="step-list"><li>Stop equipment</li><li>Isolate energy source</li><li>Apply lock and tag</li><li>Verify zero energy</li><li>Perform maintenance</li><li>Remove tools and personnel</li><li>Clear lock/tag</li><li>Return to service</li></ol></section>
+<section class="panel"><h2>Current Locks</h2><div class="table-wrap"><table><tr><th>Equipment</th><th>Status</th><th>Owner</th><th>Verification</th></tr><tr><td>Auger 2</td><td><span class="tag critical">Locked Out</span></td><td>Senior Maintenance Tech</td><td>Pending</td></tr></table></div></section>
+{% endblock %}
