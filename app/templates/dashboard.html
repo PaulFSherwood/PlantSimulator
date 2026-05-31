@@ -70,76 +70,103 @@
 <section class="dashboard-layout">
     <main class="dashboard-main">
         <section class="panel process-panel">
-            <div class="panel-header">
+            <div class="panel-header process-panel-header">
                 <div>
                     <h2>Process Flow Overview</h2>
                     <p>Receiving hopper to packaging line</p>
                 </div>
-                <span class="live-dot">Live</span>
+        
+                <div class="process-header-actions">
+                    <span class="live-dot">Live</span>
+                    <a class="small-action-button" href="/process-flow">View Full Process</a>
+                </div>
             </div>
-
-            <div class="process-flow-css">
+        
+            <div class="process-flow-css process-flow-mockup">
                 <div class="process-step">
-                    <div class="bin css-bin" style="--fill: 44%;">
-                        <div class="bin-fill"></div>
-                        <div class="bin-shine"></div>
+                    <div class="process-visual">
+                        <span class="step-status ok"></span>
+                        <div class="plant-bin hopper-bin" style="--fill: 44%;">
+                            <div class="plant-bin-fill"></div>
+                            <div class="plant-bin-shine"></div>
+                        </div>
+                        <div class="bin-legs"></div>
                     </div>
                     <h3>Receiving Hopper</h3>
                     <p>45 ton/hr</p>
                     <span class="status-text good-text">95%</span>
                 </div>
-
+        
                 <div class="flow-arrow">→</div>
-
+        
                 <div class="process-step">
-                    <div class="bin css-bin wet-bin" style="--fill: 68%;">
-                        <div class="bin-fill"></div>
-                        <div class="bin-shine"></div>
+                    <div class="process-visual">
+                        <span class="step-status ok"></span>
+                        <div class="plant-bin wet-bin" style="--fill: 68%;">
+                            <div class="plant-bin-fill"></div>
+                            <div class="plant-bin-shine"></div>
+                        </div>
+                        <div class="bin-legs"></div>
                     </div>
                     <h3>Wet Bin</h3>
                     <p>Level: 68%</p>
                     <span>18.2% Moisture</span>
                 </div>
-
+        
                 <div class="flow-arrow">→</div>
-
+        
                 <div class="process-step">
-                    <div class="css-dryer">
-                        <div class="dryer-fire"></div>
+                    <div class="process-visual">
+                        <span class="step-status warning"></span>
+                        <div class="plant-dryer">
+                            <div class="dryer-input-tube"></div>
+                            <div class="dryer-fire"></div>
+                        </div>
                     </div>
                     <h3>Dryer</h3>
                     <p>Temp: 285°F</p>
                     <span class="status-text warning-text">Outlet: 12.1%</span>
                 </div>
-
+        
                 <div class="flow-arrow">→</div>
-
+        
                 <div class="process-step">
-                    <div class="bin css-bin dry-bin" style="--fill: 42%;">
-                        <div class="bin-fill"></div>
-                        <div class="bin-shine"></div>
+                    <div class="process-visual">
+                        <span class="step-status ok"></span>
+                        <div class="plant-bin dry-bin" style="--fill: 42%;">
+                            <div class="plant-bin-fill"></div>
+                            <div class="plant-bin-shine"></div>
+                        </div>
                     </div>
                     <h3>Dry Bin</h3>
                     <p>Level: 42%</p>
                     <span>12.0% Moisture</span>
                 </div>
-
+        
                 <div class="flow-arrow">→</div>
-
+        
                 <div class="process-step">
-                    <div class="css-packager">
-                        <div class="package-box"></div>
-                        <div class="conveyor-belt"></div>
+                    <div class="process-visual">
+                        <span class="step-status ok"></span>
+                        <div class="plant-packager is-running">
+                            <div class="packager-head"></div>
+                            <div class="package-box"></div>
+                            <div class="conveyor-belt"></div>
+                        </div>
                     </div>
                     <h3>Packaging Line</h3>
                     <p>280 bag/hr</p>
                     <span class="status-text good-text">Running</span>
                 </div>
             </div>
-
-            <div class="info-banner">
-                <strong>Current Bottleneck:</strong> Dryer Line 1
-                <span>Limiting overall production by ~22%</span>
+        
+            <div class="bottleneck-banner">
+                <div class="banner-icon">i</div>
+                <div class="banner-text">
+                    <strong>Current Bottleneck: Dryer Line 1</strong>
+                    <span>Limiting overall production by ~22%</span>
+                </div>
+                <a class="banner-button" href="/reports">View Bottleneck Analysis</a>
             </div>
         </section>
 
