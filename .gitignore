@@ -5,6 +5,7 @@ build*/
 bin/
 lib/
 CMakeFiles/
+OldVersion/
 CMakeCache.txt
 cmake_install.cmake
 Makefile
