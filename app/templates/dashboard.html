@@ -2,40 +2,67 @@
 
 {% block content %}
 
-<section class="metric-grid">
-    <article class="metric-card">
-        <div class="metric-icon profit-icon">$</div>
-        <div>
-            <p class="metric-label">Estimated Profit Today</p>
+<section class="metric-grid owner-metrics">
+    <article class="metric-card owner-metric">
+        <div class="metric-icon metric-production"></div>
+        <div class="metric-body">
+            <p class="metric-label">Today's Production</p>
+            <h2>1,246 ton</h2>
+            <div class="metric-footer">
+                <span>Target: 1,500 ton</span>
+                <strong class="good-text">83%</strong>
+            </div>
+            <div class="metric-progress">
+                <span style="--value: 83%;"></span>
+            </div>
+        </div>
+    </article>
+
+    <article class="metric-card owner-metric">
+        <div class="metric-icon metric-revenue"></div>
+        <div class="metric-body">
+            <p class="metric-label">Today's Revenue</p>
+            <h2>$42,800</h2>
+            <div class="metric-footer">
+                <span>Yesterday: $38,650</span>
+                <strong class="good-text">↑ 10.7%</strong>
+            </div>
+        </div>
+    </article>
+
+    <article class="metric-card owner-metric">
+        <div class="metric-icon metric-profit"></div>
+        <div class="metric-body">
+            <p class="metric-label">Estimated Profit</p>
             <h2>$8,950</h2>
-            <p class="metric-note">After downtime and energy estimate</p>
+            <div class="metric-footer">
+                <span>Margin: 20.9%</span>
+                <strong class="good-text">↑ 8.2%</strong>
+            </div>
         </div>
     </article>
 
-    <article class="metric-card">
-        <div class="metric-icon warning-icon">!</div>
-        <div>
-            <p class="metric-label">Lost Profit Opportunity</p>
+    <article class="metric-card owner-metric">
+        <div class="metric-icon metric-downtime"></div>
+        <div class="metric-body">
+            <p class="metric-label">Downtime Cost</p>
             <h2>$3,400</h2>
-            <p class="metric-note">Recoverable if bottleneck clears</p>
+            <div class="metric-footer">
+                <span>Today</span>
+                <strong class="bad-text">↑ 15.4%</strong>
+            </div>
         </div>
     </article>
 
-    <article class="metric-card">
-        <div class="metric-icon throughput-icon">↗</div>
-        <div>
-            <p class="metric-label">Throughput</p>
-            <h2>215 tons/hr</h2>
-            <p class="metric-note">Current rolling average</p>
-        </div>
-    </article>
-
-    <article class="metric-card">
-        <div class="metric-icon uptime-icon">✓</div>
-        <div>
-            <p class="metric-label">Uptime</p>
-            <h2>87.6%</h2>
-            <p class="metric-note">Current shift</p>
+    <article class="metric-card owner-metric">
+        <div class="metric-icon metric-opportunity"></div>
+        <div class="metric-body">
+            <p class="metric-label">Lost Profit Opportunity</p>
+            <h2>$11,700</h2>
+            <div class="metric-footer">
+                <span>If bottlenecks cleared</span>
+                <a href="/reports">View Details</a>
+            </div>
         </div>
     </article>
 </section>

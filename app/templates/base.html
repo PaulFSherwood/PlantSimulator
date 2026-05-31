@@ -28,15 +28,41 @@
     </aside>
 
     <main class="main-content">
-      <header class="topbar">
-        <div>
-          <h1>{{ page.title if page else title }}</h1>
-          <p>{{ page.subtitle if page else '' }}</p>
-        </div>
-        <div class="topbar-status">
-          <span class="status-pill ok">{{ status }}</span>
-          <span class="status-pill neutral">{{ shift }}</span>
-        </div>
+        <header class="topbar app-topbar">
+          <div class="topbar-left">
+            <button class="hamburger-button" type="button" aria-label="Toggle navigation">
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+        
+            <div class="page-title-block">
+              <h1>{{ page.title if page else title }}</h1>
+              <p>{{ page.subtitle if page else '' }}</p>
+            </div>
+          </div>
+        
+          <div class="topbar-right">
+            <button class="topbar-control" type="button">
+              <span class="topbar-control-icon">⌂</span>
+              <span>Demo Feed Mill</span>
+              <span class="topbar-chevron">⌄</span>
+            </button>
+        
+            <button class="topbar-control" type="button">
+              <span class="topbar-control-icon">□</span>
+              <span>May 14, 2025</span>
+            </button>
+        
+            <div class="operator-card">
+              <div class="operator-avatar"></div>
+              <div class="operator-text">
+                <strong>John Owner</strong>
+                <span>Owner</span>
+              </div>
+              <span class="topbar-chevron">⌄</span>
+            </div>
+          </div>
       </header>
 
       {% block content %}{% endblock %}
