@@ -62,7 +62,14 @@ button {
 .nav-item:hover { background: rgba(255,255,255,0.04); color: var(--text); }
 .nav-item.active { background: #172840; color: var(--text); border-color: #2c4360; }
 .nav-icon { width: 20px; height: 20px; opacity: 0.9; }
-.main-content { flex: 1; padding: 1.25rem; min-width: 0; }
+.main-content {
+  flex: 1;
+  min-width: 0;
+  min-height: 100vh;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
 .topbar {
   display: flex; justify-content: space-between; gap: 1rem; align-items: start;
   margin-bottom: 1.25rem;
@@ -2204,3 +2211,130 @@ input, select {
         grid-template-columns: 1fr;
     }
 }
+
+/* =========================================================
+   Footer + right rail tightening
+   ========================================================= */
+
+.dashboard-rail {
+    gap: 0.75rem;
+}
+
+.rail-header {
+    padding: 0.7rem 0.9rem;
+}
+
+.rail-alarm {
+    padding: 0.62rem 0.85rem 0.62rem 1.25rem;
+}
+
+.rail-alarm::before {
+    top: 0.45rem;
+    bottom: 0.45rem;
+}
+
+.rail-alarm strong {
+    font-size: 0.86rem;
+}
+
+.rail-alarm span {
+    font-size: 0.74rem;
+}
+
+.alarm-meta {
+    gap: 0.25rem;
+}
+
+.alarm-meta em {
+    font-size: 0.66rem;
+    padding: 0.18rem 0.42rem;
+}
+
+.rail-wide-button,
+.what-if-button {
+    margin: 0.65rem 0.9rem 0.8rem;
+    padding: 0.5rem;
+}
+
+.loto-primary {
+    margin: 0.75rem 0.9rem;
+    padding: 0.58rem;
+}
+
+.loto-grid {
+    padding: 0 0.9rem 0.8rem;
+}
+
+.loto-grid div {
+    padding: 0.45rem 0.3rem;
+}
+
+.profit-block {
+    margin: 0 0.9rem 0.55rem;
+    padding: 0.75rem;
+}
+
+.profit-block strong {
+    font-size: 1.35rem;
+}
+
+.dashboard-footer {
+    height: 34px;
+    margin-top: auto;
+    padding: 0 0.75rem;
+    border-top: 1px solid rgba(142, 160, 180, 0.18);
+    color: var(--muted);
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.78rem;
+    overflow: hidden;
+    flex: 0 0 34px;
+}
+
+.footer-left,
+.footer-center,
+.footer-right {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+}
+
+.footer-center {
+    justify-content: center;
+}
+
+.footer-right {
+    justify-content: flex-end;
+}
+
+.footer-live {
+    color: #37c878;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.footer-live i {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: #37c878;
+}
+
+.footer-divider {
+    width: 1px;
+    height: 18px;
+    background: rgba(142, 160, 180, 0.25);
+}
+
+.footer-weather-icon {
+    color: #f59e0b;
+    font-size: 1rem;
+}
+
+.footer-right strong {
+    color: var(--text);
+}
+
