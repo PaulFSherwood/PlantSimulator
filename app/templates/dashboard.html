@@ -170,14 +170,14 @@
             </div>
         </section>
 
-        <section class="lower-grid">
-            <article class="panel">
+        <section class="lower-grid dashboard-lower-cards">
+            <article class="panel lower-card">
                 <div class="panel-header">
                     <h2>Equipment At A Glance</h2>
-                    <a href="/equipment">View all</a>
+                    <a href="/equipment">View All</a>
                 </div>
-
-                <table class="data-table">
+        
+                <table class="data-table compact-data-table">
                     <thead>
                         <tr>
                             <th>Equipment</th>
@@ -206,6 +206,18 @@
                             <td><span class="health warn-health" style="--health: 78%;"></span></td>
                         </tr>
                         <tr>
+                            <td>Dry Bin</td>
+                            <td><span class="dot good-dot"></span>Running</td>
+                            <td>3.2 h</td>
+                            <td><span class="health good-health" style="--health: 92%;"></span></td>
+                        </tr>
+                        <tr>
+                            <td>Packaging Line 1</td>
+                            <td><span class="dot good-dot"></span>Running</td>
+                            <td>3.2 h</td>
+                            <td><span class="health good-health" style="--health: 91%;"></span></td>
+                        </tr>
+                        <tr>
                             <td>Auger 3</td>
                             <td><span class="dot warn-dot"></span>Warning</td>
                             <td>1.1 h</td>
@@ -214,29 +226,100 @@
                     </tbody>
                 </table>
             </article>
-
-            <article class="panel">
+        
+            <article class="panel lower-card">
                 <div class="panel-header">
-                    <h2>Owner Summary</h2>
-                    <span class="status-pill danger">1 Critical / 2 Warnings</span>
+                    <h2>Production Trend (Today)</h2>
                 </div>
-
-                <div class="summary-list">
+        
+                <div class="trend-legend">
+                    <span><i class="legend-line actual"></i>Actual (ton/hr)</span>
+                    <span><i class="legend-line target"></i>Target (ton/hr)</span>
+                </div>
+        
+                <div class="mini-chart">
+                    <svg viewBox="0 0 420 190" preserveAspectRatio="none">
+                        <line x1="25" y1="25" x2="25" y2="160" class="chart-axis"/>
+                        <line x1="25" y1="160" x2="400" y2="160" class="chart-axis"/>
+        
+                        <line x1="25" y1="55" x2="400" y2="55" class="chart-target"/>
+        
+                        <polyline class="chart-line"
+                            points="25,140 60,115 95,92 130,112 165,82 200,70 235,95 270,76 305,90 340,72 375,78 400,70"/>
+                        <g class="chart-points">
+                            <circle cx="25" cy="140" r="3"/>
+                            <circle cx="60" cy="115" r="3"/>
+                            <circle cx="95" cy="92" r="3"/>
+                            <circle cx="130" cy="112" r="3"/>
+                            <circle cx="165" cy="82" r="3"/>
+                            <circle cx="200" cy="70" r="3"/>
+                            <circle cx="235" cy="95" r="3"/>
+                            <circle cx="270" cy="76" r="3"/>
+                            <circle cx="305" cy="90" r="3"/>
+                            <circle cx="340" cy="72" r="3"/>
+                            <circle cx="375" cy="78" r="3"/>
+                            <circle cx="400" cy="70" r="3"/>
+                        </g>
+                    </svg>
+        
+                    <div class="chart-x-labels">
+                        <span>12 AM</span>
+                        <span>4 AM</span>
+                        <span>8 AM</span>
+                        <span>12 PM</span>
+                        <span>4 PM</span>
+                        <span>8 PM</span>
+                        <span>12 AM</span>
+                    </div>
+                </div>
+        
+                <div class="trend-summary">
                     <div>
-                        <span>Current bottleneck</span>
-                        <strong>Dryer Line 1</strong>
+                        <span>YTD Production</span>
+                        <strong>182,450 ton</strong>
                     </div>
                     <div>
-                        <span>Highest maintenance risk</span>
-                        <strong>Auger 2 bearing temperature</strong>
+                        <span>YTD Revenue</span>
+                        <strong>$6.21M</strong>
                     </div>
                     <div>
-                        <span>Projected end-of-day output</span>
-                        <strong>1,720 tons / 2,000 ton goal</strong>
+                        <span>YTD Profit</span>
+                        <strong>$1.23M</strong>
+                    </div>
+                </div>
+            </article>
+        
+            <article class="panel lower-card">
+                <div class="panel-header">
+                    <h2>Maintenance Overview</h2>
+                    <a href="/maintenance">View All</a>
+                </div>
+        
+                <div class="maintenance-list">
+                    <div>
+                        <span class="maint-icon blue">▣</span>
+                        <span>Open Work Orders</span>
+                        <strong>7</strong>
                     </div>
                     <div>
-                        <span>Recommended action</span>
-                        <strong>Inspect dryer airflow and pre-stage bearing kit</strong>
+                        <span class="maint-icon red">▣</span>
+                        <span>Overdue Work Orders</span>
+                        <strong>2</strong>
+                    </div>
+                    <div>
+                        <span class="maint-icon purple">▣</span>
+                        <span>Planned Maintenance (7 days)</span>
+                        <strong>4</strong>
+                    </div>
+                    <div>
+                        <span class="maint-icon green">◷</span>
+                        <span>MTTR (30 days)</span>
+                        <strong>46 min</strong>
+                    </div>
+                    <div>
+                        <span class="maint-icon sky">⌁</span>
+                        <span>MTBF (30 days)</span>
+                        <strong>128 h</strong>
                     </div>
                 </div>
             </article>
