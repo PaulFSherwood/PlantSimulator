@@ -244,69 +244,113 @@
     </main>
 
     <aside class="dashboard-rail">
-        <section class="panel compact-panel">
-            <div class="panel-header">
-                <h2>Active Alarms</h2>
-                <a href="/alarms">View all</a>
+        <section class="panel rail-panel">
+            <div class="rail-header">
+                <h2>Active Alarms (4)</h2>
+                <a href="/alarms">View All</a>
             </div>
-
-            <div class="alarm-list">
-                <div class="alarm-item critical">
-                    <strong>High Temperature</strong>
-                    <span>Dryer Outlet Temp</span>
-                    <em>2 min ago</em>
+    
+            <div class="rail-alarm-list">
+                <div class="rail-alarm critical">
+                    <div>
+                        <strong>High Temperature</strong>
+                        <span>Dryer Outlet Temp High</span>
+                    </div>
+                    <div class="alarm-meta">
+                        <span>2 min ago</span>
+                        <em>Critical</em>
+                    </div>
                 </div>
-                <div class="alarm-item high">
-                    <strong>High Vibration</strong>
-                    <span>Auger 3 Bearing</span>
-                    <em>5 min ago</em>
+    
+                <div class="rail-alarm high">
+                    <div>
+                        <strong>High Vibration</strong>
+                        <span>Auger 3 Bearing</span>
+                    </div>
+                    <div class="alarm-meta">
+                        <span>5 min ago</span>
+                        <em>High</em>
+                    </div>
                 </div>
-                <div class="alarm-item medium">
-                    <strong>High Motor Load</strong>
-                    <span>Conveyor 2 Drive</span>
-                    <em>10 min ago</em>
+    
+                <div class="rail-alarm medium">
+                    <div>
+                        <strong>High Motor Load</strong>
+                        <span>Conveyor 2 Drive</span>
+                    </div>
+                    <div class="alarm-meta">
+                        <span>10 min ago</span>
+                        <em>Medium</em>
+                    </div>
+                </div>
+    
+                <div class="rail-alarm low">
+                    <div>
+                        <strong>Level Sensor Dirty</strong>
+                        <span>Dry Bin Level Sensor</span>
+                    </div>
+                    <div class="alarm-meta">
+                        <span>15 min ago</span>
+                        <em>Low</em>
+                    </div>
                 </div>
             </div>
+    
+            <a class="rail-wide-button" href="/alarms">Acknowledge All</a>
         </section>
-
-        <section class="panel compact-panel">
-            <div class="panel-header">
+    
+        <section class="panel rail-panel">
+            <div class="rail-header">
                 <h2>LOTO Status</h2>
-                <a href="/loto">View all</a>
+                <a href="/loto">View All</a>
             </div>
-
-            <div class="loto-summary">
+    
+            <div class="loto-primary">
+                <span class="loto-icon"></span>
+                <strong>1</strong>
+                <span>Locked Out</span>
+            </div>
+            
+            <div class="loto-grid">
                 <div>
-                    <strong>1</strong>
-                    <span>Locked Out</span>
-                </div>
-                <div>
+                    <span class="loto-icon"></span>
                     <strong>0</strong>
                     <span>Tagged Out</span>
                 </div>
                 <div>
+                    <span class="loto-icon"></span>
+                    <strong>0</strong>
+                    <span>In Progress</span>
+                </div>
+                <div>
+                    <span class="loto-icon"></span>
                     <strong>0</strong>
                     <span>Verification</span>
                 </div>
-            </div>
+            </div> 
         </section>
-
-        <section class="panel compact-panel profit-summary">
-            <div class="panel-header">
+    
+        <section class="panel rail-panel profit-rail">
+            <div class="rail-header">
                 <h2>Profit Summary</h2>
-                <a href="/reports">Details</a>
+                <a href="/reports">View Details</a>
             </div>
-
-            <p>Estimated end of day</p>
-            <h2>$12,450</h2>
-            <span>If current rate continues</span>
-
-            <hr>
-
-            <p>Potential with optimization</p>
-            <h2 class="blue-number">$20,150</h2>
-            <span>Eliminate downtime + clear bottleneck</span>
+    
+            <div class="profit-block">
+                <span>Estimated End of Day</span>
+                <strong>$12,450</strong>
+                <p>If current rate continues</p>
+            </div>
+    
+            <div class="profit-block optimized">
+                <span>Potential With Optimization</span>
+                <strong>$20,150</strong>
+                <p>Eliminate downtime + clear bottleneck</p>
+            </div>
+    
+            <a class="what-if-button" href="/reports">What-If Analysis</a>
         </section>
     </aside>
+
 </section>
 {% endblock %}
