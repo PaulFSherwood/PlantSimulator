@@ -1,0 +1,225 @@
+/* =========================================================
+   Right rail pass
+   ========================================================= */
+
+.rail-panel {
+    padding: 0;
+    overflow: hidden;
+}
+
+.rail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.95rem 1rem;
+    border-bottom: 1px solid var(--line);
+}
+
+.rail-header h2 {
+    margin: 0;
+    font-size: 1.05rem;
+}
+
+.rail-header a {
+    color: #60a5fa;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.rail-alarm-list {
+    display: grid;
+}
+
+.rail-alarm {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.75rem;
+    padding: 0.9rem 1rem 0.9rem 1.35rem;
+    border-bottom: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.015);
+}
+
+.rail-alarm::before {
+    content: "";
+    position: absolute;
+    left: 0.55rem;
+    top: 0.65rem;
+    bottom: 0.65rem;
+    width: 8px;
+    border-left: 3px solid #64748b;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+.rail-alarm strong {
+    display: block;
+    color: var(--text);
+    font-size: 0.92rem;
+}
+
+.rail-alarm span {
+    display: block;
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin-top: 0.2rem;
+}
+
+.rail-alarm.critical::before {
+    border-left-color: #ef4444;
+}
+
+.rail-alarm.high::before {
+    border-left-color: #f97316;
+}
+
+.rail-alarm.medium::before {
+    border-left-color: #eab308;
+}
+
+.rail-alarm.low::before {
+    border-left-color: #3b82f6;
+}
+
+.alarm-meta {
+    text-align: right;
+    display: grid;
+    justify-items: end;
+    align-content: start;
+    gap: 0.35rem;
+}
+
+.alarm-meta em {
+    font-style: normal;
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 0.22rem 0.5rem;
+    border-radius: 0.35rem;
+    color: var(--text);
+    background: #334155;
+}
+
+.rail-alarm.critical .alarm-meta em {
+    background: rgba(239, 68, 68, 0.22);
+    color: #fecaca;
+}
+
+.rail-alarm.high .alarm-meta em {
+    background: rgba(249, 115, 22, 0.22);
+    color: #fed7aa;
+}
+
+.rail-alarm.medium .alarm-meta em {
+    background: rgba(234, 179, 8, 0.22);
+    color: #fef08a;
+}
+
+.rail-alarm.low .alarm-meta em {
+    background: rgba(59, 130, 246, 0.22);
+    color: #bfdbfe;
+}
+
+.rail-wide-button,
+.what-if-button {
+    display: block;
+    margin: 0.85rem 1rem 1rem;
+    padding: 0.65rem;
+    border: 1px solid var(--line);
+    border-radius: 0.5rem;
+    text-align: center;
+    font-weight: 800;
+    font-size: 0.86rem;
+    background: rgba(255, 255, 255, 0.035);
+    color: var(--text);
+}
+
+.loto-primary {
+    margin: 1rem;
+    padding: 0.9rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(34, 197, 94, 0.25);
+    background: rgba(34, 197, 94, 0.08);
+    text-align: center;
+}
+
+.loto-primary strong {
+    display: block;
+    color: #86efac;
+    font-size: 1.6rem;
+}
+
+.loto-primary span {
+    display: block;
+    color: var(--muted);
+    font-size: 0.82rem;
+}
+
+.loto-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    padding: 0 1rem 1rem;
+}
+
+.loto-grid div {
+    text-align: center;
+    border: 1px solid var(--line);
+    border-radius: 0.65rem;
+    padding: 0.65rem 0.35rem;
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.loto-grid strong {
+    display: block;
+    color: var(--text);
+    font-size: 1.2rem;
+}
+
+.loto-grid span {
+    display: block;
+    margin-top: 0.2rem;
+    color: var(--muted);
+    font-size: 0.75rem;
+}
+
+.profit-rail .rail-header {
+    border-bottom: 0;
+}
+
+.profit-block {
+    padding: 1rem;
+    border-top: 1px solid var(--line);
+}
+
+.profit-block span {
+    display: block;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.72rem;
+    font-weight: 800;
+}
+
+.profit-block strong {
+    display: block;
+    margin-top: 0.5rem;
+    color: #22c55e;
+    font-size: 1.55rem;
+    letter-spacing: -0.04em;
+}
+
+.profit-block p {
+    margin: 0.25rem 0 0;
+    color: var(--muted);
+    font-size: 0.82rem;
+}
+
+.profit-block.optimized strong {
+    color: #60a5fa;
+}
+
+.what-if-button {
+    background: #2563eb;
+    border-color: #2563eb;
+    color: white;
+}

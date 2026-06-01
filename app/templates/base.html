@@ -1,10 +1,11 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ page.title if page else title }} | PlantOps</title>
-  <link rel="stylesheet" href="{{ url_for('static', path='css/plantops.css') }}?v=2">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ page.title if page else title }} | PlantOps</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/plantops.css') }}">
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
     {% set app_version = "1.0.0" %}
