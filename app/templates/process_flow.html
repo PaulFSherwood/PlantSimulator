@@ -7,28 +7,20 @@
 <section class="process-page">
     <div class="process-tabs">
         <a class="active" href="/process-flow">Main Flow</a>
-        <a href="#">Grain Receiving</a>
-        <a href="#">Dryer</a>
-        <a href="#">Milling & Mixing</a>
-        <a href="#">Packaging</a>
+        <a class="disabled" href="#">Grain Receiving</a>
+        <a class="disabled" href="#">Dryer</a>
+        <a class="disabled" href="#">Milling & Mixing</a>
+        <a class="disabled" href="#">Packaging</a>
     </div>
 
     <section class="panel process-map-panel">
-        <div class="process-map-header">
-            <div>
-                <h2>Main Plant Flow</h2>
-                <p>Config-style layout prototype for a grain/feed operation.</p>
-            </div>
-
-            <div class="process-legend">
+        <div class="scada-map">
+            <div class="scada-map-legend">
                 <span><i class="legend-running"></i>Running</span>
                 <span><i class="legend-stopped"></i>Stopped</span>
                 <span><i class="legend-fault"></i>Faulted</span>
                 <span><i class="legend-nocomms"></i>No Comms</span>
             </div>
-        </div>
-
-        <div class="scada-map">
             <!-- flow lines -->
             <div class="flow-line running line-receive-main"></div>
             <div class="flow-line running line-bin-header"></div>
@@ -102,7 +94,9 @@
             </div>
 
             <div class="scada-node mixer-node" style="--x: 795px; --y: 430px;">
-                <div class="mini-mixer"></div>
+                <div class="mini-mixer">
+                    <div class="mixer-base"></div>
+                </div>
                 <div class="node-title">Mill / Mixer</div>
                 <span class="node-status running">RUN</span>
             </div>

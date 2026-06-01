@@ -30,23 +30,8 @@
 }
 
 .process-map-panel {
-    min-height: 640px;
-}
-
-.process-map-header {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.process-map-header h2 {
-    margin: 0;
-}
-
-.process-map-header p {
-    margin: 0.25rem 0 0;
-    color: var(--muted);
+    min-height: 660px;
+    padding: 1rem;
 }
 
 .process-legend {
@@ -76,14 +61,43 @@
 
 .scada-map {
     position: relative;
-    height: 540px;
+    height: 610px;
     min-width: 1180px;
-    overflow: auto;
+    overflow: hidden;
     border-radius: 1rem;
     border: 1px solid var(--line);
     background:
         radial-gradient(circle at 15% 20%, rgba(34, 197, 94, 0.08), transparent 18rem),
         linear-gradient(180deg, #101923, #0c131b);
+}
+
+.scada-map-legend {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    z-index: 10;
+    display: grid;
+    gap: 0.35rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+}
+
+.scada-map-legend span {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.scada-map-legend i {
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    border-radius: 3px;
+}
+
+.process-tabs a.disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
 }
 
 .scada-node {
@@ -231,10 +245,10 @@
 
 .mini-hopper,
 .mini-bin {
-    width: 48px;
+    width: 52px;
     height: 72px;
     margin: 0 auto 0.35rem;
-    clip-path: polygon(50% 0, 100% 18%, 100% 72%, 50% 100%, 0 72%, 0 18%);
+    clip-path: polygon(50% 0, 100% 20%, 100% 68%, 62% 88%, 62% 100%, 38% 100%, 38% 88%, 0 68%, 0 20%);
     background:
         linear-gradient(90deg, #94a3b8, #e2e8f0 45%, #64748b);
     position: relative;
@@ -255,14 +269,38 @@
 }
 
 .mini-dryer-box {
-    width: 74px;
-    height: 82px;
+    position: relative;
+    width: 86px;
+    height: 42px;
     margin: 0 auto 0.35rem;
-    border-radius: 0.35rem;
-    border: 3px solid #a16207;
+    border: 3px solid #64748b;
+    border-radius: 8px 14px 14px 8px;
     background:
-        linear-gradient(180deg, rgba(255,255,255,0.18), transparent 35%),
-        linear-gradient(180deg, #eab308, #a16207);
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.15) 0 6px, transparent 6px 14px),
+        linear-gradient(180deg, #aab6c4, #566275);
+}
+
+.mini-dryer-box::before {
+    content: "";
+    position: absolute;
+    left: -22px;
+    top: -2px;
+    width: 22px;
+    height: 42px;
+    border: 3px solid #64748b;
+    border-radius: 5px 0 0 5px;
+    background: #566275;
+}
+
+.mini-dryer-box::after {
+    content: "";
+    position: absolute;
+    left: -15px;
+    top: 18px;
+    width: 12px;
+    height: 18px;
+    background: linear-gradient(180deg, #fbbf24, #ea580c);
+    clip-path: polygon(50% 0, 100% 70%, 70% 100%, 30% 100%, 0 70%);
 }
 
 .mini-elevator {
@@ -276,13 +314,68 @@
         linear-gradient(90deg, #94a3b8, #475569);
 }
 
+/* Mill / Mixer */
+
 .mini-mixer {
-    width: 68px;
-    height: 74px;
+    position: relative;
+    width: 58px;
+    height: 112px;
     margin: 0 auto 0.35rem;
+}
+
+/* top dryer/mixer label box */
+.mini-mixer::before {
+    content: "Dryer";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 58px;
+    height: 32px;
+    display: grid;
+    place-items: center;
     border: 3px solid #64748b;
-    border-radius: 10px 10px 20px 20px;
-    background: linear-gradient(180deg, #cbd5e1, #64748b);
+    border-radius: 4px;
+    background: linear-gradient(180deg, #dbe4ee, #9aa8b8);
+    color: #0f172a;
+    font-size: 0.72rem;
+    font-weight: 900;
+}
+
+/* vertical pipe */
+.mini-mixer::after {
+    content: "";
+    position: absolute;
+    left: 21px;
+    top: 34px;
+    width: 16px;
+    height: 44px;
+    border-left: 3px solid #64748b;
+    border-right: 3px solid #64748b;
+    background: linear-gradient(90deg, #94a3b8, #dbe4ee 50%, #64748b);
+}
+
+/* bottom motor/base */
+.mixer-base {
+    position: absolute;
+    left: 4px;
+    bottom: 0;
+    width: 50px;
+    height: 34px;
+    border: 3px solid #64748b;
+    border-radius: 4px;
+    background: linear-gradient(180deg, #dbe4ee, #9aa8b8);
+}
+
+.mixer-base::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 9px;
+    height: 9px;
+    transform: translate(-50%, -50%);
+    border-radius: 999px;
+    border: 2px solid #334155;
 }
 
 .mini-packaging {
