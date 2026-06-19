@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/process.css') }}">
+{% endblock %}
+<section class="process-page">
+    <div class="process-tabs">
+        <a class="active" href="/process-flow">Main Flow</a>
+        <a class="disabled" href="#">Grain Receiving</a>
+        <a class="disabled" href="#">Dryer</a>
+        <a class="disabled" href="#">Milling & Mixing</a>
+        <a class="disabled" href="#">Packaging</a>
+    </div>
+
+    <section class="panel process-map-panel">
+        <div class="scada-map">
+            <div class="scada-map-legend">
+                <span><i class="legend-running"></i>Running</span>
+                <span><i class="legend-stopped"></i>Stopped</span>
+                <span><i class="legend-fault"></i>Faulted</span>
+                <span><i class="legend-nocomms"></i>No Comms</span>
+            </div>
+            <!-- flow lines -->
+            <div class="flow-line running line-receive-main"></div>
+            <div class="flow-line running line-bin-header"></div>
+            <div class="flow-line running line-bin1-drop"></div>
+            <div class="flow-line running line-bin2-drop"></div>
+            <div class="flow-line stopped line-bin3-drop"></div>
+            <div class="flow-line running line-bin4-drop"></div>
+            <div class="flow-line running line-auger-dryer"></div>
+            <div class="flow-line warning line-dryer-conveyor"></div>
+            <div class="flow-line running line-conveyor-elevator"></div>
+            <div class="flow-line running line-elevator-mixer"></div>
+            <div class="flow-line running line-mixer-packaging"></div>
+            <div class="flow-line running line-packaging-shipping"></div>
+
+            <!-- equipment nodes -->
+            <div class="scada-node receiving-node" style="--x: 70px; --y: 205px;">
+                <div class="node-title">Grain Receiving</div>
+                <div class="node-rate">8,450 bu/hr</div>
+                <div class="mini-hopper"></div>
+                <span class="node-status running">RUN</span>
+            </div>
+
+            <div class="scada-node bin-node" style="--x: 240px; --y: 85px;">
+                <div class="mini-bin" style="--fill: 72%;"></div>
+                <div class="node-title">Bin 1</div>
+                <div class="node-rate">72%</div>
+            </div>
+
+            <div class="scada-node bin-node" style="--x: 365px; --y: 85px;">
+                <div class="mini-bin" style="--fill: 68%;"></div>
+                <div class="node-title">Bin 2</div>
+                <div class="node-rate">68%</div>
+            </div>
+
+            <div class="scada-node bin-node" style="--x: 490px; --y: 85px;">
+                <div class="mini-bin" style="--fill: 48%;"></div>
+                <div class="node-title">Bin 3</div>
+                <div class="node-rate">48%</div>
+            </div>
+
+            <div class="scada-node bin-node" style="--x: 615px; --y: 85px;">
+                <div class="mini-bin" style="--fill: 27%;"></div>
+                <div class="node-title">Bin 4</div>
+                <div class="node-rate">27%</div>
+            </div>
+
+            <div class="scada-node auger-node" style="--x: 220px; --y: 315px;">
+                <div class="node-title">Auger 1</div>
+                <span class="node-status running">RUN</span>
+            </div>
+
+            <div class="scada-node auger-node" style="--x: 405px; --y: 315px;">
+                <div class="node-title">Auger 2</div>
+                <span class="node-status running">RUN</span>
+            </div>
+
+            <div class="scada-node dryer-node" style="--x: 500px; --y: 405px;">
+                <div class="mini-dryer-box"></div>
+                <div class="node-title">Dryer</div>
+                <div class="node-rate warning-text">Warning</div>
+            </div>
+
+            <div class="scada-node conveyor-node" style="--x: 685px; --y: 365px;">
+                <div class="node-title">Conveyor 3</div>
+                <span class="node-status running">RUN</span>
+            </div>
+
+            <div class="scada-node elevator-node" style="--x: 790px; --y: 150px;">
+                <div class="mini-elevator"></div>
+                <div class="node-title">Elevator</div>
+            </div>
+
+            <div class="scada-node mixer-node" style="--x: 795px; --y: 430px;">
+                <div class="mini-mixer">
+                    <div class="mixer-base"></div>
+                </div>
+                <div class="node-title">Mill / Mixer</div>
+                <span class="node-status running">RUN</span>
+            </div>
+
+            <div class="scada-node packaging-node" style="--x: 990px; --y: 430px;">
+                <div class="mini-packaging"></div>
+                <div class="node-title">Packaging</div>
+            </div>
+
+            <div class="shipping-label" style="--x: 1030px; --y: 335px;">To Shipping</div>
+        </div>
+    </section>
+</section>
+{% endblock %}

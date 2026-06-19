@@ -1,20 +1,28 @@
 {% extends "base.html" %}
 
-{% block content %}
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', path='css/process.css') }}">
 {% endblock %}
+
+{% block content %}
 <section class="process-page">
+    <input class="process-tab-radio" type="radio" name="process-view" id="process-main-flow" checked>
+    <input class="process-tab-radio" type="radio" name="process-view" id="process-receiving">
+    <input class="process-tab-radio" type="radio" name="process-view" id="process-dryer">
+    <input class="process-tab-radio" type="radio" name="process-view" id="process-milling">
+    <input class="process-tab-radio" type="radio" name="process-view" id="process-packaging">
+
     <div class="process-tabs">
-        <a class="active" href="/process-flow">Main Flow</a>
-        <a class="disabled" href="#">Grain Receiving</a>
-        <a class="disabled" href="#">Dryer</a>
-        <a class="disabled" href="#">Milling & Mixing</a>
-        <a class="disabled" href="#">Packaging</a>
+        <label for="process-main-flow">Main Flow</label>
+        <label for="process-receiving">Grain Receiving</label>
+        <label for="process-dryer">Dryer</label>
+        <label for="process-milling">Milling &amp; Mixing</label>
+        <label for="process-packaging">Packaging</label>
     </div>
 
     <section class="panel process-map-panel">
-        <div class="scada-map">
+        <div class="process-view process-view-main">
+            <div class="scada-map">
             <div class="scada-map-legend">
                 <span><i class="legend-running"></i>Running</span>
                 <span><i class="legend-stopped"></i>Stopped</span>
@@ -107,6 +115,87 @@
             </div>
 
             <div class="shipping-label" style="--x: 1030px; --y: 335px;">To Shipping</div>
+            </div>
+        </div>
+
+        <div class="process-view process-view-receiving">
+            <div class="process-detail-grid">
+                <article class="process-detail-card">
+                    <h2>Grain Receiving</h2>
+                    <p>Inbound flow, dump pit, sampling, and routing to wet bins.</p>
+                    <div class="detail-metric"><span>Inbound Rate</span><strong>8,450 bu/hr</strong></div>
+                    <div class="detail-metric"><span>Moisture</span><strong>18.2%</strong></div>
+                    <div class="detail-metric"><span>Destination</span><strong>Bin 2</strong></div>
+                </article>
+                <article class="process-detail-card">
+                    <h2>Receiving Equipment</h2>
+                    <ul class="detail-list">
+                        <li><span>Dump Pit</span><strong class="good-text">Running</strong></li>
+                        <li><span>Auger 1</span><strong class="good-text">Running</strong></li>
+                        <li><span>Level Sensor</span><strong class="warning-text">Dirty</strong></li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+
+        <div class="process-view process-view-dryer">
+            <div class="process-detail-grid">
+                <article class="process-detail-card">
+                    <h2>Dryer</h2>
+                    <p>Temperature, outlet moisture, burner status, and dryer bottleneck state.</p>
+                    <div class="detail-metric"><span>Temperature</span><strong>285°F</strong></div>
+                    <div class="detail-metric"><span>Outlet Moisture</span><strong class="warning-text">12.1%</strong></div>
+                    <div class="detail-metric"><span>Status</span><strong class="warning-text">Bottleneck</strong></div>
+                </article>
+                <article class="process-detail-card">
+                    <h2>Dryer Checks</h2>
+                    <ul class="detail-list">
+                        <li><span>Burner</span><strong class="good-text">Running</strong></li>
+                        <li><span>Airflow</span><strong>Normal</strong></li>
+                        <li><span>Discharge</span><strong class="warning-text">Below Target</strong></li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+
+        <div class="process-view process-view-milling">
+            <div class="process-detail-grid">
+                <article class="process-detail-card">
+                    <h2>Milling &amp; Mixing</h2>
+                    <p>Mill/mixer state, batch progress, and downstream feed to packaging.</p>
+                    <div class="detail-metric"><span>Current Batch</span><strong>Feed Mix A</strong></div>
+                    <div class="detail-metric"><span>Batch Progress</span><strong>63%</strong></div>
+                    <div class="detail-metric"><span>Motor Load</span><strong>71%</strong></div>
+                </article>
+                <article class="process-detail-card">
+                    <h2>Equipment</h2>
+                    <ul class="detail-list">
+                        <li><span>Mill / Mixer</span><strong class="good-text">Running</strong></li>
+                        <li><span>Conveyor 3</span><strong class="good-text">Running</strong></li>
+                        <li><span>Discharge Gate</span><strong>Auto</strong></li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+
+        <div class="process-view process-view-packaging">
+            <div class="process-detail-grid">
+                <article class="process-detail-card">
+                    <h2>Packaging</h2>
+                    <p>Bagging rate, finished product movement, and shipping handoff.</p>
+                    <div class="detail-metric"><span>Bagging Rate</span><strong>280 bag/hr</strong></div>
+                    <div class="detail-metric"><span>Line Status</span><strong class="good-text">Running</strong></div>
+                    <div class="detail-metric"><span>Destination</span><strong>To Shipping</strong></div>
+                </article>
+                <article class="process-detail-card">
+                    <h2>Packaging Equipment</h2>
+                    <ul class="detail-list">
+                        <li><span>Bag Filler</span><strong class="good-text">Running</strong></li>
+                        <li><span>Conveyor</span><strong class="good-text">Running</strong></li>
+                        <li><span>Scale Check</span><strong>Passed</strong></li>
+                    </ul>
+                </article>
+            </div>
         </div>
     </section>
 </section>
