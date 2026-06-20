@@ -1,0 +1,259 @@
+{
+  "id": "feed_mill_demo",
+  "name": "Demo Feed Mill",
+  "app_version": "1.0.0",
+  "plant_type": "Feed Mill",
+  "topbar": {
+    "date_label": "May 14, 2025",
+    "operator_name": "John Owner",
+    "operator_role": "Owner"
+  },
+  "footer": {
+    "last_updated": "10:24:30 AM",
+    "live_label": "Live",
+    "temperature": "72°F",
+    "weather": "Sunny",
+    "weather_icon": "☀"
+  },
+  "operations": {
+    "status": "Receiving Open",
+    "shift": "Day Shift",
+    "throughput": "215 tons/hr",
+    "uptime": "87.6%",
+    "active_faults": "1 Critical / 2 Warnings",
+    "bottleneck": "Dryer Line 1"
+  },
+  "dashboard": {
+    "metrics": [
+      {
+        "label": "Today's Production",
+        "value": "1,246 ton",
+        "footer_label": "Target: 1,500 ton",
+        "footer_value": "83%",
+        "footer_class": "good-text",
+        "icon_class": "metric-production",
+        "progress": "83%"
+      },
+      {
+        "label": "Today's Revenue",
+        "value": "$42,800",
+        "footer_label": "Yesterday: $38,650",
+        "footer_value": "↑ 10.7%",
+        "footer_class": "good-text",
+        "icon_class": "metric-revenue"
+      },
+      {
+        "label": "Estimated Profit",
+        "value": "$8,950",
+        "footer_label": "Margin: 20.9%",
+        "footer_value": "↑ 8.2%",
+        "footer_class": "good-text",
+        "icon_class": "metric-profit"
+      },
+      {
+        "label": "Downtime Cost",
+        "value": "$3,400",
+        "footer_label": "Today",
+        "footer_value": "↑ 15.4%",
+        "footer_class": "bad-text",
+        "icon_class": "metric-downtime"
+      },
+      {
+        "label": "Lost Profit Opportunity",
+        "value": "$11,700",
+        "footer_label": "If bottlenecks cleared",
+        "footer_link_label": "View Details",
+        "footer_link_href": "/reports",
+        "icon_class": "metric-opportunity"
+      }
+    ],
+    "process_overview": {
+      "title": "Process Flow Overview",
+      "subtitle": "Receiving hopper to packaging line",
+      "steps": [
+        {
+          "kind": "bin",
+          "title": "Receiving Hopper",
+          "line1": "45 ton/hr",
+          "line2": "95%",
+          "line2_class": "status-text good-text",
+          "status_class": "ok",
+          "visual_class": "hopper-bin",
+          "fill": "44%",
+          "legs": true
+        },
+        {
+          "kind": "bin",
+          "title": "Wet Bin",
+          "line1": "Level: 68%",
+          "line2": "18.2% Moisture",
+          "status_class": "ok",
+          "visual_class": "wet-bin",
+          "fill": "68%",
+          "legs": true
+        },
+        {
+          "kind": "dryer",
+          "title": "Dryer",
+          "line1": "Temp: 285°F",
+          "line2": "Outlet: 12.1%",
+          "line2_class": "status-text warning-text",
+          "status_class": "warning"
+        },
+        {
+          "kind": "bin",
+          "title": "Dry Bin",
+          "line1": "Level: 42%",
+          "line2": "12.0% Moisture",
+          "status_class": "ok",
+          "visual_class": "dry-bin",
+          "fill": "42%",
+          "legs": false
+        },
+        {
+          "kind": "packager",
+          "title": "Packaging Line",
+          "line1": "280 bag/hr",
+          "line2": "Running",
+          "line2_class": "status-text good-text",
+          "status_class": "ok",
+          "running": true
+        }
+      ],
+      "bottleneck": {
+        "title": "Current Bottleneck: Dryer Line 1",
+        "subtitle": "Limiting overall production by ~22%",
+        "href": "/reports",
+        "link_label": "View Bottleneck Analysis"
+      }
+    },
+    "equipment": [
+      {"name": "Receiving Hopper", "status": "Running", "status_dot": "good-dot", "runtime": "3.2 h", "health_class": "good-health", "health": "96%"},
+      {"name": "Wet Bin Auger", "status": "Running", "status_dot": "good-dot", "runtime": "3.2 h", "health_class": "good-health", "health": "94%"},
+      {"name": "Dryer Line 1", "status": "Warning", "status_dot": "warn-dot", "runtime": "3.2 h", "health_class": "warn-health", "health": "78%"},
+      {"name": "Dry Bin", "status": "Running", "status_dot": "good-dot", "runtime": "3.2 h", "health_class": "good-health", "health": "92%"},
+      {"name": "Packaging Line 1", "status": "Running", "status_dot": "good-dot", "runtime": "3.2 h", "health_class": "good-health", "health": "91%"},
+      {"name": "Auger 3", "status": "Warning", "status_dot": "warn-dot", "runtime": "1.1 h", "health_class": "warn-health", "health": "62%"}
+    ],
+    "trend_summary": [
+      {"label": "YTD Production", "value": "182,450 ton"},
+      {"label": "YTD Revenue", "value": "$6.21M"},
+      {"label": "YTD Profit", "value": "$1.23M"}
+    ],
+    "maintenance": [
+      {"icon": "▣", "icon_class": "blue", "label": "Open Work Orders", "value": "7"},
+      {"icon": "▣", "icon_class": "red", "label": "Overdue Work Orders", "value": "2"},
+      {"icon": "▣", "icon_class": "purple", "label": "Planned Maintenance (7 days)", "value": "4"},
+      {"icon": "◷", "icon_class": "green", "label": "MTTR (30 days)", "value": "46 min"},
+      {"icon": "⌁", "icon_class": "sky", "label": "MTBF (30 days)", "value": "128 h"}
+    ],
+    "alarms": [
+      {"severity_class": "critical", "title": "High Temperature", "subtitle": "Dryer Outlet Temp High", "age": "2 min ago", "severity": "Critical"},
+      {"severity_class": "high", "title": "High Vibration", "subtitle": "Auger 3 Bearing", "age": "5 min ago", "severity": "High"},
+      {"severity_class": "medium", "title": "High Motor Load", "subtitle": "Conveyor 2 Drive", "age": "10 min ago", "severity": "Medium"},
+      {"severity_class": "low", "title": "Level Sensor Dirty", "subtitle": "Dry Bin Level Sensor", "age": "15 min ago", "severity": "Low"}
+    ],
+    "loto": {
+      "primary": {"value": "1", "label": "Locked Out"},
+      "secondary": [
+        {"value": "0", "label": "Tagged Out"},
+        {"value": "0", "label": "In Progress"},
+        {"value": "0", "label": "Verification"}
+      ]
+    },
+    "profit": {
+      "estimated": {"label": "Estimated End of Day", "value": "$12,450", "note": "If current rate continues"},
+      "optimized": {"label": "Potential With Optimization", "value": "$20,150", "note": "Eliminate downtime + clear bottleneck"}
+    }
+  },
+  "process_flow": {
+    "tabs": {
+      "main": "Main Flow",
+      "receiving": "Grain Receiving",
+      "dryer": "Dryer",
+      "milling": "Milling & Mixing",
+      "packaging": "Packaging"
+    },
+    "main": {
+      "receiving": {"title": "Grain Receiving", "rate": "8,450 bu/hr", "x": "70px", "y": "205px", "status": "RUN"},
+      "bins": [
+        {"title": "Bin 1", "rate": "72%", "fill": "72%", "x": "240px", "y": "85px"},
+        {"title": "Bin 2", "rate": "68%", "fill": "68%", "x": "365px", "y": "85px"},
+        {"title": "Bin 3", "rate": "48%", "fill": "48%", "x": "490px", "y": "85px"},
+        {"title": "Bin 4", "rate": "27%", "fill": "27%", "x": "615px", "y": "85px"}
+      ],
+      "augers": [
+        {"title": "Auger 1", "x": "220px", "y": "315px", "status": "RUN"},
+        {"title": "Auger 2", "x": "405px", "y": "315px", "status": "RUN"}
+      ],
+      "dryer": {"title": "Dryer", "rate": "Warning", "x": "500px", "y": "405px"},
+      "conveyor": {"title": "Conveyor 3", "x": "685px", "y": "365px", "status": "RUN"},
+      "elevator": {"title": "Elevator", "x": "790px", "y": "150px"},
+      "mixer": {"title": "Mill / Mixer", "x": "795px", "y": "430px", "status": "RUN"},
+      "packaging": {"title": "Packaging", "x": "990px", "y": "430px"},
+      "shipping": {"label": "To Shipping", "x": "1030px", "y": "335px"}
+    },
+    "details": {
+      "receiving": {
+        "title": "Grain Receiving",
+        "subtitle": "Inbound grain flow, dump pit, sampling, and wet-bin routing.",
+        "metrics": [
+          {"label": "Inbound Rate", "value": "8,450 bu/hr"},
+          {"label": "Moisture", "value": "18.2%"},
+          {"label": "Destination", "value": "Wet Bin 2"}
+        ],
+        "list_title": "Receiving Equipment",
+        "items": [
+          {"label": "Dump Pit Auger", "value": "Running", "class": "good-text"},
+          {"label": "Bucket Elevator", "value": "Running", "class": "good-text"},
+          {"label": "Level Sensor", "value": "Dirty", "class": "warning-text"}
+        ]
+      },
+      "dryer": {
+        "title": "Dryer Line",
+        "subtitle": "Dryer temperature, outlet moisture, burner status, and airflow.",
+        "metrics": [
+          {"label": "Temperature", "value": "285°F"},
+          {"label": "Outlet Moisture", "value": "12.1%", "class": "warning-text"},
+          {"label": "Current State", "value": "Bottleneck", "class": "warning-text"}
+        ],
+        "list_title": "Dryer Risk",
+        "items": [
+          {"label": "Airflow", "value": "Normal"},
+          {"label": "Burner", "value": "Running", "class": "good-text"},
+          {"label": "Output", "value": "Below Target", "class": "warning-text"}
+        ]
+      },
+      "milling": {
+        "title": "Milling & Mixing",
+        "subtitle": "Mill/mixer state, batch progress, and downstream feed to packaging.",
+        "metrics": [
+          {"label": "Current Batch", "value": "Feed Mix A"},
+          {"label": "Batch Progress", "value": "63%"},
+          {"label": "Motor Load", "value": "71%"}
+        ],
+        "list_title": "Equipment",
+        "items": [
+          {"label": "Mill / Mixer", "value": "Running", "class": "good-text"},
+          {"label": "Conveyor 3", "value": "Running", "class": "good-text"},
+          {"label": "Discharge Gate", "value": "Auto"}
+        ]
+      },
+      "packaging": {
+        "title": "Packaging",
+        "subtitle": "Bagging rate, finished product movement, and shipping handoff.",
+        "metrics": [
+          {"label": "Bagging Rate", "value": "280 bag/hr"},
+          {"label": "Line Status", "value": "Running", "class": "good-text"},
+          {"label": "Destination", "value": "To Shipping"}
+        ],
+        "list_title": "Packaging Equipment",
+        "items": [
+          {"label": "Bag Filler", "value": "Running", "class": "good-text"},
+          {"label": "Conveyor", "value": "Running", "class": "good-text"},
+          {"label": "Scale Check", "value": "Passed"}
+        ]
+      }
+    }
+  }
+}

@@ -13,186 +13,178 @@
     <input class="process-tab-radio" type="radio" name="process-view" id="process-packaging">
 
     <div class="process-tabs">
-        <label for="process-main-flow">Main Flow</label>
-        <label for="process-receiving">Grain Receiving</label>
-        <label for="process-dryer">Dryer</label>
-        <label for="process-milling">Milling &amp; Mixing</label>
-        <label for="process-packaging">Packaging</label>
+        <label for="process-main-flow">{{ plant.process_flow.tabs.main }}</label>
+        <label for="process-receiving">{{ plant.process_flow.tabs.receiving }}</label>
+        <label for="process-dryer">{{ plant.process_flow.tabs.dryer }}</label>
+        <label for="process-milling">{{ plant.process_flow.tabs.milling }}</label>
+        <label for="process-packaging">{{ plant.process_flow.tabs.packaging }}</label>
     </div>
 
     <section class="panel process-map-panel">
         <div class="process-view process-view-main">
             <div class="scada-map">
-            <div class="scada-map-legend">
-                <span><i class="legend-running"></i>Running</span>
-                <span><i class="legend-stopped"></i>Stopped</span>
-                <span><i class="legend-fault"></i>Faulted</span>
-                <span><i class="legend-nocomms"></i>No Comms</span>
-            </div>
-            <!-- flow lines -->
-            <div class="flow-line running line-receive-main"></div>
-            <div class="flow-line running line-bin-header"></div>
-            <div class="flow-line running line-bin1-drop"></div>
-            <div class="flow-line running line-bin2-drop"></div>
-            <div class="flow-line stopped line-bin3-drop"></div>
-            <div class="flow-line running line-bin4-drop"></div>
-            <div class="flow-line running line-auger-dryer"></div>
-            <div class="flow-line warning line-dryer-conveyor"></div>
-            <div class="flow-line running line-conveyor-elevator"></div>
-            <div class="flow-line running line-elevator-mixer"></div>
-            <div class="flow-line running line-mixer-packaging"></div>
-            <div class="flow-line running line-packaging-shipping"></div>
-
-            <!-- equipment nodes -->
-            <div class="scada-node receiving-node" style="--x: 70px; --y: 205px;">
-                <div class="node-title">Grain Receiving</div>
-                <div class="node-rate">8,450 bu/hr</div>
-                <div class="mini-hopper"></div>
-                <span class="node-status running">RUN</span>
-            </div>
-
-            <div class="scada-node bin-node" style="--x: 240px; --y: 85px;">
-                <div class="mini-bin" style="--fill: 72%;"></div>
-                <div class="node-title">Bin 1</div>
-                <div class="node-rate">72%</div>
-            </div>
-
-            <div class="scada-node bin-node" style="--x: 365px; --y: 85px;">
-                <div class="mini-bin" style="--fill: 68%;"></div>
-                <div class="node-title">Bin 2</div>
-                <div class="node-rate">68%</div>
-            </div>
-
-            <div class="scada-node bin-node" style="--x: 490px; --y: 85px;">
-                <div class="mini-bin" style="--fill: 48%;"></div>
-                <div class="node-title">Bin 3</div>
-                <div class="node-rate">48%</div>
-            </div>
-
-            <div class="scada-node bin-node" style="--x: 615px; --y: 85px;">
-                <div class="mini-bin" style="--fill: 27%;"></div>
-                <div class="node-title">Bin 4</div>
-                <div class="node-rate">27%</div>
-            </div>
-
-            <div class="scada-node auger-node" style="--x: 220px; --y: 315px;">
-                <div class="node-title">Auger 1</div>
-                <span class="node-status running">RUN</span>
-            </div>
-
-            <div class="scada-node auger-node" style="--x: 405px; --y: 315px;">
-                <div class="node-title">Auger 2</div>
-                <span class="node-status running">RUN</span>
-            </div>
-
-            <div class="scada-node dryer-node" style="--x: 500px; --y: 405px;">
-                <div class="mini-dryer-box"></div>
-                <div class="node-title">Dryer</div>
-                <div class="node-rate warning-text">Warning</div>
-            </div>
-
-            <div class="scada-node conveyor-node" style="--x: 685px; --y: 365px;">
-                <div class="node-title">Conveyor 3</div>
-                <span class="node-status running">RUN</span>
-            </div>
-
-            <div class="scada-node elevator-node" style="--x: 790px; --y: 150px;">
-                <div class="mini-elevator"></div>
-                <div class="node-title">Elevator</div>
-            </div>
-
-            <div class="scada-node mixer-node" style="--x: 795px; --y: 430px;">
-                <div class="mini-mixer">
-                    <div class="mixer-base"></div>
+                <div class="scada-map-legend">
+                    <span><i class="legend-running"></i>Running</span>
+                    <span><i class="legend-stopped"></i>Stopped</span>
+                    <span><i class="legend-fault"></i>Faulted</span>
+                    <span><i class="legend-nocomms"></i>No Comms</span>
                 </div>
-                <div class="node-title">Mill / Mixer</div>
-                <span class="node-status running">RUN</span>
-            </div>
 
-            <div class="scada-node packaging-node" style="--x: 990px; --y: 430px;">
-                <div class="mini-packaging"></div>
-                <div class="node-title">Packaging</div>
-            </div>
+                <!-- flow lines -->
+                <div class="flow-line running line-receive-main"></div>
+                <div class="flow-line running line-bin-header"></div>
+                <div class="flow-line running line-bin1-drop"></div>
+                <div class="flow-line running line-bin2-drop"></div>
+                <div class="flow-line stopped line-bin3-drop"></div>
+                <div class="flow-line running line-bin4-drop"></div>
+                <div class="flow-line running line-auger-dryer"></div>
+                <div class="flow-line warning line-dryer-conveyor"></div>
+                <div class="flow-line running line-conveyor-elevator"></div>
+                <div class="flow-line running line-elevator-mixer"></div>
+                <div class="flow-line running line-mixer-packaging"></div>
+                <div class="flow-line running line-packaging-shipping"></div>
 
-            <div class="shipping-label" style="--x: 1030px; --y: 335px;">To Shipping</div>
+                <!-- equipment nodes -->
+                <div class="scada-node receiving-node" style="--x: {{ plant.process_flow.main.receiving.x }}; --y: {{ plant.process_flow.main.receiving.y }};">
+                    <div class="node-title">{{ plant.process_flow.main.receiving.title }}</div>
+                    <div class="node-rate">{{ plant.process_flow.main.receiving.rate }}</div>
+                    <div class="mini-hopper"></div>
+                    <span class="node-status running">{{ plant.process_flow.main.receiving.status }}</span>
+                </div>
+
+                {% for bin in plant.process_flow.main.bins %}
+                <div class="scada-node bin-node" style="--x: {{ bin.x }}; --y: {{ bin.y }};">
+                    <div class="mini-bin" style="--fill: {{ bin.fill }};"></div>
+                    <div class="node-title">{{ bin.title }}</div>
+                    <div class="node-rate">{{ bin.rate }}</div>
+                </div>
+                {% endfor %}
+
+                {% for auger in plant.process_flow.main.augers %}
+                <div class="scada-node auger-node" style="--x: {{ auger.x }}; --y: {{ auger.y }};">
+                    <div class="node-title">{{ auger.title }}</div>
+                    <span class="node-status running">{{ auger.status }}</span>
+                </div>
+                {% endfor %}
+
+                <div class="scada-node dryer-node" style="--x: {{ plant.process_flow.main.dryer.x }}; --y: {{ plant.process_flow.main.dryer.y }};">
+                    <div class="mini-dryer-box"></div>
+                    <div class="node-title">{{ plant.process_flow.main.dryer.title }}</div>
+                    <div class="node-rate warning-text">{{ plant.process_flow.main.dryer.rate }}</div>
+                </div>
+
+                <div class="scada-node conveyor-node" style="--x: {{ plant.process_flow.main.conveyor.x }}; --y: {{ plant.process_flow.main.conveyor.y }};">
+                    <div class="node-title">{{ plant.process_flow.main.conveyor.title }}</div>
+                    <span class="node-status running">{{ plant.process_flow.main.conveyor.status }}</span>
+                </div>
+
+                <div class="scada-node elevator-node" style="--x: {{ plant.process_flow.main.elevator.x }}; --y: {{ plant.process_flow.main.elevator.y }};">
+                    <div class="mini-elevator"></div>
+                    <div class="node-title">{{ plant.process_flow.main.elevator.title }}</div>
+                </div>
+
+                <div class="scada-node mixer-node" style="--x: {{ plant.process_flow.main.mixer.x }}; --y: {{ plant.process_flow.main.mixer.y }};">
+                    <div class="mini-mixer">
+                        <div class="mixer-base"></div>
+                    </div>
+                    <div class="node-title">{{ plant.process_flow.main.mixer.title }}</div>
+                    <span class="node-status running">{{ plant.process_flow.main.mixer.status }}</span>
+                </div>
+
+                <div class="scada-node packaging-node" style="--x: {{ plant.process_flow.main.packaging.x }}; --y: {{ plant.process_flow.main.packaging.y }};">
+                    <div class="mini-packaging"></div>
+                    <div class="node-title">{{ plant.process_flow.main.packaging.title }}</div>
+                </div>
+
+                <div class="shipping-label" style="--x: {{ plant.process_flow.main.shipping.x }}; --y: {{ plant.process_flow.main.shipping.y }};">
+                    {{ plant.process_flow.main.shipping.label }}
+                </div>
             </div>
         </div>
 
+        {% set receiving = plant.process_flow.details.receiving %}
         <div class="process-view process-view-receiving">
             <div class="process-detail-grid">
                 <article class="process-detail-card">
-                    <h2>Grain Receiving</h2>
-                    <p>Inbound flow, dump pit, sampling, and routing to wet bins.</p>
-                    <div class="detail-metric"><span>Inbound Rate</span><strong>8,450 bu/hr</strong></div>
-                    <div class="detail-metric"><span>Moisture</span><strong>18.2%</strong></div>
-                    <div class="detail-metric"><span>Destination</span><strong>Bin 2</strong></div>
+                    <h2>{{ receiving.title }}</h2>
+                    <p>{{ receiving.subtitle }}</p>
+                    {% for metric in receiving.metrics %}
+                    <div class="detail-metric"><span>{{ metric.label }}</span><strong class="{{ metric.class | default('') }}">{{ metric.value }}</strong></div>
+                    {% endfor %}
                 </article>
+
                 <article class="process-detail-card">
-                    <h2>Receiving Equipment</h2>
+                    <h2>{{ receiving.list_title }}</h2>
                     <ul class="detail-list">
-                        <li><span>Dump Pit</span><strong class="good-text">Running</strong></li>
-                        <li><span>Auger 1</span><strong class="good-text">Running</strong></li>
-                        <li><span>Level Sensor</span><strong class="warning-text">Dirty</strong></li>
+                        {% for item in receiving["items"] %}
+                        <li><span>{{ item.label }}</span><strong class="{{ item.class | default('') }}">{{ item.value }}</strong></li>
+                        {% endfor %}
                     </ul>
                 </article>
             </div>
         </div>
 
+        {% set dryer = plant.process_flow.details.dryer %}
         <div class="process-view process-view-dryer">
             <div class="process-detail-grid">
                 <article class="process-detail-card">
-                    <h2>Dryer</h2>
-                    <p>Temperature, outlet moisture, burner status, and dryer bottleneck state.</p>
-                    <div class="detail-metric"><span>Temperature</span><strong>285°F</strong></div>
-                    <div class="detail-metric"><span>Outlet Moisture</span><strong class="warning-text">12.1%</strong></div>
-                    <div class="detail-metric"><span>Status</span><strong class="warning-text">Bottleneck</strong></div>
+                    <h2>{{ dryer.title }}</h2>
+                    <p>{{ dryer.subtitle }}</p>
+                    {% for metric in dryer.metrics %}
+                    <div class="detail-metric"><span>{{ metric.label }}</span><strong class="{{ metric.class | default('') }}">{{ metric.value }}</strong></div>
+                    {% endfor %}
                 </article>
+
                 <article class="process-detail-card">
-                    <h2>Dryer Checks</h2>
+                    <h2>{{ dryer.list_title }}</h2>
                     <ul class="detail-list">
-                        <li><span>Burner</span><strong class="good-text">Running</strong></li>
-                        <li><span>Airflow</span><strong>Normal</strong></li>
-                        <li><span>Discharge</span><strong class="warning-text">Below Target</strong></li>
+                        {% for item in dryer["items"] %}
+                        <li><span>{{ item.label }}</span><strong class="{{ item.class | default('') }}">{{ item.value }}</strong></li>
+                        {% endfor %}
                     </ul>
                 </article>
             </div>
         </div>
 
+        {% set milling = plant.process_flow.details.milling %}
         <div class="process-view process-view-milling">
             <div class="process-detail-grid">
                 <article class="process-detail-card">
-                    <h2>Milling &amp; Mixing</h2>
-                    <p>Mill/mixer state, batch progress, and downstream feed to packaging.</p>
-                    <div class="detail-metric"><span>Current Batch</span><strong>Feed Mix A</strong></div>
-                    <div class="detail-metric"><span>Batch Progress</span><strong>63%</strong></div>
-                    <div class="detail-metric"><span>Motor Load</span><strong>71%</strong></div>
+                    <h2>{{ milling.title }}</h2>
+                    <p>{{ milling.subtitle }}</p>
+                    {% for metric in milling.metrics %}
+                    <div class="detail-metric"><span>{{ metric.label }}</span><strong class="{{ metric.class | default('') }}">{{ metric.value }}</strong></div>
+                    {% endfor %}
                 </article>
+
                 <article class="process-detail-card">
-                    <h2>Equipment</h2>
+                    <h2>{{ milling.list_title }}</h2>
                     <ul class="detail-list">
-                        <li><span>Mill / Mixer</span><strong class="good-text">Running</strong></li>
-                        <li><span>Conveyor 3</span><strong class="good-text">Running</strong></li>
-                        <li><span>Discharge Gate</span><strong>Auto</strong></li>
+                        {% for item in milling["items"] %}
+                        <li><span>{{ item.label }}</span><strong class="{{ item.class | default('') }}">{{ item.value }}</strong></li>
+                        {% endfor %}
                     </ul>
                 </article>
             </div>
         </div>
 
+        {% set packaging = plant.process_flow.details.packaging %}
         <div class="process-view process-view-packaging">
             <div class="process-detail-grid">
                 <article class="process-detail-card">
-                    <h2>Packaging</h2>
-                    <p>Bagging rate, finished product movement, and shipping handoff.</p>
-                    <div class="detail-metric"><span>Bagging Rate</span><strong>280 bag/hr</strong></div>
-                    <div class="detail-metric"><span>Line Status</span><strong class="good-text">Running</strong></div>
-                    <div class="detail-metric"><span>Destination</span><strong>To Shipping</strong></div>
+                    <h2>{{ packaging.title }}</h2>
+                    <p>{{ packaging.subtitle }}</p>
+                    {% for metric in packaging.metrics %}
+                    <div class="detail-metric"><span>{{ metric.label }}</span><strong class="{{ metric.class | default('') }}">{{ metric.value }}</strong></div>
+                    {% endfor %}
                 </article>
+
                 <article class="process-detail-card">
-                    <h2>Packaging Equipment</h2>
+                    <h2>{{ packaging.list_title }}</h2>
                     <ul class="detail-list">
-                        <li><span>Bag Filler</span><strong class="good-text">Running</strong></li>
-                        <li><span>Conveyor</span><strong class="good-text">Running</strong></li>
-                        <li><span>Scale Check</span><strong>Passed</strong></li>
+                        {% for item in packaging["items"] %}
+                        <li><span>{{ item.label }}</span><strong class="{{ item.class | default('') }}">{{ item.value }}</strong></li>
+                        {% endfor %}
                     </ul>
                 </article>
             </div>

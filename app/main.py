@@ -3,6 +3,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.responses import RedirectResponse
 
+from app.services.plant_config import get_plant_context
+
 app = FastAPI(title="PlantOps Simulator")
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
@@ -111,40 +113,33 @@ PAGE_DATA = {
     },
 }
 
-DEMO_CONTEXT = {
-    "plant_name": "Green Valley Grain & Feed",
-    "status": "Receiving Open",
-    "shift": "Day Shift",
-    "profit_today": "$8,950",
-    "lost_profit": "$3,400",
-    "throughput": "215 tons/hr",
-    "uptime": "87.6%",
-    "active_faults": "1 Critical / 2 Warnings",
-    "bottleneck": "Dryer Line 1",
-}
+
+def build_template_context(request: Request, endpoint: str, page: dict | None) -> dict:
+    return {
+        "request": request,
+        "nav_items": NAV_ITEMS,
+        "active_path": endpoint,
+        "page": page,
+        **get_plant_context("feed_mill"),
+    }
+
 
 @app.get("/", include_in_schema=False)
 def root():
     return RedirectResponse("/dashboard")
 
+
 @app.get("/{page_path:path}")
 def render_page(request: Request, page_path: str):
     endpoint = f"/{page_path}" if page_path else "/dashboard"
     page = PAGE_DATA.get(endpoint)
+
     if page is None:
-        return templates.TemplateResponse(
-            "not_found.html",
-            {"request": request, "nav_items": NAV_ITEMS, "active_path": endpoint, "title": "Not Found", **DEMO_CONTEXT},
-            status_code=404,
-        )
+        context = build_template_context(request, endpoint, None)
+        context["title"] = "Not Found"
+        return templates.TemplateResponse("not_found.html", context, status_code=404)
 
     return templates.TemplateResponse(
         page["template"],
-        {
-            "request": request,
-            "nav_items": NAV_ITEMS,
-            "active_path": endpoint,
-            "page": page,
-            **DEMO_CONTEXT,
-        },
+        build_template_context(request, endpoint, page),
     )

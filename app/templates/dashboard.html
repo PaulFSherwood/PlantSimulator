@@ -3,68 +3,28 @@
 {% block content %}
 
 <section class="metric-grid owner-metrics">
+    {% for metric in plant.dashboard.metrics %}
     <article class="metric-card owner-metric">
-        <div class="metric-icon metric-production"></div>
+        <div class="metric-icon {{ metric.icon_class }}"></div>
         <div class="metric-body">
-            <p class="metric-label">Today's Production</p>
-            <h2>1,246 ton</h2>
+            <p class="metric-label">{{ metric.label }}</p>
+            <h2>{{ metric.value }}</h2>
             <div class="metric-footer">
-                <span>Target: 1,500 ton</span>
-                <strong class="good-text">83%</strong>
+                <span>{{ metric.footer_label }}</span>
+                {% if metric.footer_link_href %}
+                <a href="{{ metric.footer_link_href }}">{{ metric.footer_link_label }}</a>
+                {% else %}
+                <strong class="{{ metric.footer_class }}">{{ metric.footer_value }}</strong>
+                {% endif %}
             </div>
+            {% if metric.progress %}
             <div class="metric-progress">
-                <span style="--value: 83%;"></span>
+                <span style="--value: {{ metric.progress }};"></span>
             </div>
+            {% endif %}
         </div>
     </article>
-
-    <article class="metric-card owner-metric">
-        <div class="metric-icon metric-revenue"></div>
-        <div class="metric-body">
-            <p class="metric-label">Today's Revenue</p>
-            <h2>$42,800</h2>
-            <div class="metric-footer">
-                <span>Yesterday: $38,650</span>
-                <strong class="good-text">↑ 10.7%</strong>
-            </div>
-        </div>
-    </article>
-
-    <article class="metric-card owner-metric">
-        <div class="metric-icon metric-profit"></div>
-        <div class="metric-body">
-            <p class="metric-label">Estimated Profit</p>
-            <h2>$8,950</h2>
-            <div class="metric-footer">
-                <span>Margin: 20.9%</span>
-                <strong class="good-text">↑ 8.2%</strong>
-            </div>
-        </div>
-    </article>
-
-    <article class="metric-card owner-metric">
-        <div class="metric-icon metric-downtime"></div>
-        <div class="metric-body">
-            <p class="metric-label">Downtime Cost</p>
-            <h2>$3,400</h2>
-            <div class="metric-footer">
-                <span>Today</span>
-                <strong class="bad-text">↑ 15.4%</strong>
-            </div>
-        </div>
-    </article>
-
-    <article class="metric-card owner-metric">
-        <div class="metric-icon metric-opportunity"></div>
-        <div class="metric-body">
-            <p class="metric-label">Lost Profit Opportunity</p>
-            <h2>$11,700</h2>
-            <div class="metric-footer">
-                <span>If bottlenecks cleared</span>
-                <a href="/reports">View Details</a>
-            </div>
-        </div>
-    </article>
+    {% endfor %}
 </section>
 
 <section class="dashboard-layout">
@@ -72,8 +32,8 @@
         <section class="panel process-panel">
             <div class="panel-header process-panel-header">
                 <div>
-                    <h2>Process Flow Overview</h2>
-                    <p>Receiving hopper to packaging line</p>
+                    <h2>{{ plant.dashboard.process_overview.title }}</h2>
+                    <p>{{ plant.dashboard.process_overview.subtitle }}</p>
                 </div>
         
                 <div class="process-header-actions">
@@ -83,90 +43,55 @@
             </div>
         
             <div class="process-flow-css process-flow-mockup">
+                {% for step in plant.dashboard.process_overview.steps %}
                 <div class="process-step">
                     <div class="process-visual">
-                        <span class="step-status ok"></span>
-                        <div class="plant-bin hopper-bin" style="--fill: 44%;">
+                        <span class="step-status {{ step.status_class }}"></span>
+
+                        {% if step.kind == "bin" %}
+                        <div class="plant-bin {{ step.visual_class }}" style="--fill: {{ step.fill }};">
                             <div class="plant-bin-fill"></div>
                             <div class="plant-bin-shine"></div>
                         </div>
+                        {% if step.legs %}
                         <div class="bin-legs"></div>
-                    </div>
-                    <h3>Receiving Hopper</h3>
-                    <p>45 ton/hr</p>
-                    <span class="status-text good-text">95%</span>
-                </div>
-        
-                <div class="flow-arrow">→</div>
-        
-                <div class="process-step">
-                    <div class="process-visual">
-                        <span class="step-status ok"></span>
-                        <div class="plant-bin wet-bin" style="--fill: 68%;">
-                            <div class="plant-bin-fill"></div>
-                            <div class="plant-bin-shine"></div>
-                        </div>
-                        <div class="bin-legs"></div>
-                    </div>
-                    <h3>Wet Bin</h3>
-                    <p>Level: 68%</p>
-                    <span>18.2% Moisture</span>
-                </div>
-        
-                <div class="flow-arrow">→</div>
-        
-                <div class="process-step">
-                    <div class="process-visual">
-                        <span class="step-status warning"></span>
+                        {% endif %}
+
+                        {% elif step.kind == "dryer" %}
                         <div class="plant-dryer">
                             <div class="dryer-input-tube"></div>
                             <div class="dryer-fire"></div>
                         </div>
-                    </div>
-                    <h3>Dryer</h3>
-                    <p>Temp: 285°F</p>
-                    <span class="status-text warning-text">Outlet: 12.1%</span>
-                </div>
-        
-                <div class="flow-arrow">→</div>
-        
-                <div class="process-step">
-                    <div class="process-visual">
-                        <span class="step-status ok"></span>
-                        <div class="plant-bin dry-bin" style="--fill: 42%;">
-                            <div class="plant-bin-fill"></div>
-                            <div class="plant-bin-shine"></div>
-                        </div>
-                    </div>
-                    <h3>Dry Bin</h3>
-                    <p>Level: 42%</p>
-                    <span>12.0% Moisture</span>
-                </div>
-        
-                <div class="flow-arrow">→</div>
-        
-                <div class="process-step">
-                    <div class="process-visual">
-                        <span class="step-status ok"></span>
-                        <div class="plant-packager is-running">
+
+                        {% elif step.kind == "packager" %}
+                        <div class="plant-packager {% if step.running %}is-running{% endif %}">
                             <div class="packager-head"></div>
                             <div class="package-box"></div>
                             <div class="conveyor-belt"></div>
                         </div>
+                        {% endif %}
                     </div>
-                    <h3>Packaging Line</h3>
-                    <p>280 bag/hr</p>
-                    <span class="status-text good-text">Running</span>
+
+                    <h3>{{ step.title }}</h3>
+                    <p>{{ step.line1 }}</p>
+                    <span class="{{ step.line2_class | default('') }}">{{ step.line2 }}</span>
                 </div>
+
+                {% if not loop.last %}
+                <div class="flow-arrow">→</div>
+                {% endif %}
+                {% endfor %}
             </div>
         
             <div class="bottleneck-banner">
                 <div class="banner-icon">i</div>
                 <div class="banner-text">
-                    <strong>Current Bottleneck: Dryer Line 1</strong>
-                    <span>Limiting overall production by ~22%</span>
+                    <strong>{{ plant.dashboard.process_overview.bottleneck.title }}</strong>
+                    <span>{{ plant.dashboard.process_overview.bottleneck.subtitle }}</span>
                 </div>
-                <a class="banner-button" href="/reports">View Bottleneck Analysis</a>
+                <a class="banner-button" href="{{ plant.dashboard.process_overview.bottleneck.href }}">
+                    {{ plant.dashboard.process_overview.bottleneck.link_label }}
+                </a>
             </div>
         </section>
 
@@ -187,42 +112,14 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% for item in plant.dashboard.equipment %}
                         <tr>
-                            <td>Receiving Hopper</td>
-                            <td><span class="dot good-dot"></span>Running</td>
-                            <td>3.2 h</td>
-                            <td><span class="health good-health" style="--health: 96%;"></span></td>
+                            <td>{{ item.name }}</td>
+                            <td><span class="dot {{ item.status_dot }}"></span>{{ item.status }}</td>
+                            <td>{{ item.runtime }}</td>
+                            <td><span class="health {{ item.health_class }}" style="--health: {{ item.health }};"></span></td>
                         </tr>
-                        <tr>
-                            <td>Wet Bin Auger</td>
-                            <td><span class="dot good-dot"></span>Running</td>
-                            <td>3.2 h</td>
-                            <td><span class="health good-health" style="--health: 94%;"></span></td>
-                        </tr>
-                        <tr>
-                            <td>Dryer Line 1</td>
-                            <td><span class="dot warn-dot"></span>Warning</td>
-                            <td>3.2 h</td>
-                            <td><span class="health warn-health" style="--health: 78%;"></span></td>
-                        </tr>
-                        <tr>
-                            <td>Dry Bin</td>
-                            <td><span class="dot good-dot"></span>Running</td>
-                            <td>3.2 h</td>
-                            <td><span class="health good-health" style="--health: 92%;"></span></td>
-                        </tr>
-                        <tr>
-                            <td>Packaging Line 1</td>
-                            <td><span class="dot good-dot"></span>Running</td>
-                            <td>3.2 h</td>
-                            <td><span class="health good-health" style="--health: 91%;"></span></td>
-                        </tr>
-                        <tr>
-                            <td>Auger 3</td>
-                            <td><span class="dot warn-dot"></span>Warning</td>
-                            <td>1.1 h</td>
-                            <td><span class="health warn-health" style="--health: 62%;"></span></td>
-                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </article>
@@ -274,18 +171,12 @@
                 </div>
         
                 <div class="trend-summary">
+                    {% for item in plant.dashboard.trend_summary %}
                     <div>
-                        <span>YTD Production</span>
-                        <strong>182,450 ton</strong>
+                        <span>{{ item.label }}</span>
+                        <strong>{{ item.value }}</strong>
                     </div>
-                    <div>
-                        <span>YTD Revenue</span>
-                        <strong>$6.21M</strong>
-                    </div>
-                    <div>
-                        <span>YTD Profit</span>
-                        <strong>$1.23M</strong>
-                    </div>
+                    {% endfor %}
                 </div>
             </article>
         
@@ -296,31 +187,13 @@
                 </div>
         
                 <div class="maintenance-list">
+                    {% for item in plant.dashboard.maintenance %}
                     <div>
-                        <span class="maint-icon blue">▣</span>
-                        <span>Open Work Orders</span>
-                        <strong>7</strong>
+                        <span class="maint-icon {{ item.icon_class }}">{{ item.icon }}</span>
+                        <span>{{ item.label }}</span>
+                        <strong>{{ item.value }}</strong>
                     </div>
-                    <div>
-                        <span class="maint-icon red">▣</span>
-                        <span>Overdue Work Orders</span>
-                        <strong>2</strong>
-                    </div>
-                    <div>
-                        <span class="maint-icon purple">▣</span>
-                        <span>Planned Maintenance (7 days)</span>
-                        <strong>4</strong>
-                    </div>
-                    <div>
-                        <span class="maint-icon green">◷</span>
-                        <span>MTTR (30 days)</span>
-                        <strong>46 min</strong>
-                    </div>
-                    <div>
-                        <span class="maint-icon sky">⌁</span>
-                        <span>MTBF (30 days)</span>
-                        <strong>128 h</strong>
-                    </div>
+                    {% endfor %}
                 </div>
             </article>
         </section>
@@ -329,54 +202,23 @@
     <aside class="dashboard-rail">
         <section class="panel rail-panel">
             <div class="rail-header">
-                <h2>Active Alarms (4)</h2>
+                <h2>Active Alarms ({{ plant.dashboard.alarms | length }})</h2>
                 <a href="/alarms">View All</a>
             </div>
     
             <div class="rail-alarm-list">
-                <div class="rail-alarm critical">
+                {% for alarm in plant.dashboard.alarms %}
+                <div class="rail-alarm {{ alarm.severity_class }}">
                     <div>
-                        <strong>High Temperature</strong>
-                        <span>Dryer Outlet Temp High</span>
+                        <strong>{{ alarm.title }}</strong>
+                        <span>{{ alarm.subtitle }}</span>
                     </div>
                     <div class="alarm-meta">
-                        <span>2 min ago</span>
-                        <em>Critical</em>
+                        <span>{{ alarm.age }}</span>
+                        <em>{{ alarm.severity }}</em>
                     </div>
                 </div>
-    
-                <div class="rail-alarm high">
-                    <div>
-                        <strong>High Vibration</strong>
-                        <span>Auger 3 Bearing</span>
-                    </div>
-                    <div class="alarm-meta">
-                        <span>5 min ago</span>
-                        <em>High</em>
-                    </div>
-                </div>
-    
-                <div class="rail-alarm medium">
-                    <div>
-                        <strong>High Motor Load</strong>
-                        <span>Conveyor 2 Drive</span>
-                    </div>
-                    <div class="alarm-meta">
-                        <span>10 min ago</span>
-                        <em>Medium</em>
-                    </div>
-                </div>
-    
-                <div class="rail-alarm low">
-                    <div>
-                        <strong>Level Sensor Dirty</strong>
-                        <span>Dry Bin Level Sensor</span>
-                    </div>
-                    <div class="alarm-meta">
-                        <span>15 min ago</span>
-                        <em>Low</em>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
     
             <a class="rail-wide-button" href="/alarms">Acknowledge All</a>
@@ -390,26 +232,18 @@
     
             <div class="loto-primary">
                 <span class="loto-icon"></span>
-                <strong>1</strong>
-                <span>Locked Out</span>
+                <strong>{{ plant.dashboard.loto.primary.value }}</strong>
+                <span>{{ plant.dashboard.loto.primary.label }}</span>
             </div>
             
             <div class="loto-grid">
+                {% for item in plant.dashboard.loto.secondary %}
                 <div>
                     <span class="loto-icon"></span>
-                    <strong>0</strong>
-                    <span>Tagged Out</span>
+                    <strong>{{ item.value }}</strong>
+                    <span>{{ item.label }}</span>
                 </div>
-                <div>
-                    <span class="loto-icon"></span>
-                    <strong>0</strong>
-                    <span>In Progress</span>
-                </div>
-                <div>
-                    <span class="loto-icon"></span>
-                    <strong>0</strong>
-                    <span>Verification</span>
-                </div>
+                {% endfor %}
             </div> 
         </section>
     
@@ -420,15 +254,15 @@
             </div>
     
             <div class="profit-block">
-                <span>Estimated End of Day</span>
-                <strong>$12,450</strong>
-                <p>If current rate continues</p>
+                <span>{{ plant.dashboard.profit.estimated.label }}</span>
+                <strong>{{ plant.dashboard.profit.estimated.value }}</strong>
+                <p>{{ plant.dashboard.profit.estimated.note }}</p>
             </div>
     
             <div class="profit-block optimized">
-                <span>Potential With Optimization</span>
-                <strong>$20,150</strong>
-                <p>Eliminate downtime + clear bottleneck</p>
+                <span>{{ plant.dashboard.profit.optimized.label }}</span>
+                <strong>{{ plant.dashboard.profit.optimized.value }}</strong>
+                <p>{{ plant.dashboard.profit.optimized.note }}</p>
             </div>
     
             <a class="what-if-button" href="/reports">What-If Analysis</a>
