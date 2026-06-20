@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.responses import RedirectResponse
+from app.sim.engine import plant_sim
 
 from app.services.plant_config import get_plant_context
 
@@ -123,6 +124,34 @@ def build_template_context(request: Request, endpoint: str, page: dict | None) -
         **get_plant_context("feed_mill"),
     }
 
+@app.on_event("startup")
+def start_sim_engine():
+    plant_sim.start()
+
+
+@app.on_event("shutdown")
+def stop_sim_engine():
+    plant_sim.stop()
+
+
+@app.get("/api/state")
+def api_state():
+    return plant_sim.snapshot()
+
+
+@app.post("/api/sim/pause")
+def api_sim_pause():
+    return plant_sim.pause()
+
+
+@app.post("/api/sim/resume")
+def api_sim_resume():
+    return plant_sim.resume()
+
+
+@app.post("/api/sim/reset")
+def api_sim_reset():
+    return plant_sim.reset()
 
 @app.get("/", include_in_schema=False)
 def root():
