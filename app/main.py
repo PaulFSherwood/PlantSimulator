@@ -1,13 +1,20 @@
 from __future__ import annotations
 
-from fastapi import FastAPI, Request
+import asyncio
+
+from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
-from starlette.responses import PlainTextResponse, RedirectResponse, Response
+from starlette.responses import JSONResponse, PlainTextResponse, RedirectResponse, Response
 
+from app.core.logging_config import configure_logging
+from app.core.version import APP_VERSION
 from app.services.auth import SESSION_COOKIE, auth_service
 from app.services.db_store import db
+from app.services.diagnostics import diagnostics_service
+from app.services.playback import playback_service
+from app.services.scenario_service import scenario_service
 from app.services.plant_config import get_plant_context
 from app.sim.engine import plant_sim
 
@@ -28,10 +35,13 @@ NAV_ITEMS = [
     {"label": "Parts & Reliability", "endpoint": "/parts", "icon": "parts"},
     {"label": "Fault Tuning", "endpoint": "/fault-tuning", "icon": "fault"},
     {"label": "Training Scenarios", "endpoint": "/training", "icon": "training"},
+    {"label": "Scenario Builder", "endpoint": "/scenarios", "icon": "training"},
+    {"label": "Playback", "endpoint": "/playback", "icon": "trends"},
     {"label": "Reports", "endpoint": "/reports", "icon": "reports"},
     {"label": "I/O Monitor", "endpoint": "/io-monitor", "icon": "io"},
     {"label": "Farmer Display", "endpoint": "/farmer-display", "icon": "farmer"},
     {"label": "Plant Configuration", "endpoint": "/plant-config", "icon": "settings"},
+    {"label": "Diagnostics", "endpoint": "/diagnostics", "icon": "help"},
     {"label": "Help", "endpoint": "/help", "icon": "help"},
 ]
 
@@ -47,10 +57,13 @@ PAGE_DATA = {
     "/parts": {"title": "Parts & Reliability", "subtitle": "Part life, vendor reliability, cost tradeoffs, and failure history.", "template": "parts.html"},
     "/fault-tuning": {"title": "Fault Tuning", "subtitle": "Senior maintenance tuning for realistic breakage and downtime behavior.", "template": "fault_tuning.html"},
     "/training": {"title": "Training Scenarios", "subtitle": "Operator and maintenance troubleshooting drills.", "template": "training.html"},
+    "/scenarios": {"title": "Scenario Builder", "subtitle": "Start realistic operating, fault, and training scenarios.", "template": "scenarios.html"},
+    "/playback": {"title": "Historical Playback", "subtitle": "Review recent simulated production and alarm history.", "template": "playback.html"},
     "/reports": {"title": "Reports", "subtitle": "Daily summaries for production, downtime, safety, maintenance, and profit.", "template": "reports.html"},
     "/io-monitor": {"title": "I/O Monitor", "subtitle": "Virtual inputs, outputs, sensor registers, and command states.", "template": "io_monitor.html"},
     "/farmer-display": {"title": "Farmer Intake Display", "subtitle": "Read-only intake board for farmers and truck drivers.", "template": "farmer_display.html", "kiosk": True},
     "/plant-config": {"title": "Plant Configuration", "subtitle": "Plant layout, equipment definitions, thresholds, users, and security settings.", "template": "plant_config.html"},
+    "/diagnostics": {"title": "Diagnostics", "subtitle": "Health checks, route checks, database status, and release readiness.", "template": "diagnostics.html"},
     "/help": {"title": "Help", "subtitle": "Project guide, role map, safety notes, and first-use instructions.", "template": "help.html"},
 }
 
@@ -92,6 +105,9 @@ def build_template_context(request: Request, endpoint: str, page: dict | None) -
         },
         "db_summary": db.summary(),
         "report_summary": report,
+        "diagnostics": diagnostics_service.summary(),
+        "scenarios": scenario_service.list_scenarios(),
+        "playback": playback_service.summary(),
         "plant_config": db.get_active_plant_config(),
         **get_plant_context("feed_mill"),
     }
@@ -99,6 +115,7 @@ def build_template_context(request: Request, endpoint: str, page: dict | None) -
 
 @app.on_event("startup")
 def start_services() -> None:
+    configure_logging()
     db.initialize()
     auth_service.ensure_seed_user()
     cfg = db.get_active_plant_config()
@@ -285,6 +302,84 @@ async def plant_config_save(request: Request):
     )
     return RedirectResponse("/plant-config", status_code=303)
 
+
+
+
+@app.middleware("http")
+async def add_reliability_headers(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["X-PlantOps-Version"] = APP_VERSION
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["Referrer-Policy"] = "same-origin"
+    return response
+
+
+@app.exception_handler(Exception)
+async def unhandled_exception_handler(request: Request, exc: Exception):
+    db.audit(auth_service.audit_name(request), "app.exception", str(request.url.path), {"error": str(exc)[:500]})
+    return JSONResponse(
+        status_code=500,
+        content={
+            "error": "Internal server error",
+            "path": str(request.url.path),
+            "detail": "Check server log for traceback.",
+        },
+    )
+
+
+@app.get("/api/version")
+def api_version():
+    return {"version": APP_VERSION, "app": "PlantOps Simulator"}
+
+
+@app.get("/api/health")
+def api_health():
+    return diagnostics_service.health()
+
+
+@app.get("/api/diagnostics")
+def api_diagnostics():
+    return diagnostics_service.summary()
+
+
+@app.get("/api/playback/summary")
+def api_playback_summary():
+    return playback_service.summary()
+
+
+@app.get("/api/playback/production")
+def api_playback_production(limit: int = 120):
+    return {"samples": playback_service.production_samples(limit=limit)}
+
+
+@app.get("/api/plant-config/export.json")
+def api_plant_config_export():
+    return db.get_active_plant_config()
+
+
+@app.get("/api/scenarios")
+def api_scenarios():
+    return {"scenarios": scenario_service.list_scenarios()}
+
+
+@app.post("/api/scenarios/{scenario_id}/start")
+def api_scenario_start(scenario_id: str, request: Request):
+    actor = auth_service.audit_name(request)
+    result = scenario_service.start_scenario(scenario_id, actor=actor)
+    state = result.get("state", plant_sim.snapshot())
+    db.record_snapshot_once(state)
+    return result
+
+
+@app.websocket("/ws/state")
+async def websocket_state(websocket: WebSocket):
+    await websocket.accept()
+    try:
+        while True:
+            await websocket.send_json(plant_sim.snapshot())
+            await asyncio.sleep(1.0)
+    except WebSocketDisconnect:
+        return
 
 @app.get("/", include_in_schema=False)
 def root():

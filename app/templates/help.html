@@ -1,38 +1,33 @@
 {% extends "base.html" %}
+
 {% block content %}
-<section class="ops-page-grid two-col-ops">
-  <article class="panel">
-    <h2>PlantOps Project Status</h2>
-    <div class="summary-list">
-      <div><span>Stage 1</span><strong>Live UI wiring complete</strong></div>
-      <div><span>Stage 2</span><strong>Simulation engine complete</strong></div>
-      <div><span>Stage 3</span><strong>Control APIs complete</strong></div>
-      <div><span>Stage 4</span><strong>Operations pages complete</strong></div>
-      <div><span>Stage 5</span><strong>SQLite database persistence added</strong></div>
-      <div><span>Stage 6</span><strong>Login, roles, TOTP, audit added</strong></div>
-      <div><span>Stage 7</span><strong>Plant config page saves profile to DB</strong></div>
-      <div><span>Stage 8</span><strong>Reports use DB samples/history</strong></div>
-    </div>
-  </article>
+<section class="ops-page">
+    <section class="ops-grid-2">
+        <article class="ops-card">
+            <h2>Project Status</h2>
+            <p>PlantOps now has a working UI shell, live simulation engine, control APIs, database-backed reports, demo authentication, plant configuration, diagnostics, scenarios, and playback.</p>
+            <div class="diagnostic-list">
+                <div class="diagnostic-row"><span>Current version</span><strong>{{ diagnostics.version }}</strong></div>
+                <div class="diagnostic-row"><span>Database</span><strong>{{ diagnostics.database }}</strong></div>
+                <div class="diagnostic-row"><span>WebSocket</span><strong>/ws/state</strong></div>
+            </div>
+        </article>
 
-  <article class="panel">
-    <h2>Demo Login</h2>
-    <p class="muted">Default local account:</p>
-    <div class="summary-list">
-      <div><span>Username</span><strong>owner</strong></div>
-      <div><span>Password</span><strong>plantops</strong></div>
-      <div><span>Role</span><strong>admin</strong></div>
-    </div>
-    <a class="banner-button" href="/login">Open Login</a>
-  </article>
+        <article class="ops-card">
+            <h2>Recommended Next Branches</h2>
+            <div class="diagnostic-list">
+                <div class="diagnostic-row"><span>PostgreSQL</span><strong>Replace SQLite when ready</strong></div>
+                <div class="diagnostic-row"><span>Layout editor</span><strong>Drag/drop process map</strong></div>
+                <div class="diagnostic-row"><span>Real integrations</span><strong>OPC-UA / MQTT mock layer</strong></div>
+                <div class="diagnostic-row"><span>Tests</span><strong>Expand scenario and API tests</strong></div>
+            </div>
+        </article>
+    </section>
 
-  <article class="panel ops-wide-panel">
-    <h2>Useful API checks</h2>
-    <pre class="code-card">curl http://127.0.0.1:8000/api/state
-curl http://127.0.0.1:8000/api/db/summary
-curl http://127.0.0.1:8000/api/reports/daily
-curl -X POST http://127.0.0.1:8000/api/sim/pause
-curl -X POST http://127.0.0.1:8000/api/sim/resume</pre>
-  </article>
+    <section class="ops-grid-3">
+        <article class="ops-card"><h2>Operator Flow</h2><p>Use Dashboard, Process Flow, Equipment, Alarms, and LOTO for day-to-day simulated operations.</p></article>
+        <article class="ops-card"><h2>Training Flow</h2><p>Use Scenario Builder and Fault Tuning to create faults, then resolve them through Equipment, Alarms, LOTO, and Maintenance.</p></article>
+        <article class="ops-card"><h2>Owner Flow</h2><p>Use Reports, Playback, and Plant Configuration to review production, profit, downtime, and settings.</p></article>
+    </section>
 </section>
 {% endblock %}

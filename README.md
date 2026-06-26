@@ -1,8 +1,6 @@
 # PlantOps Simulator
 
-A no-npm FastAPI/Jinja2 first draft for a web-based plant operations simulator.
-
-![Dashboard.png](/home/sherwood/Documents/src/projects/PlantSimulator/screenshots/Dashboard.png)
+FastAPI/Jinja/CSS plant operations simulator for feed mill / grain handling style workflows.
 
 ## Run
 
@@ -13,36 +11,58 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-Then open:
+Open:
 
 ```text
-http://127.0.0.1:8000
+http://127.0.0.1:8000/dashboard
 ```
 
-## Design decisions
+## Demo login
 
-- No npm / React / frontend build chain.
-- Shared external CSS in `app/static/css/plantops.css`.
-- Shared JavaScript in `app/static/js/plantops.js`.
-- Shared SVG icons in `app/static/icons/`.
-- All pages inherit from `templates/base.html`.
-- This draft uses placeholder demo data. PostgreSQL models come next.
+```text
+owner / plantops
+```
 
-## Included pages
+## Main features
 
-- Owner Dashboard
-- Process Flow
-- Production
-- Equipment
-- Alarms
-- Trends
-- Maintenance
-- Lockout / Tagout
-- Parts & Reliability
-- Fault Tuning
-- Training Scenarios
-- Reports
-- I/O Monitor
-- Farmer Display
-- Plant Configuration
-- Help
+- Live dashboard and process flow.
+- In-memory plant simulation engine.
+- Equipment control actions.
+- Alarm acknowledgement.
+- LOTO workflow.
+- Fault injection.
+- SQLite database history.
+- Reports and CSV export.
+- Plant configuration page.
+- Demo login, session cookie, TOTP setup support.
+- Audit log.
+- Diagnostics page.
+- Scenario Builder.
+- Historical Playback.
+- WebSocket `/ws/state` live updates.
+
+## Smoke check
+
+Start the server first, then run:
+
+```bash
+python3 scripts/smoke_check.py
+```
+
+## Project tree without noisy folders
+
+```bash
+bash scripts/project_tree.sh
+```
+
+## Docker
+
+```bash
+docker compose up --build
+```
+
+## Docs
+
+- `docs/OPERATIONS_GUIDE.md`
+- `docs/RELEASE_CHECKLIST.md`
+- `docs/PROJECT_STATUS.md`

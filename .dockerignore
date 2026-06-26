@@ -1,0 +1,10 @@
+.git
+.venv
+__pycache__
+*.pyc
+*.bak
+app/data/*.sqlite3
+app/data/*.sqlite3-shm
+app/data/*.sqlite3-wal
+app/data/logs
+archive

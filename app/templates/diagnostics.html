@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="ops-page">
+    <section class="ops-grid-3">
+        <article class="diagnostic-card">
+            <h2>Application Health</h2>
+            <p><span class="status-chip {% if diagnostics.status != 'ok' %}warning{% endif %}">{{ diagnostics.status | upper }}</span></p>
+            <div class="diagnostic-list">
+                <div class="diagnostic-row"><span>Version</span><strong>{{ diagnostics.version }}</strong></div>
+                <div class="diagnostic-row"><span>Python</span><strong>{{ diagnostics.python }}</strong></div>
+                <div class="diagnostic-row"><span>Tick</span><strong>{{ diagnostics.tick }}</strong></div>
+                <div class="diagnostic-row"><span>Database</span><strong>{{ "OK" if diagnostics.db_exists else "Missing" }}</strong></div>
+            </div>
+        </article>
+
+        <article class="diagnostic-card">
+            <h2>Database Summary</h2>
+            <div class="diagnostic-list">
+                {% for key, value in diagnostics.db_summary.items() %}
+                <div class="diagnostic-row"><span>{{ key }}</span><strong>{{ value }}</strong></div>
+                {% endfor %}
+            </div>
+        </article>
+
+        <article class="diagnostic-card">
+            <h2>Release Readiness</h2>
+            <div class="release-list">
+                {% for item in diagnostics.release_checks %}
+                <div class="release-row"><span>{{ item.name }}</span><strong>{{ "OK" if item.ok else "Missing" }}</strong></div>
+                {% endfor %}
+            </div>
+        </article>
+    </section>
+
+    <section class="ops-grid-2">
+        <article class="ops-card">
+            <h2>Health Checks</h2>
+            <div class="diagnostic-list">
+                {% for check in diagnostics.checks %}
+                <div class="diagnostic-row"><span>{{ check.name }}</span><strong>{{ "OK" if check.ok else "Check" }} — {{ check.detail }}</strong></div>
+                {% endfor %}
+            </div>
+        </article>
+
+        <article class="ops-card">
+            <h2>Smoke Test Routes</h2>
+            <div class="route-list">
+                {% for route in diagnostics.route_checks %}
+                <div class="route-row"><span>{{ route.path }}</span><strong>{{ route.expected }}</strong></div>
+                {% endfor %}
+            </div>
+        </article>
+    </section>
+
+    <article class="ops-card">
+        <h2>Useful Commands</h2>
+        <div class="command-card">python3 scripts/smoke_check.py
+bash scripts/project_tree.sh
+bash scripts/release_check.sh</div>
+    </article>
+</section>
+{% endblock %}

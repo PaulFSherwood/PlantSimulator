@@ -1,0 +1,137 @@
+/* =========================================================
+   Stage 9/10 - polish, diagnostics, scenarios, playback
+   ========================================================= */
+
+.ops-page {
+    display: grid;
+    gap: 1rem;
+}
+
+.ops-grid-2,
+.ops-grid-3,
+.scenario-grid {
+    display: grid;
+    gap: 1rem;
+}
+
+.ops-grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.ops-grid-3, .scenario-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+.ops-card,
+.scenario-card,
+.diagnostic-card {
+    background: linear-gradient(180deg, var(--panel), #101720);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1rem;
+    box-shadow: var(--shadow);
+}
+
+.ops-card h2,
+.scenario-card h2,
+.diagnostic-card h2 { margin: 0 0 0.45rem; }
+.ops-card p,
+.scenario-card p { margin: 0 0 0.8rem; color: var(--muted); }
+
+.status-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border: 1px solid rgba(55,200,120,0.35);
+    background: rgba(55,200,120,0.12);
+    color: #8ff0ba;
+    border-radius: 999px;
+    padding: 0.28rem 0.65rem;
+    font-size: 0.78rem;
+    font-weight: 800;
+}
+
+.status-chip.warning { border-color: rgba(247,185,85,0.35); background: rgba(247,185,85,0.12); color: #ffd58b; }
+.status-chip.bad { border-color: rgba(255,92,108,0.35); background: rgba(255,92,108,0.12); color: #ffa3ad; }
+
+.diagnostic-list,
+.route-list,
+.release-list,
+.playback-list {
+    display: grid;
+    gap: 0.45rem;
+}
+
+.diagnostic-row,
+.route-row,
+.release-row,
+.playback-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.diagnostic-row span,
+.route-row span,
+.release-row span,
+.playback-row span { color: var(--muted); }
+
+.scenario-card {
+    display: grid;
+    align-content: space-between;
+    min-height: 210px;
+}
+
+.scenario-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.8rem;
+    align-items: center;
+    margin-top: 0.75rem;
+}
+
+.scenario-card button,
+.ops-card button,
+.ops-link-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.75rem;
+    background: #172840;
+    border: 1px solid #2c4360;
+    color: var(--text);
+    padding: 0.62rem 0.85rem;
+}
+
+.playback-bars {
+    height: 220px;
+    display: flex;
+    align-items: end;
+    gap: 4px;
+    padding: 1rem;
+    border: 1px solid var(--line);
+    border-radius: 1rem;
+    background: rgba(255,255,255,0.025);
+}
+
+.playback-bars span {
+    flex: 1;
+    min-width: 4px;
+    border-radius: 6px 6px 0 0;
+    background: linear-gradient(180deg, #60a5fa, #2563eb);
+}
+
+.code-card,
+.command-card {
+    overflow-x: auto;
+    white-space: pre-wrap;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    color: #cbd5e1;
+    background: #0b1118;
+    border: 1px solid var(--line);
+    border-radius: 0.8rem;
+    padding: 0.8rem;
+}
+
+@media (max-width: 1200px) {
+    .ops-grid-2,
+    .ops-grid-3,
+    .scenario-grid { grid-template-columns: 1fr; }
+}
