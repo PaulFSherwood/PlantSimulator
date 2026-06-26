@@ -60,14 +60,22 @@
               <span>{{ topbar.date_label | default("May 14, 2025") }}</span>
             </button>
         
-            <div class="operator-card">
+            <a class="operator-card" href="/plant-config" title="Security and user settings">
               <div class="operator-avatar"></div>
               <div class="operator-text">
-                <strong>{{ topbar.operator_name | default("John Owner") }}</strong>
-                <span>{{ topbar.operator_role | default("Owner") }}</span>
+                <strong>{{ current_user.display_name if current_user is defined else topbar.operator_name | default("John Owner") }}</strong>
+                <span>{{ current_user.role if current_user is defined else topbar.operator_role | default("Owner") }}{% if current_user is defined and not current_user.authenticated %} / demo{% endif %}</span>
               </div>
               <span class="topbar-chevron">⌄</span>
-            </div>
+            </a>
+
+            {% if current_user is defined and current_user.authenticated %}
+              <form method="post" action="/logout" class="topbar-inline-form">
+                <button class="topbar-control" type="submit">Logout</button>
+              </form>
+            {% else %}
+              <a class="topbar-control" href="/login">Login</a>
+            {% endif %}
           </div>
       </header>
 

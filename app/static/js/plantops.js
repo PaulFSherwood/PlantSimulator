@@ -234,6 +234,32 @@
     const faultButton = event.target.closest("[data-inject-fault]");
     if (faultButton) {
       postJson("/api/faults/inject", { equipment_id: faultButton.dataset.injectFault, severity: faultButton.dataset.severity || "high" }).catch(console.error);
+      return;
+    }
+
+    const totpButton = event.target.closest("[data-totp-setup]");
+    if (totpButton) {
+      fetch("/api/auth/totp/setup", { method: "POST" })
+        .then(r => r.json())
+        .then(data => {
+          const out = document.querySelector("[data-totp-output]");
+          if (!out) return;
+          if (data.error) {
+            out.innerHTML = `<div class="form-error">${escapeHtml(data.error)}</div>`;
+          } else {
+            out.innerHTML = `<div class="code-card"><strong>Secret:</strong> ${escapeHtml(data.secret)}<br><strong>URI:</strong> ${escapeHtml(data.uri)}</div>`;
+          }
+        })
+        .catch(console.error);
+      return;
+    }
+
+    const reportButton = event.target.closest("[data-report-refresh]");
+    if (reportButton) {
+      fetch("/api/reports/daily", { cache: "no-store" })
+        .then(r => r.json())
+        .then(data => { reportButton.textContent = `Report refreshed (${data.sample_count} samples)`; })
+        .catch(console.error);
     }
   });
 

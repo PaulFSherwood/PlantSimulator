@@ -1,7 +1,92 @@
 {% extends "base.html" %}
 {% block content %}
 <section class="ops-page-grid two-col-ops">
-  <article class="panel"><h2>Plant Template</h2><div class="summary-list"><div><span>Name</span><strong>{{ plant.name }}</strong></div><div><span>Type</span><strong>{{ plant.plant_type }}</strong></div><div><span>Config Source</span><strong>feed_mill.json</strong></div></div></article>
-  <article class="panel"><h2>Next Config Stage</h2><p class="muted">Later this page should edit equipment, capacities, thresholds, and flow connections. Right now config is still file-backed.</p></article>
+  <article class="panel">
+    <h2>Plant Profile</h2>
+    <p class="muted">This is now database-backed. Saving here creates a new active plant config record and updates the running sim profile.</p>
+
+    <form method="post" action="/plant-config/save" class="config-form">
+      <label>
+        <span>Plant Name</span>
+        <input name="name" value="{{ plant.name }}">
+      </label>
+      <label>
+        <span>Plant Type</span>
+        <select name="plant_type">
+          {% for option in ["Feed Mill", "Grain Elevator", "Seed Processing", "Packaging Line", "Generic Manufacturing"] %}
+            <option value="{{ option }}" {% if plant.plant_type == option %}selected{% endif %}>{{ option }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>
+        <span>Status</span>
+        <input name="status" value="{{ status }}">
+      </label>
+      <label>
+        <span>Shift</span>
+        <input name="shift" value="{{ shift }}">
+      </label>
+      <button type="submit">Save Plant Profile</button>
+    </form>
+  </article>
+
+  <aside class="panel">
+    <h2>Database Status</h2>
+    <div class="summary-list compact-summary-list">
+      <div><span>SQLite DB</span><strong>{{ db_summary.database_path }}</strong></div>
+      <div><span>Production Samples</span><strong>{{ db_summary.production_samples }}</strong></div>
+      <div><span>Alarm History</span><strong>{{ db_summary.alarm_history }}</strong></div>
+      <div><span>Audit Events</span><strong>{{ db_summary.audit_events }}</strong></div>
+      <div><span>Active Config</span><strong>{{ db_summary.active_config.name }}</strong></div>
+    </div>
+  </aside>
+
+  <article class="panel">
+    <h2>Security</h2>
+    <p class="muted">Demo account: <strong>owner / plantops</strong>. TOTP setup returns a secret you can add to Google Authenticator, 1Password, Bitwarden, etc.</p>
+    <div class="summary-list compact-summary-list">
+      <div><span>Current User</span><strong>{{ current_user.display_name }} / {{ current_user.role }}</strong></div>
+      <div><span>Authenticated</span><strong>{{ current_user.authenticated }}</strong></div>
+      <div><span>TOTP Enabled</span><strong>{{ current_user.totp_enabled }}</strong></div>
+    </div>
+
+    {% if current_user.authenticated %}
+      <form method="post" action="/api/auth/totp/verify" class="config-form totp-form">
+        <button type="button" data-totp-setup>Generate TOTP Secret</button>
+        <div class="totp-output" data-totp-output></div>
+        <label>
+          <span>Verify Code</span>
+          <input name="code" placeholder="123456">
+        </label>
+        <button type="submit">Enable TOTP</button>
+      </form>
+    {% else %}
+      <a class="banner-button" href="/login">Login to manage TOTP</a>
+    {% endif %}
+  </article>
+
+  <article class="panel">
+    <h2>Users</h2>
+    <table class="data-table compact-data-table ops-table">
+      <thead><tr><th>Username</th><th>Name</th><th>Role</th><th>2FA</th></tr></thead>
+      <tbody>
+        {% for user in security.users %}
+          <tr><td>{{ user.username }}</td><td>{{ user.display_name }}</td><td>{{ user.role }}</td><td>{{ "Yes" if user.totp_enabled else "No" }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </article>
+
+  <article class="panel ops-wide-panel">
+    <h2>Audit Log</h2>
+    <table class="data-table compact-data-table ops-table">
+      <thead><tr><th>Time</th><th>User</th><th>Action</th><th>Target</th><th>Details</th></tr></thead>
+      <tbody>
+        {% for row in security.audit %}
+          <tr><td>{{ row.ts }}</td><td>{{ row.username }}</td><td>{{ row.action }}</td><td>{{ row.target }}</td><td>{{ row.details }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </article>
 </section>
 {% endblock %}

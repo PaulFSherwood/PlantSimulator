@@ -1,7 +1,38 @@
 {% extends "base.html" %}
 {% block content %}
 <section class="ops-page-grid two-col-ops">
-  <article class="panel"><h2>Current Architecture</h2><div class="summary-list"><div><span>Config</span><strong>JSON plant template</strong></div><div><span>Engine</span><strong>In-memory simulator</strong></div><div><span>Live UI</span><strong>/api/state polling</strong></div><div><span>Database</span><strong>Not added yet</strong></div></div></article>
-  <article class="panel"><h2>Controls</h2><p class="muted">Use the bottom control dock to pause, resume, or reset. Equipment controls are on the Equipment page. Fault scenarios are on Fault Tuning and Training.</p></article>
+  <article class="panel">
+    <h2>PlantOps Project Status</h2>
+    <div class="summary-list">
+      <div><span>Stage 1</span><strong>Live UI wiring complete</strong></div>
+      <div><span>Stage 2</span><strong>Simulation engine complete</strong></div>
+      <div><span>Stage 3</span><strong>Control APIs complete</strong></div>
+      <div><span>Stage 4</span><strong>Operations pages complete</strong></div>
+      <div><span>Stage 5</span><strong>SQLite database persistence added</strong></div>
+      <div><span>Stage 6</span><strong>Login, roles, TOTP, audit added</strong></div>
+      <div><span>Stage 7</span><strong>Plant config page saves profile to DB</strong></div>
+      <div><span>Stage 8</span><strong>Reports use DB samples/history</strong></div>
+    </div>
+  </article>
+
+  <article class="panel">
+    <h2>Demo Login</h2>
+    <p class="muted">Default local account:</p>
+    <div class="summary-list">
+      <div><span>Username</span><strong>owner</strong></div>
+      <div><span>Password</span><strong>plantops</strong></div>
+      <div><span>Role</span><strong>admin</strong></div>
+    </div>
+    <a class="banner-button" href="/login">Open Login</a>
+  </article>
+
+  <article class="panel ops-wide-panel">
+    <h2>Useful API checks</h2>
+    <pre class="code-card">curl http://127.0.0.1:8000/api/state
+curl http://127.0.0.1:8000/api/db/summary
+curl http://127.0.0.1:8000/api/reports/daily
+curl -X POST http://127.0.0.1:8000/api/sim/pause
+curl -X POST http://127.0.0.1:8000/api/sim/resume</pre>
+  </article>
 </section>
 {% endblock %}
