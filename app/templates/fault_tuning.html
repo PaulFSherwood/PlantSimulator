@@ -1,4 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="panel"><div class="panel-header"><h2>Failure Model Tuning</h2><span class="tag warning">Senior Tech Only</span></div><form class="form-grid"><label>Equipment<select><option>Auger 2</option></select></label><label>Failure Mode<input value="Plugged chute"></label><label>Base Chance / Hour<input value="1.5%"></label><label>Average Downtime<input value="35 minutes"></label><label>Requires LOTO<select><option>Yes</option><option>No</option></select></label><label>Risk Trigger<input value="Moisture > 18%, Flow > 80%"></label></form></section>
+<section class="ops-page-grid two-col-ops">
+  <article class="panel ops-wide-panel">
+    <div class="panel-header"><div><h2>Fault Injection</h2><p>Inject training faults into equipment.</p></div><span class="status-pill warning">Training Mode</span></div>
+    <div class="fault-button-grid" data-live-list="fault-buttons"></div>
+  </article>
+  <article class="panel"><h2>Recent Events</h2><div class="event-log" data-live-list="event-log"></div></article>
+</section>
 {% endblock %}

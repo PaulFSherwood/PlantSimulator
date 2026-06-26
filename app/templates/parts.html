@@ -1,4 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="panel"><div class="panel-header"><h2>Parts & Vendor Reliability</h2><span class="tag neutral">Maintenance Knowledge</span></div><div class="table-wrap"><table><tr><th>Part</th><th>Vendor</th><th>Cost</th><th>Expected Life</th><th>Actual Avg</th><th>Recommendation</th></tr><tr><td>Auger Bearing</td><td>Brand A</td><td>$42</td><td>1,200 hrs</td><td>1,080 hrs</td><td><span class="tag ok">Preferred</span></td></tr><tr><td>Auger Bearing</td><td>Cheap Brand B</td><td>$18</td><td>350 hrs</td><td>290 hrs</td><td><span class="tag critical">Avoid</span></td></tr></table></div></section>
+<section class="ops-page-grid">
+  <article class="panel ops-wide-panel"><div class="panel-header"><h2>Parts & Reliability</h2><p>Placeholder inventory tied to current fault risk.</p></div><div class="table-wrap"><table class="data-table"><thead><tr><th>Part</th><th>Used On</th><th>Stock</th><th>Risk</th></tr></thead><tbody><tr><td>Auger Bearing Kit</td><td>Auger 3</td><td>2</td><td class="warning-text">High</td></tr><tr><td>Dryer Flame Sensor</td><td>Dryer Line 1</td><td>1</td><td class="bad-text">Critical</td></tr><tr><td>Level Sensor Lens</td><td>Dry Bin</td><td>6</td><td>Medium</td></tr><tr><td>Packaging Scale Cell</td><td>Packaging Line 1</td><td>1</td><td>Low</td></tr></tbody></table></div></article>
+</section>
 {% endblock %}

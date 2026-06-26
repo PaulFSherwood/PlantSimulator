@@ -1,4 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="panel"><div class="panel-header"><h2>Active Alarms</h2><span class="tag critical">3 Active</span></div><div class="table-wrap"><table><tr><th>Severity</th><th>Equipment</th><th>Alarm</th><th>Age</th><th>Ack</th></tr><tr><td><span class="tag critical">Critical</span></td><td>Auger 2</td><td>Bearing temperature high</td><td>18 min</td><td>No</td></tr><tr><td><span class="tag warning">Warning</span></td><td>Dryer Line 1</td><td>Outlet moisture high</td><td>31 min</td><td>Yes</td></tr><tr><td><span class="tag warning">Warning</span></td><td>Truck Scale</td><td>Queue wait above target</td><td>42 min</td><td>No</td></tr></table></div></section>
+<section class="ops-page-grid two-col-ops">
+  <article class="panel ops-wide-panel">
+    <div class="panel-header"><div><h2>Active Alarms</h2><p>Alarm list updates from simulator state.</p></div><span class="status-pill critical"><span data-live-count="alarms">0</span> active</span></div>
+    <div class="alarm-page-list" data-live-list="alarms-page"></div>
+  </article>
+  <aside class="panel"><h2>Alarm Rules</h2><div class="summary-list"><div><span>Dryer temp</span><strong>Critical ≥ 288°F</strong></div><div><span>Wet bin</span><strong>High ≥ 92%</strong></div><div><span>Auger vibration</span><strong>High fault</strong></div></div></aside>
+</section>
 {% endblock %}

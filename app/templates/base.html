@@ -8,8 +8,11 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    {% set app_version = "1.0.0" %}
-    {% set plant_name = "Demo Feed Mill" %}
+    {% set app_version = app_version if app_version is defined else "1.0.0" %}
+    {% set plant_name = plant_name if plant_name is defined else "Demo Feed Mill" %}
+    {% set topbar = plant.topbar if plant is defined else {} %}
+    {% set footer = plant.footer if plant is defined else {} %}
+
   <div class="app-shell">
     <aside class="sidebar">
       <div class="brand">
@@ -54,14 +57,14 @@
         
             <button class="topbar-control" type="button">
               <span class="topbar-control-icon">□</span>
-              <span>May 14, 2025</span>
+              <span>{{ topbar.date_label | default("May 14, 2025") }}</span>
             </button>
         
             <div class="operator-card">
               <div class="operator-avatar"></div>
               <div class="operator-text">
-                <strong>John Owner</strong>
-                <span>Owner</span>
+                <strong>{{ topbar.operator_name | default("John Owner") }}</strong>
+                <span>{{ topbar.operator_role | default("Owner") }}</span>
               </div>
               <span class="topbar-chevron">⌄</span>
             </div>
@@ -71,8 +74,8 @@
       {% block content %}{% endblock %}
       <footer class="dashboard-footer">
           <div class="footer-left">
-            <span>Last Updated: 10:24:30 AM</span>
-            <span class="footer-live"><i></i>Live</span>
+            <span>Last Updated: <span data-live="sim.updated_at">{{ footer.last_updated | default("10:24:30 AM") }}</span></span>
+            <span class="footer-live"><i></i><span data-live="sim.running" data-format="running-label">{{ footer.live_label | default("Live") }}</span></span>
           </div>
         
           <div class="footer-center">
@@ -82,12 +85,21 @@
           </div>
         
           <div class="footer-right">
-            <span class="footer-weather-icon">☀</span>
-            <strong>72°F</strong>
-            <span>Sunny</span>
+            <span class="footer-weather-icon">{{ footer.weather_icon | default("☀") }}</span>
+            <strong>{{ footer.temperature | default("72°F") }}</strong>
+            <span>{{ footer.weather | default("Sunny") }}</span>
           </div>
         </footer>
     </main>
+  </div>
+
+
+  <div class="sim-control-dock" data-sim-dock>
+    <span class="sim-pill">Tick <strong data-live="sim.tick">0</strong></span>
+    <span class="sim-pill" data-live="sim.last_event">Simulation ready</span>
+    <button type="button" data-sim-action="pause">Pause</button>
+    <button type="button" data-sim-action="resume">Resume</button>
+    <button type="button" data-sim-action="reset">Reset</button>
   </div>
 
   <script src="{{ url_for('static', path='js/plantops.js') }}"></script>

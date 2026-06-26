@@ -1,15 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 <section class="farmer-board">
-  <div class="farmer-header"><h2>{{ plant_name }}</h2><span>Receiving: OPEN</span></div>
-  <div class="farmer-grid">
-    <div><span>Current Ticket</span><strong>184</strong></div>
-    <div><span>Commodity</span><strong>Corn</strong></div>
-    <div><span>Moisture</span><strong>18.4%</strong></div>
-    <div><span>Assigned Pit</span><strong>Pit 2</strong></div>
-    <div><span>Estimated Wait</span><strong>22 min</strong></div>
-    <div><span>Status</span><strong>Unloading</strong></div>
-  </div>
-  <div class="farmer-message">Please remain in your vehicle until called. Pit 1 closed for maintenance.</div>
+  <div class="farmer-header"><h2>{{ plant_name }}</h2><span data-live="plant.status">Receiving Open</span></div>
+  <div class="farmer-grid"><div><span>Receiving Rate</span><strong data-live="process.receiving_rate_bu_hr" data-format="rate-bu">0</strong></div><div><span>Wet Bin</span><strong data-live="process.wet_bin_fill" data-format="percent">0</strong></div><div><span>Current Shift</span><strong data-live="plant.shift">Day Shift</strong></div></div>
+  <div class="farmer-message">Proceed to scale when directed by yard staff.</div>
 </section>
 {% endblock %}

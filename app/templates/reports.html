@@ -1,4 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="panel"><div class="panel-header"><h2>Reports</h2></div><div class="report-list"><a href="#">Daily Production Summary</a><a href="#">Downtime Cost Report</a><a href="#">Maintenance Reliability Report</a><a href="#">LOTO Audit Report</a><a href="#">Parts Vendor Comparison</a><a href="#">Training Performance Report</a></div></section>
+<section class="ops-page-grid two-col-ops">
+  <article class="panel"><h2>Daily Summary</h2><div class="summary-list"><div><span>Production</span><strong data-live="dashboard.production_tons" data-format="tons">0</strong></div><div><span>Revenue</span><strong data-live="dashboard.revenue_today" data-format="currency">0</strong></div><div><span>Estimated Profit</span><strong data-live="dashboard.estimated_profit" data-format="currency">0</strong></div><div><span>Downtime Cost</span><strong data-live="dashboard.downtime_cost" data-format="currency">0</strong></div></div></article>
+  <article class="panel"><h2>What-If Analysis</h2><div class="summary-list"><div><span>Current EOD Profit</span><strong data-live="dashboard.end_of_day_profit" data-format="currency">0</strong></div><div><span>Optimized Profit</span><strong data-live="dashboard.optimized_profit" data-format="currency">0</strong></div><div><span>Lost Opportunity</span><strong data-live="dashboard.lost_profit_opportunity" data-format="currency">0</strong></div></div></article>
+  <article class="panel ops-wide-panel"><h2>Event Log</h2><div class="event-log" data-live-list="event-log"></div></article>
+</section>
 {% endblock %}

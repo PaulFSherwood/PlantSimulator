@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="panel"><div class="panel-header"><h2>Trend Placeholder</h2><span class="tag neutral">No npm</span></div><div class="chart-placeholder"><div class="trend-line"></div><p>Chart.js or hand-coded SVG charts can be added as local static files.</p></div></section>
-<section class="card-grid"><article class="metric-card"><span>Moisture Trend</span><strong>18.4% → 16.2%</strong><small>Last 2 hours</small></article><article class="metric-card"><span>Current Trend</span><strong>6.2 A → 14.8 A</strong><small>Auger 2 rising</small></article><article class="metric-card"><span>Downtime Trend</span><strong>+42 min</strong><small>Current shift</small></article></section>
+<section class="ops-page-grid">
+  <article class="panel ops-wide-panel"><div class="panel-header"><h2>Live Production Samples</h2><span class="live-dot">Live</span></div><div class="simple-live-chart large-chart" data-live-chart="production"></div></article>
+  <article class="panel"><h2>Current Sensors</h2><div class="summary-list"><div><span>Dryer Temp</span><strong data-live="process.dryer_temp_f" data-format="temp-f">0</strong></div><div><span>Wet Bin</span><strong data-live="process.wet_bin_fill" data-format="percent">0</strong></div><div><span>Dry Bin</span><strong data-live="process.dry_bin_fill" data-format="percent">0</strong></div><div><span>Packaging</span><strong data-live="process.packaging_bag_hr" data-format="bags-hour">0</strong></div></div></article>
+</section>
 {% endblock %}

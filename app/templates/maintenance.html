@@ -1,4 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="panel"><div class="panel-header"><h2>Open Work Orders</h2><span class="tag warning">4 Open</span></div><div class="table-wrap"><table><tr><th>WO</th><th>Equipment</th><th>Task</th><th>Priority</th><th>LOTO</th></tr><tr><td>WO-1042</td><td>Auger 2</td><td>Inspect bearing and chute</td><td>High</td><td>Required</td></tr><tr><td>WO-1043</td><td>Dryer Line 1</td><td>Check airflow and burner tuning</td><td>Medium</td><td>May be required</td></tr></table></div></section>
+<section class="ops-page-grid">
+  <article class="panel ops-kpi-strip">
+    <div><span>Open Work Orders</span><strong data-live="maintenance.open_work_orders">0</strong></div>
+    <div><span>Overdue</span><strong data-live="maintenance.overdue_work_orders">0</strong></div>
+    <div><span>Planned 7 Days</span><strong data-live="maintenance.planned_7_days">0</strong></div>
+    <div><span>MTBF</span><strong><span data-live="maintenance.mtbf_hours">0</span> h</strong></div>
+  </article>
+  <article class="panel ops-wide-panel"><div class="panel-header"><h2>Work Orders</h2><a href="/equipment">Go to Equipment</a></div><div class="table-wrap"><table class="data-table"><thead><tr><th>ID</th><th>Equipment</th><th>Priority</th><th>Status</th><th>Task</th></tr></thead><tbody data-live-list="work-orders"></tbody></table></div></article>
+</section>
 {% endblock %}

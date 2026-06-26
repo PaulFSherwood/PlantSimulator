@@ -7,6 +7,12 @@
     gap: 1rem;
 }
 
+.process-tab-radio {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
 .process-tabs {
     display: flex;
     gap: 0.35rem;
@@ -14,16 +20,23 @@
     overflow-x: auto;
 }
 
-.process-tabs a {
+.process-tabs a,
+.process-tabs label {
     padding: 0.7rem 1rem;
     color: var(--muted);
     border: 1px solid transparent;
     border-bottom: 0;
     border-radius: 0.75rem 0.75rem 0 0;
     white-space: nowrap;
+    cursor: pointer;
 }
 
-.process-tabs a.active {
+.process-tabs a.active,
+#process-main-flow:checked ~ .process-tabs label[for="process-main-flow"],
+#process-receiving:checked ~ .process-tabs label[for="process-receiving"],
+#process-dryer:checked ~ .process-tabs label[for="process-dryer"],
+#process-milling:checked ~ .process-tabs label[for="process-milling"],
+#process-packaging:checked ~ .process-tabs label[for="process-packaging"] {
     color: var(--text);
     background: #172840;
     border-color: var(--line);
@@ -32,6 +45,19 @@
 .process-map-panel {
     min-height: 660px;
     padding: 1rem;
+    overflow-x: auto;
+}
+
+.process-view {
+    display: none;
+}
+
+#process-main-flow:checked ~ .process-map-panel .process-view-main,
+#process-receiving:checked ~ .process-map-panel .process-view-receiving,
+#process-dryer:checked ~ .process-map-panel .process-view-dryer,
+#process-milling:checked ~ .process-map-panel .process-view-milling,
+#process-packaging:checked ~ .process-map-panel .process-view-packaging {
+    display: block;
 }
 
 .process-legend {
@@ -80,6 +106,10 @@
     gap: 0.35rem;
     font-size: 0.8rem;
     color: var(--muted);
+    background: rgba(15, 23, 42, 0.72);
+    border: 1px solid rgba(100, 116, 139, 0.28);
+    border-radius: 0.75rem;
+    padding: 0.7rem;
 }
 
 .scada-map-legend span {
@@ -323,9 +353,9 @@
     margin: 0 auto 0.35rem;
 }
 
-/* top dryer/mixer label box */
+/* top mixer label box */
 .mini-mixer::before {
-    content: "Dryer";
+    content: "Mixer";
     position: absolute;
     left: 0;
     top: 0;
@@ -410,54 +440,7 @@
     z-index: 4;
 }
 
-@media (max-width: 1300px) {
-    .process-map-panel {
-        overflow-x: auto;
-    }
-}
-
-/* =========================================================
-   Process tabs and detail views
-   ========================================================= */
-
-.process-tab-radio {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-}
-
-.process-tabs label,
-.process-tabs a {
-    padding: 0.7rem 1rem;
-    color: var(--muted);
-    border: 1px solid transparent;
-    border-bottom: 0;
-    border-radius: 0.75rem 0.75rem 0 0;
-    white-space: nowrap;
-    cursor: pointer;
-}
-
-#process-main-flow:checked ~ .process-tabs label[for="process-main-flow"],
-#process-receiving:checked ~ .process-tabs label[for="process-receiving"],
-#process-dryer:checked ~ .process-tabs label[for="process-dryer"],
-#process-milling:checked ~ .process-tabs label[for="process-milling"],
-#process-packaging:checked ~ .process-tabs label[for="process-packaging"] {
-    color: var(--text);
-    background: #172840;
-    border-color: var(--line);
-}
-
-.process-view {
-    display: none;
-}
-
-#process-main-flow:checked ~ .process-map-panel .process-view-main,
-#process-receiving:checked ~ .process-map-panel .process-view-receiving,
-#process-dryer:checked ~ .process-map-panel .process-view-dryer,
-#process-milling:checked ~ .process-map-panel .process-view-milling,
-#process-packaging:checked ~ .process-map-panel .process-view-packaging {
-    display: block;
-}
+/* Detail tabs */
 
 .process-detail-grid {
     display: grid;
@@ -517,7 +500,13 @@
     border-bottom: 1px solid var(--line);
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1300px) {
+    .process-map-panel {
+        overflow-x: auto;
+    }
+}
+
+@media (max-width: 900px) {
     .process-detail-grid {
         grid-template-columns: 1fr;
     }
