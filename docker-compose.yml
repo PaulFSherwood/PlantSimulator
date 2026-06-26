@@ -1,0 +1,9 @@
+services:
+  plantops:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app/data:/app/app/data
+    environment:
+      - PLANTOPS_ENV=development

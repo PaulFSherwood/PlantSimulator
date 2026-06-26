@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="auth-layout">
+  <article class="panel auth-card">
+    <h2>PlantOps Login</h2>
+    <p class="muted">Local demo auth is now wired in. The seeded account is <strong>owner</strong> with password <strong>plantops</strong>.</p>
+
+    {% if login_error is defined %}
+      <div class="form-error">{{ login_error }}</div>
+    {% endif %}
+
+    <form method="post" action="/login" class="config-form">
+      <label>
+        <span>Username</span>
+        <input name="username" value="owner" autocomplete="username">
+      </label>
+      <label>
+        <span>Password</span>
+        <input name="password" type="password" value="plantops" autocomplete="current-password">
+      </label>
+      <label>
+        <span>TOTP Code</span>
+        <input name="totp_code" placeholder="Only needed after enabling 2FA">
+      </label>
+      <button type="submit">Login</button>
+    </form>
+  </article>
+
+  <article class="panel auth-card">
+    <h2>What this stage added</h2>
+    <div class="summary-list">
+      <div><span>Users</span><strong>{{ db_summary.users }}</strong></div>
+      <div><span>Sessions</span><strong>Cookie backed</strong></div>
+      <div><span>2FA</span><strong>TOTP ready</strong></div>
+      <div><span>Audit Log</span><strong>{{ db_summary.audit_events }} events</strong></div>
+    </div>
+  </article>
+</section>
+{% endblock %}

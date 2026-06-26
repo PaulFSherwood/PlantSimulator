@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="ops-page">
+    <section class="scenario-grid">
+        {% for scenario in scenarios %}
+        <article class="scenario-card">
+            <div>
+                <h2>{{ scenario.name }}</h2>
+                <p>{{ scenario.description }}</p>
+                <span class="status-chip {% if scenario.severity in ['critical', 'high'] %}bad{% elif scenario.severity in ['medium', 'safety'] %}warning{% endif %}">{{ scenario.severity }}</span>
+            </div>
+            <div class="scenario-meta">
+                <small>{{ scenario.actions | join(', ') }}</small>
+                <button type="button" data-scenario-start="{{ scenario.id }}">Start</button>
+            </div>
+        </article>
+        {% endfor %}
+    </section>
+
+    <article class="ops-card">
+        <h2>Scenario Notes</h2>
+        <p>Scenarios use the same control APIs as the UI: reset/resume, equipment stop/start, lockout, speed, and fault injection. They are useful for demonstrations, training pages, report generation, and testing alarm/LOTO workflows.</p>
+    </article>
+</section>
+{% endblock %}

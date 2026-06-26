@@ -189,12 +189,16 @@
     document.querySelectorAll("[data-live-chart='production']").forEach(el => renderChart(el, state));
   }
 
+  function applyState(state) {
+    lastState = state;
+    updateLiveText(lastState);
+    updateLists(lastState);
+  }
+
   async function fetchState() {
     const response = await fetch(stateUrl, { cache: "no-store" });
     if (!response.ok) throw new Error(`State fetch failed: ${response.status}`);
-    lastState = await response.json();
-    updateLiveText(lastState);
-    updateLists(lastState);
+    applyState(await response.json());
   }
 
   async function postJson(url, body) {
@@ -204,9 +208,7 @@
       body: body ? JSON.stringify(body) : undefined,
     });
     if (!response.ok) throw new Error(`POST failed: ${response.status}`);
-    lastState = await response.json();
-    updateLiveText(lastState);
-    updateLists(lastState);
+    applyState(await response.json());
   }
 
   document.addEventListener("click", (event) => {
@@ -234,9 +236,73 @@
     const faultButton = event.target.closest("[data-inject-fault]");
     if (faultButton) {
       postJson("/api/faults/inject", { equipment_id: faultButton.dataset.injectFault, severity: faultButton.dataset.severity || "high" }).catch(console.error);
+      return;
+    }
+
+    const scenarioButton = event.target.closest("[data-scenario-start]");
+    if (scenarioButton) {
+      const id = scenarioButton.dataset.scenarioStart;
+      postJson(`/api/scenarios/${id}/start`, {}).catch(console.error);
+      scenarioButton.textContent = "Scenario started";
+      return;
+    }
+
+    const totpButton = event.target.closest("[data-totp-setup]");
+    if (totpButton) {
+      fetch("/api/auth/totp/setup", { method: "POST" })
+        .then(r => r.json())
+        .then(data => {
+          const out = document.querySelector("[data-totp-output]");
+          if (!out) return;
+          if (data.error) {
+            out.innerHTML = `<div class="form-error">${escapeHtml(data.error)}</div>`;
+          } else {
+            out.innerHTML = `<div class="code-card"><strong>Secret:</strong> ${escapeHtml(data.secret)}<br><strong>URI:</strong> ${escapeHtml(data.uri)}</div>`;
+          }
+        })
+        .catch(console.error);
+      return;
+    }
+
+    const reportButton = event.target.closest("[data-report-refresh]");
+    if (reportButton) {
+      fetch("/api/reports/daily", { cache: "no-store" })
+        .then(r => r.json())
+        .then(data => { reportButton.textContent = `Report refreshed (${data.sample_count} samples)`; })
+        .catch(console.error);
     }
   });
 
+  function startPolling() {
+    fetchState().catch(console.error);
+    return setInterval(() => fetchState().catch(console.error), 2000);
+  }
+
+  function startLiveUpdates() {
+    if (!("WebSocket" in window)) {
+      startPolling();
+      return;
+    }
+
+    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+    const ws = new WebSocket(`${protocol}//${window.location.host}/ws/state`);
+    let fallbackTimer = null;
+
+    ws.onmessage = (event) => {
+      try { applyState(JSON.parse(event.data)); }
+      catch (err) { console.error(err); }
+    };
+
+    ws.onerror = () => {
+      if (!fallbackTimer) fallbackTimer = startPolling();
+    };
+
+    ws.onclose = () => {
+      if (!fallbackTimer) fallbackTimer = startPolling();
+      setTimeout(() => startLiveUpdates(), 5000);
+    };
+  }
+
   fetchState().catch(console.error);
-  setInterval(() => fetchState().catch(console.error), 2000);
+  startLiveUpdates();
 })();

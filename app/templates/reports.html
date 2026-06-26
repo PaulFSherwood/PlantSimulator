@@ -1,8 +1,70 @@
 {% extends "base.html" %}
 {% block content %}
 <section class="ops-page-grid two-col-ops">
-  <article class="panel"><h2>Daily Summary</h2><div class="summary-list"><div><span>Production</span><strong data-live="dashboard.production_tons" data-format="tons">0</strong></div><div><span>Revenue</span><strong data-live="dashboard.revenue_today" data-format="currency">0</strong></div><div><span>Estimated Profit</span><strong data-live="dashboard.estimated_profit" data-format="currency">0</strong></div><div><span>Downtime Cost</span><strong data-live="dashboard.downtime_cost" data-format="currency">0</strong></div></div></article>
-  <article class="panel"><h2>What-If Analysis</h2><div class="summary-list"><div><span>Current EOD Profit</span><strong data-live="dashboard.end_of_day_profit" data-format="currency">0</strong></div><div><span>Optimized Profit</span><strong data-live="dashboard.optimized_profit" data-format="currency">0</strong></div><div><span>Lost Opportunity</span><strong data-live="dashboard.lost_profit_opportunity" data-format="currency">0</strong></div></div></article>
-  <article class="panel ops-wide-panel"><h2>Event Log</h2><div class="event-log" data-live-list="event-log"></div></article>
+  <article class="panel">
+    <div class="panel-header">
+      <div>
+        <h2>Daily Summary</h2>
+        <p>Live values plus database-backed saved samples.</p>
+      </div>
+      <a class="small-action-button" href="/reports/export.csv">Export CSV</a>
+    </div>
+
+    <div class="summary-list">
+      <div><span>Current Production</span><strong data-live="dashboard.production_tons" data-format="tons">0</strong></div>
+      <div><span>Revenue</span><strong data-live="dashboard.revenue_today" data-format="currency">0</strong></div>
+      <div><span>Estimated Profit</span><strong data-live="dashboard.estimated_profit" data-format="currency">0</strong></div>
+      <div><span>Downtime Cost</span><strong data-live="dashboard.downtime_cost" data-format="currency">0</strong></div>
+      <div><span>DB Samples Today</span><strong>{{ report_summary.sample_count }}</strong></div>
+      <div><span>Reported Delta</span><strong>{{ report_summary.production_delta_tons }} ton</strong></div>
+    </div>
+  </article>
+
+  <article class="panel">
+    <h2>What-If Analysis</h2>
+    <div class="summary-list">
+      <div><span>Current EOD Profit</span><strong data-live="dashboard.end_of_day_profit" data-format="currency">0</strong></div>
+      <div><span>Optimized Profit</span><strong data-live="dashboard.optimized_profit" data-format="currency">0</strong></div>
+      <div><span>Lost Opportunity</span><strong data-live="dashboard.lost_profit_opportunity" data-format="currency">0</strong></div>
+      <div><span>Current Bottleneck</span><strong data-live="dashboard.bottleneck">Dryer</strong></div>
+    </div>
+  </article>
+
+  <article class="panel ops-wide-panel">
+    <div class="panel-header">
+      <h2>Production History</h2>
+      <button type="button" data-report-refresh>Refresh Report API</button>
+    </div>
+    <div class="simple-live-chart large-chart" data-live-chart="production"></div>
+  </article>
+
+  <article class="panel">
+    <h2>Alarm History</h2>
+    <table class="data-table compact-data-table ops-table">
+      <thead><tr><th>ID</th><th>Severity</th><th>Equipment</th><th>Title</th><th>Ack</th></tr></thead>
+      <tbody>
+        {% for alarm in report_summary.alarms %}
+          <tr><td>{{ alarm.alarm_id }}</td><td>{{ alarm.severity }}</td><td>{{ alarm.equipment }}</td><td>{{ alarm.title }}</td><td>{{ alarm.acknowledged }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </article>
+
+  <article class="panel">
+    <h2>Audit Trail</h2>
+    <table class="data-table compact-data-table ops-table">
+      <thead><tr><th>Time</th><th>User</th><th>Action</th><th>Target</th></tr></thead>
+      <tbody>
+        {% for row in report_summary.audit %}
+          <tr><td>{{ row.ts }}</td><td>{{ row.username }}</td><td>{{ row.action }}</td><td>{{ row.target }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </article>
+
+  <article class="panel ops-wide-panel">
+    <h2>Live Event Log</h2>
+    <div class="event-log" data-live-list="event-log"></div>
+  </article>
 </section>
 {% endblock %}

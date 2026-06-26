@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="ops-page">
+    <section class="ops-grid-3">
+        <article class="ops-card">
+            <h2>Samples</h2>
+            <strong>{{ playback.sample_count }}</strong>
+            <p>Recent database-backed production samples.</p>
+        </article>
+        <article class="ops-card">
+            <h2>First Tick</h2>
+            <strong>{{ playback.first_tick }}</strong>
+            <p>Oldest sample loaded in playback window.</p>
+        </article>
+        <article class="ops-card">
+            <h2>Last Tick</h2>
+            <strong>{{ playback.last_tick }}</strong>
+            <p>Newest sample loaded in playback window.</p>
+        </article>
+    </section>
+
+    <article class="ops-card">
+        <h2>Production Playback</h2>
+        <div class="playback-bars">
+            {% set samples = playback.samples if playback.samples is defined else [] %}
+            {% set latest = playback.latest.production_tons if playback.latest is defined else 1 %}
+            {% for sample in samples %}
+            {% set height = (sample.production_tons / latest * 100) if latest else 5 %}
+            <span title="Tick {{ sample.tick }}" style="height: {{ height if height > 4 else 4 }}%;"></span>
+            {% endfor %}
+        </div>
+    </article>
+
+    <article class="ops-card">
+        <h2>Recent Samples</h2>
+        <div class="playback-list">
+            {% for sample in playback.samples %}
+            <div class="playback-row">
+                <span>Tick {{ sample.tick }} — {{ sample.ts }}</span>
+                <strong>{{ "%.1f"|format(sample.production_tons) }} ton / ${{ sample.revenue_today }}</strong>
+            </div>
+            {% endfor %}
+        </div>
+    </article>
+</section>
+{% endblock %}

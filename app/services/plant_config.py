@@ -9,15 +9,23 @@ TEMPLATE_DIR = APP_DIR / "data" / "plant_templates"
 
 @lru_cache(maxsize=16)
 def load_plant_config(template_name: str = "feed_mill") -> dict[str, Any]:
-    """Load a plant template JSON file from app/data/plant_templates."""
+    """Load the original file-backed template. Used as fallback and seed data."""
     template_path = TEMPLATE_DIR / f"{template_name}.json"
     with template_path.open("r", encoding="utf-8") as config_file:
         return json.load(config_file)
 
 
+def _load_active_config(template_name: str = "feed_mill") -> dict[str, Any]:
+    try:
+        from app.services.db_store import db
+        return db.get_active_plant_config()
+    except Exception:
+        return load_plant_config(template_name)
+
+
 def get_plant_context(template_name: str = "feed_mill") -> dict[str, Any]:
     """Return template context plus old shortcut variables used by early pages."""
-    plant = load_plant_config(template_name)
+    plant = _load_active_config(template_name)
     operations = plant.get("operations", {})
     dashboard = plant.get("dashboard", {})
 

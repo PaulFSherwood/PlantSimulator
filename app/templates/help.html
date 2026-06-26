@@ -1,7 +1,33 @@
 {% extends "base.html" %}
+
 {% block content %}
-<section class="ops-page-grid two-col-ops">
-  <article class="panel"><h2>Current Architecture</h2><div class="summary-list"><div><span>Config</span><strong>JSON plant template</strong></div><div><span>Engine</span><strong>In-memory simulator</strong></div><div><span>Live UI</span><strong>/api/state polling</strong></div><div><span>Database</span><strong>Not added yet</strong></div></div></article>
-  <article class="panel"><h2>Controls</h2><p class="muted">Use the bottom control dock to pause, resume, or reset. Equipment controls are on the Equipment page. Fault scenarios are on Fault Tuning and Training.</p></article>
+<section class="ops-page">
+    <section class="ops-grid-2">
+        <article class="ops-card">
+            <h2>Project Status</h2>
+            <p>PlantOps now has a working UI shell, live simulation engine, control APIs, database-backed reports, demo authentication, plant configuration, diagnostics, scenarios, and playback.</p>
+            <div class="diagnostic-list">
+                <div class="diagnostic-row"><span>Current version</span><strong>{{ diagnostics.version }}</strong></div>
+                <div class="diagnostic-row"><span>Database</span><strong>{{ diagnostics.database }}</strong></div>
+                <div class="diagnostic-row"><span>WebSocket</span><strong>/ws/state</strong></div>
+            </div>
+        </article>
+
+        <article class="ops-card">
+            <h2>Recommended Next Branches</h2>
+            <div class="diagnostic-list">
+                <div class="diagnostic-row"><span>PostgreSQL</span><strong>Replace SQLite when ready</strong></div>
+                <div class="diagnostic-row"><span>Layout editor</span><strong>Drag/drop process map</strong></div>
+                <div class="diagnostic-row"><span>Real integrations</span><strong>OPC-UA / MQTT mock layer</strong></div>
+                <div class="diagnostic-row"><span>Tests</span><strong>Expand scenario and API tests</strong></div>
+            </div>
+        </article>
+    </section>
+
+    <section class="ops-grid-3">
+        <article class="ops-card"><h2>Operator Flow</h2><p>Use Dashboard, Process Flow, Equipment, Alarms, and LOTO for day-to-day simulated operations.</p></article>
+        <article class="ops-card"><h2>Training Flow</h2><p>Use Scenario Builder and Fault Tuning to create faults, then resolve them through Equipment, Alarms, LOTO, and Maintenance.</p></article>
+        <article class="ops-card"><h2>Owner Flow</h2><p>Use Reports, Playback, and Plant Configuration to review production, profit, downtime, and settings.</p></article>
+    </section>
 </section>
 {% endblock %}

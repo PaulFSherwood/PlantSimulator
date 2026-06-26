@@ -202,6 +202,14 @@ class PlantSimEngine:
             self._event(f"Simulation speed set to {self._speed:g}x")
             return self.snapshot()
 
+    def update_plant_profile(self, name: str, status: str, shift: str) -> dict[str, Any]:
+        with self._lock:
+            self._state["plant"]["name"] = name
+            self._state["plant"]["status"] = status
+            self._state["plant"]["shift"] = shift
+            self._event(f"Plant profile updated: {name}")
+            return self.snapshot()
+
     def equipment_action(self, equipment_id: str, action: str, reason: str | None = None) -> dict[str, Any]:
         with self._lock:
             eq = self._state["equipment"].get(equipment_id)
