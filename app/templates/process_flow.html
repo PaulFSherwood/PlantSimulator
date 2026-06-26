@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block content %}
+{% set state = sim_state %}
 <section class="process-page">
     <input class="process-tab-radio" type="radio" name="process-view" id="process-main-flow" checked>
     <input class="process-tab-radio" type="radio" name="process-view" id="process-receiving">
@@ -13,11 +14,11 @@
     <input class="process-tab-radio" type="radio" name="process-view" id="process-packaging">
 
     <div class="process-tabs">
-        <label for="process-main-flow">{{ plant.process_flow.tabs.main }}</label>
-        <label for="process-receiving">{{ plant.process_flow.tabs.receiving }}</label>
-        <label for="process-dryer">{{ plant.process_flow.tabs.dryer }}</label>
-        <label for="process-milling">{{ plant.process_flow.tabs.milling }}</label>
-        <label for="process-packaging">{{ plant.process_flow.tabs.packaging }}</label>
+        <label for="process-main-flow">Main Flow</label>
+        <label for="process-receiving">Grain Receiving</label>
+        <label for="process-dryer">Dryer</label>
+        <label for="process-milling">Milling & Mixing</label>
+        <label for="process-packaging">Packaging</label>
     </div>
 
     <section class="panel process-map-panel">
@@ -30,7 +31,6 @@
                     <span><i class="legend-nocomms"></i>No Comms</span>
                 </div>
 
-                <!-- flow lines -->
                 <div class="flow-line running line-receive-main"></div>
                 <div class="flow-line running line-bin-header"></div>
                 <div class="flow-line running line-bin1-drop"></div>
@@ -44,149 +44,88 @@
                 <div class="flow-line running line-mixer-packaging"></div>
                 <div class="flow-line running line-packaging-shipping"></div>
 
-                <!-- equipment nodes -->
-                <div class="scada-node receiving-node" style="--x: {{ plant.process_flow.main.receiving.x }}; --y: {{ plant.process_flow.main.receiving.y }};">
-                    <div class="node-title">{{ plant.process_flow.main.receiving.title }}</div>
-                    <div class="node-rate">{{ plant.process_flow.main.receiving.rate }}</div>
-                    <div class="mini-hopper"></div>
-                    <span class="node-status running">{{ plant.process_flow.main.receiving.status }}</span>
+                <div class="scada-node receiving-node" style="--x: 70px; --y: 205px;">
+                    <div class="node-title">Grain Receiving</div>
+                    <div class="node-rate" data-live="process.receiving_rate_bu_hr" data-format="rate-bu">{{ state.process.receiving_rate_bu_hr }}</div>
+                    <div class="mini-hopper" data-live-style="process.hopper_fill" data-style-prop="--fill" data-style-format="percent" style="--fill: {{ state.process.hopper_fill }}%;"></div>
+                    <span class="node-status running">RUN</span>
                 </div>
 
-                {% for bin in plant.process_flow.main.bins %}
-                <div class="scada-node bin-node" style="--x: {{ bin.x }}; --y: {{ bin.y }};">
-                    <div class="mini-bin" style="--fill: {{ bin.fill }};"></div>
-                    <div class="node-title">{{ bin.title }}</div>
-                    <div class="node-rate">{{ bin.rate }}</div>
+                <div class="scada-node bin-node" style="--x: 240px; --y: 85px;">
+                    <div class="mini-bin" data-live-style="process.bins.bin_1" data-style-prop="--fill" data-style-format="percent" style="--fill: {{ state.process.bins.bin_1 }}%;"></div>
+                    <div class="node-title">Bin 1</div><div class="node-rate"><span data-live="process.bins.bin_1" data-format="percent">{{ state.process.bins.bin_1 }}</span></div>
                 </div>
-                {% endfor %}
-
-                {% for auger in plant.process_flow.main.augers %}
-                <div class="scada-node auger-node" style="--x: {{ auger.x }}; --y: {{ auger.y }};">
-                    <div class="node-title">{{ auger.title }}</div>
-                    <span class="node-status running">{{ auger.status }}</span>
+                <div class="scada-node bin-node" style="--x: 365px; --y: 85px;">
+                    <div class="mini-bin" data-live-style="process.bins.bin_2" data-style-prop="--fill" data-style-format="percent" style="--fill: {{ state.process.bins.bin_2 }}%;"></div>
+                    <div class="node-title">Bin 2</div><div class="node-rate"><span data-live="process.bins.bin_2" data-format="percent">{{ state.process.bins.bin_2 }}</span></div>
                 </div>
-                {% endfor %}
+                <div class="scada-node bin-node" style="--x: 490px; --y: 85px;">
+                    <div class="mini-bin" data-live-style="process.bins.bin_3" data-style-prop="--fill" data-style-format="percent" style="--fill: {{ state.process.bins.bin_3 }}%;"></div>
+                    <div class="node-title">Bin 3</div><div class="node-rate"><span data-live="process.bins.bin_3" data-format="percent">{{ state.process.bins.bin_3 }}</span></div>
+                </div>
+                <div class="scada-node bin-node" style="--x: 615px; --y: 85px;">
+                    <div class="mini-bin" data-live-style="process.bins.bin_4" data-style-prop="--fill" data-style-format="percent" style="--fill: {{ state.process.bins.bin_4 }}%;"></div>
+                    <div class="node-title">Bin 4</div><div class="node-rate"><span data-live="process.bins.bin_4" data-format="percent">{{ state.process.bins.bin_4 }}</span></div>
+                </div>
 
-                <div class="scada-node dryer-node" style="--x: {{ plant.process_flow.main.dryer.x }}; --y: {{ plant.process_flow.main.dryer.y }};">
+                <div class="scada-node auger-node" style="--x: 220px; --y: 315px;"><div class="node-title">Auger 1</div><span class="node-status running">RUN</span></div>
+                <div class="scada-node auger-node" style="--x: 405px; --y: 315px;"><div class="node-title">Auger 2</div><span class="node-status running">RUN</span></div>
+
+                <div class="scada-node dryer-node" style="--x: 500px; --y: 405px;">
                     <div class="mini-dryer-box"></div>
-                    <div class="node-title">{{ plant.process_flow.main.dryer.title }}</div>
-                    <div class="node-rate warning-text">{{ plant.process_flow.main.dryer.rate }}</div>
+                    <div class="node-title">Dryer</div>
+                    <div class="node-rate warning-text"><span data-live="process.dryer_temp_f" data-format="temp-f">{{ state.process.dryer_temp_f }}</span> / <span data-live="process.dryer_outlet_moisture" data-format="percent">{{ state.process.dryer_outlet_moisture }}</span></div>
                 </div>
 
-                <div class="scada-node conveyor-node" style="--x: {{ plant.process_flow.main.conveyor.x }}; --y: {{ plant.process_flow.main.conveyor.y }};">
-                    <div class="node-title">{{ plant.process_flow.main.conveyor.title }}</div>
-                    <span class="node-status running">{{ plant.process_flow.main.conveyor.status }}</span>
-                </div>
-
-                <div class="scada-node elevator-node" style="--x: {{ plant.process_flow.main.elevator.x }}; --y: {{ plant.process_flow.main.elevator.y }};">
-                    <div class="mini-elevator"></div>
-                    <div class="node-title">{{ plant.process_flow.main.elevator.title }}</div>
-                </div>
-
-                <div class="scada-node mixer-node" style="--x: {{ plant.process_flow.main.mixer.x }}; --y: {{ plant.process_flow.main.mixer.y }};">
-                    <div class="mini-mixer">
-                        <div class="mixer-base"></div>
-                    </div>
-                    <div class="node-title">{{ plant.process_flow.main.mixer.title }}</div>
-                    <span class="node-status running">{{ plant.process_flow.main.mixer.status }}</span>
-                </div>
-
-                <div class="scada-node packaging-node" style="--x: {{ plant.process_flow.main.packaging.x }}; --y: {{ plant.process_flow.main.packaging.y }};">
-                    <div class="mini-packaging"></div>
-                    <div class="node-title">{{ plant.process_flow.main.packaging.title }}</div>
-                </div>
-
-                <div class="shipping-label" style="--x: {{ plant.process_flow.main.shipping.x }}; --y: {{ plant.process_flow.main.shipping.y }};">
-                    {{ plant.process_flow.main.shipping.label }}
-                </div>
+                <div class="scada-node conveyor-node" style="--x: 685px; --y: 365px;"><div class="node-title">Conveyor 3</div><span class="node-status running">RUN</span></div>
+                <div class="scada-node elevator-node" style="--x: 790px; --y: 150px;"><div class="mini-elevator"></div><div class="node-title">Elevator</div></div>
+                <div class="scada-node mixer-node" style="--x: 795px; --y: 430px;"><div class="mini-mixer"><div class="mixer-base"></div></div><div class="node-title">Mill / Mixer</div><span class="node-status running">RUN</span></div>
+                <div class="scada-node packaging-node" style="--x: 990px; --y: 430px;"><div class="mini-packaging"></div><div class="node-title">Packaging</div><div class="node-rate" data-live="process.packaging_bag_hr" data-format="bags-hour">{{ state.process.packaging_bag_hr }}</div></div>
+                <div class="shipping-label" style="--x: 1030px; --y: 335px;">To Shipping</div>
             </div>
         </div>
 
-        {% set receiving = plant.process_flow.details.receiving %}
         <div class="process-view process-view-receiving">
             <div class="process-detail-grid">
-                <article class="process-detail-card">
-                    <h2>{{ receiving.title }}</h2>
-                    <p>{{ receiving.subtitle }}</p>
-                    {% for metric in receiving.metrics %}
-                    <div class="detail-metric"><span>{{ metric.label }}</span><strong class="{{ metric.class | default('') }}">{{ metric.value }}</strong></div>
-                    {% endfor %}
+                <article class="process-detail-card"><h2>Grain Receiving</h2><p>Inbound grain flow, dump pit, sampling, and wet-bin routing.</p>
+                    <div class="detail-metric"><span>Inbound Rate</span><strong data-live="process.receiving_rate_bu_hr" data-format="rate-bu">{{ state.process.receiving_rate_bu_hr }}</strong></div>
+                    <div class="detail-metric"><span>Inbound Tons</span><strong data-live="process.receiving_rate_ton_hr" data-format="rate-ton">{{ state.process.receiving_rate_ton_hr }}</strong></div>
+                    <div class="detail-metric"><span>Wet Bin Level</span><strong data-live="process.wet_bin_fill" data-format="percent">{{ state.process.wet_bin_fill }}</strong></div>
                 </article>
-
-                <article class="process-detail-card">
-                    <h2>{{ receiving.list_title }}</h2>
-                    <ul class="detail-list">
-                        {% for item in receiving["items"] %}
-                        <li><span>{{ item.label }}</span><strong class="{{ item.class | default('') }}">{{ item.value }}</strong></li>
-                        {% endfor %}
-                    </ul>
-                </article>
+                <article class="process-detail-card"><h2>Receiving Equipment</h2><ul class="detail-list" data-live-list="receiving-equipment"></ul></article>
             </div>
         </div>
 
-        {% set dryer = plant.process_flow.details.dryer %}
         <div class="process-view process-view-dryer">
             <div class="process-detail-grid">
-                <article class="process-detail-card">
-                    <h2>{{ dryer.title }}</h2>
-                    <p>{{ dryer.subtitle }}</p>
-                    {% for metric in dryer.metrics %}
-                    <div class="detail-metric"><span>{{ metric.label }}</span><strong class="{{ metric.class | default('') }}">{{ metric.value }}</strong></div>
-                    {% endfor %}
+                <article class="process-detail-card"><h2>Dryer Line</h2><p>Temperature, outlet moisture, burner status, and airflow.</p>
+                    <div class="detail-metric"><span>Temperature</span><strong data-live="process.dryer_temp_f" data-format="temp-f">{{ state.process.dryer_temp_f }}</strong></div>
+                    <div class="detail-metric"><span>Outlet Moisture</span><strong class="warning-text" data-live="process.dryer_outlet_moisture" data-format="percent">{{ state.process.dryer_outlet_moisture }}</strong></div>
+                    <div class="detail-metric"><span>Dryer Flow</span><strong data-live="process.flow.dryer_to_dry" data-format="rate-ton">{{ state.process.flow.dryer_to_dry }}</strong></div>
                 </article>
-
-                <article class="process-detail-card">
-                    <h2>{{ dryer.list_title }}</h2>
-                    <ul class="detail-list">
-                        {% for item in dryer["items"] %}
-                        <li><span>{{ item.label }}</span><strong class="{{ item.class | default('') }}">{{ item.value }}</strong></li>
-                        {% endfor %}
-                    </ul>
-                </article>
+                <article class="process-detail-card"><h2>Dryer Risk</h2><ul class="detail-list" data-live-list="dryer-equipment"></ul></article>
             </div>
         </div>
 
-        {% set milling = plant.process_flow.details.milling %}
         <div class="process-view process-view-milling">
             <div class="process-detail-grid">
-                <article class="process-detail-card">
-                    <h2>{{ milling.title }}</h2>
-                    <p>{{ milling.subtitle }}</p>
-                    {% for metric in milling.metrics %}
-                    <div class="detail-metric"><span>{{ metric.label }}</span><strong class="{{ metric.class | default('') }}">{{ metric.value }}</strong></div>
-                    {% endfor %}
+                <article class="process-detail-card"><h2>Milling & Mixing</h2><p>Batch progress and downstream feed to packaging.</p>
+                    <div class="detail-metric"><span>Current Batch</span><strong>Feed Mix A</strong></div>
+                    <div class="detail-metric"><span>Mixer Load</span><strong data-live="equipment.mixer_1.load_percent" data-format="percent">{{ state.equipment.mixer_1.load_percent }}</strong></div>
+                    <div class="detail-metric"><span>Dry Bin Level</span><strong data-live="process.dry_bin_fill" data-format="percent">{{ state.process.dry_bin_fill }}</strong></div>
                 </article>
-
-                <article class="process-detail-card">
-                    <h2>{{ milling.list_title }}</h2>
-                    <ul class="detail-list">
-                        {% for item in milling["items"] %}
-                        <li><span>{{ item.label }}</span><strong class="{{ item.class | default('') }}">{{ item.value }}</strong></li>
-                        {% endfor %}
-                    </ul>
-                </article>
+                <article class="process-detail-card"><h2>Equipment</h2><ul class="detail-list" data-live-list="milling-equipment"></ul></article>
             </div>
         </div>
 
-        {% set packaging = plant.process_flow.details.packaging %}
         <div class="process-view process-view-packaging">
             <div class="process-detail-grid">
-                <article class="process-detail-card">
-                    <h2>{{ packaging.title }}</h2>
-                    <p>{{ packaging.subtitle }}</p>
-                    {% for metric in packaging.metrics %}
-                    <div class="detail-metric"><span>{{ metric.label }}</span><strong class="{{ metric.class | default('') }}">{{ metric.value }}</strong></div>
-                    {% endfor %}
+                <article class="process-detail-card"><h2>Packaging</h2><p>Bagging rate, finished product movement, and shipping handoff.</p>
+                    <div class="detail-metric"><span>Bagging Rate</span><strong data-live="process.packaging_bag_hr" data-format="bags-hour">{{ state.process.packaging_bag_hr }}</strong></div>
+                    <div class="detail-metric"><span>Line Status</span><strong data-live="equipment.packaging_line_1.status" data-format="status">{{ state.equipment.packaging_line_1.status }}</strong></div>
+                    <div class="detail-metric"><span>Destination</span><strong>To Shipping</strong></div>
                 </article>
-
-                <article class="process-detail-card">
-                    <h2>{{ packaging.list_title }}</h2>
-                    <ul class="detail-list">
-                        {% for item in packaging["items"] %}
-                        <li><span>{{ item.label }}</span><strong class="{{ item.class | default('') }}">{{ item.value }}</strong></li>
-                        {% endfor %}
-                    </ul>
-                </article>
+                <article class="process-detail-card"><h2>Packaging Equipment</h2><ul class="detail-list" data-live-list="packaging-equipment"></ul></article>
             </div>
         </div>
     </section>

@@ -74,8 +74,8 @@
       {% block content %}{% endblock %}
       <footer class="dashboard-footer">
           <div class="footer-left">
-            <span>Last Updated: {{ footer.last_updated | default("10:24:30 AM") }}</span>
-            <span class="footer-live"><i></i>{{ footer.live_label | default("Live") }}</span>
+            <span>Last Updated: <span data-live="sim.updated_at">{{ footer.last_updated | default("10:24:30 AM") }}</span></span>
+            <span class="footer-live"><i></i><span data-live="sim.running" data-format="running-label">{{ footer.live_label | default("Live") }}</span></span>
           </div>
         
           <div class="footer-center">
@@ -91,6 +91,15 @@
           </div>
         </footer>
     </main>
+  </div>
+
+
+  <div class="sim-control-dock" data-sim-dock>
+    <span class="sim-pill">Tick <strong data-live="sim.tick">0</strong></span>
+    <span class="sim-pill" data-live="sim.last_event">Simulation ready</span>
+    <button type="button" data-sim-action="pause">Pause</button>
+    <button type="button" data-sim-action="resume">Resume</button>
+    <button type="button" data-sim-action="reset">Reset</button>
   </div>
 
   <script src="{{ url_for('static', path='js/plantops.js') }}"></script>

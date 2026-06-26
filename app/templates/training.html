@@ -1,4 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="card-grid"><article class="panel"><h2>Auger Jam Drill</h2><p>Diagnose rising current and stopped product flow.</p><button>Start Scenario</button></article><article class="panel"><h2>LOTO Practice</h2><p>Safely isolate equipment before maintenance.</p><button>Start Scenario</button></article><article class="panel"><h2>Wet Grain Event</h2><p>Respond to dryer bottleneck and moisture hold.</p><button>Start Scenario</button></article></section>
+<section class="ops-page-grid two-col-ops">
+  <article class="panel"><h2>Training Scenarios</h2><div class="scenario-list"><div><strong>Dryer Overtemp</strong><span>Find and stabilize high outlet temperature.</span><button type="button" data-inject-fault="dryer_line_1" data-severity="critical">Start Scenario</button></div><div><strong>Packaging Starved</strong><span>Stop dryer and observe downstream impact.</span><button type="button" data-equipment-action="stop" data-equipment-id="dryer_line_1">Stop Dryer</button></div><div><strong>Auger Bearing Fault</strong><span>Inject vibration fault and create maintenance response.</span><button type="button" data-inject-fault="auger_3" data-severity="high">Start Scenario</button></div></div></article>
+  <article class="panel"><h2>Score Inputs</h2><div class="summary-list"><div><span>Alarm acknowledged</span><strong>Manual</strong></div><div><span>Correct equipment isolated</span><strong>Manual</strong></div><div><span>Production recovered</span><strong>Live sim</strong></div></div></article>
+</section>
 {% endblock %}

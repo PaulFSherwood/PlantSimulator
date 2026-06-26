@@ -1,10 +1,13 @@
+from __future__ import annotations
+
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from pydantic import BaseModel
 from starlette.responses import RedirectResponse
-from app.sim.engine import plant_sim
 
 from app.services.plant_config import get_plant_context
+from app.sim.engine import plant_sim
 
 app = FastAPI(title="PlantOps Simulator")
 
@@ -31,88 +34,36 @@ NAV_ITEMS = [
 ]
 
 PAGE_DATA = {
-    "/dashboard": {
-        "title": "Owner Dashboard",
-        "subtitle": "Daily profit, production, downtime, and risk overview.",
-        "template": "dashboard.html",
-    },
-    "/process-flow": {
-        "title": "Process Flow",
-        "subtitle": "Live simulated grain receiving, drying, storage, and packaging flow.",
-        "template": "process_flow.html",
-    },
-    "/production": {
-        "title": "Production",
-        "subtitle": "Target vs actual output, bottlenecks, throughput, and shift status.",
-        "template": "production.html",
-    },
-    "/equipment": {
-        "title": "Equipment",
-        "subtitle": "Equipment health, sensor values, runtime, and fault status.",
-        "template": "equipment.html",
-    },
-    "/alarms": {
-        "title": "Alarms",
-        "subtitle": "Active alarms, acknowledgements, severity, and event age.",
-        "template": "alarms.html",
-    },
-    "/trends": {
-        "title": "Trends",
-        "subtitle": "Sensor history, production curves, downtime, and energy trends.",
-        "template": "trends.html",
-    },
-    "/maintenance": {
-        "title": "Maintenance",
-        "subtitle": "Work orders, preventive maintenance, and repair history.",
-        "template": "maintenance.html",
-    },
-    "/loto": {
-        "title": "Lockout / Tagout",
-        "subtitle": "Track safe isolation, verification, maintenance, and return-to-service workflow.",
-        "template": "loto.html",
-    },
-    "/parts": {
-        "title": "Parts & Reliability",
-        "subtitle": "Part life, vendor reliability, cost tradeoffs, and failure history.",
-        "template": "parts.html",
-    },
-    "/fault-tuning": {
-        "title": "Fault Tuning",
-        "subtitle": "Senior maintenance tuning for realistic breakage and downtime behavior.",
-        "template": "fault_tuning.html",
-    },
-    "/training": {
-        "title": "Training Scenarios",
-        "subtitle": "Operator and maintenance troubleshooting drills.",
-        "template": "training.html",
-    },
-    "/reports": {
-        "title": "Reports",
-        "subtitle": "Daily summaries for production, downtime, safety, maintenance, and profit.",
-        "template": "reports.html",
-    },
-    "/io-monitor": {
-        "title": "I/O Monitor",
-        "subtitle": "Virtual inputs, outputs, sensor registers, and command states.",
-        "template": "io_monitor.html",
-    },
-    "/farmer-display": {
-        "title": "Farmer Intake Display",
-        "subtitle": "Read-only intake board for farmers and truck drivers.",
-        "template": "farmer_display.html",
-        "kiosk": True,
-    },
-    "/plant-config": {
-        "title": "Plant Configuration",
-        "subtitle": "Plant layout, equipment definitions, thresholds, users, and security settings.",
-        "template": "plant_config.html",
-    },
-    "/help": {
-        "title": "Help",
-        "subtitle": "Project guide, role map, safety notes, and first-use instructions.",
-        "template": "help.html",
-    },
+    "/dashboard": {"title": "Owner Dashboard", "subtitle": "Daily profit, production, downtime, and risk overview.", "template": "dashboard.html"},
+    "/process-flow": {"title": "Process Flow", "subtitle": "Live simulated grain receiving, drying, storage, and packaging flow.", "template": "process_flow.html"},
+    "/production": {"title": "Production", "subtitle": "Target vs actual output, bottlenecks, throughput, and shift status.", "template": "production.html"},
+    "/equipment": {"title": "Equipment", "subtitle": "Equipment health, sensor values, runtime, and fault status.", "template": "equipment.html"},
+    "/alarms": {"title": "Alarms", "subtitle": "Active alarms, acknowledgements, severity, and event age.", "template": "alarms.html"},
+    "/trends": {"title": "Trends", "subtitle": "Sensor history, production curves, downtime, and energy trends.", "template": "trends.html"},
+    "/maintenance": {"title": "Maintenance", "subtitle": "Work orders, preventive maintenance, and repair history.", "template": "maintenance.html"},
+    "/loto": {"title": "Lockout / Tagout", "subtitle": "Track safe isolation, verification, maintenance, and return-to-service workflow.", "template": "loto.html"},
+    "/parts": {"title": "Parts & Reliability", "subtitle": "Part life, vendor reliability, cost tradeoffs, and failure history.", "template": "parts.html"},
+    "/fault-tuning": {"title": "Fault Tuning", "subtitle": "Senior maintenance tuning for realistic breakage and downtime behavior.", "template": "fault_tuning.html"},
+    "/training": {"title": "Training Scenarios", "subtitle": "Operator and maintenance troubleshooting drills.", "template": "training.html"},
+    "/reports": {"title": "Reports", "subtitle": "Daily summaries for production, downtime, safety, maintenance, and profit.", "template": "reports.html"},
+    "/io-monitor": {"title": "I/O Monitor", "subtitle": "Virtual inputs, outputs, sensor registers, and command states.", "template": "io_monitor.html"},
+    "/farmer-display": {"title": "Farmer Intake Display", "subtitle": "Read-only intake board for farmers and truck drivers.", "template": "farmer_display.html", "kiosk": True},
+    "/plant-config": {"title": "Plant Configuration", "subtitle": "Plant layout, equipment definitions, thresholds, users, and security settings.", "template": "plant_config.html"},
+    "/help": {"title": "Help", "subtitle": "Project guide, role map, safety notes, and first-use instructions.", "template": "help.html"},
 }
+
+
+class SimSpeedRequest(BaseModel):
+    speed: float
+
+
+class EquipmentActionRequest(BaseModel):
+    reason: str | None = None
+
+
+class FaultRequest(BaseModel):
+    equipment_id: str
+    severity: str = "high"
 
 
 def build_template_context(request: Request, endpoint: str, page: dict | None) -> dict:
@@ -121,16 +72,18 @@ def build_template_context(request: Request, endpoint: str, page: dict | None) -
         "nav_items": NAV_ITEMS,
         "active_path": endpoint,
         "page": page,
+        "sim_state": plant_sim.snapshot(),
         **get_plant_context("feed_mill"),
     }
 
+
 @app.on_event("startup")
-def start_sim_engine():
+def start_sim_engine() -> None:
     plant_sim.start()
 
 
 @app.on_event("shutdown")
-def stop_sim_engine():
+def stop_sim_engine() -> None:
     plant_sim.stop()
 
 
@@ -152,6 +105,28 @@ def api_sim_resume():
 @app.post("/api/sim/reset")
 def api_sim_reset():
     return plant_sim.reset()
+
+
+@app.post("/api/sim/speed")
+def api_sim_speed(payload: SimSpeedRequest):
+    return plant_sim.set_speed(payload.speed)
+
+
+@app.post("/api/equipment/{equipment_id}/{action}")
+def api_equipment_action(equipment_id: str, action: str, payload: EquipmentActionRequest | None = None):
+    reason = payload.reason if payload else None
+    return plant_sim.equipment_action(equipment_id, action, reason)
+
+
+@app.post("/api/alarms/{alarm_id}/ack")
+def api_alarm_ack(alarm_id: str):
+    return plant_sim.acknowledge_alarm(alarm_id)
+
+
+@app.post("/api/faults/inject")
+def api_inject_fault(payload: FaultRequest):
+    return plant_sim.inject_fault(payload.equipment_id, payload.severity)
+
 
 @app.get("/", include_in_schema=False)
 def root():

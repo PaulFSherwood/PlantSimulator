@@ -1,30 +1,56 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+{% set state = sim_state %}
 <section class="metric-grid owner-metrics">
-    {% for metric in plant.dashboard.metrics %}
     <article class="metric-card owner-metric">
-        <div class="metric-icon {{ metric.icon_class }}"></div>
+        <div class="metric-icon metric-production"></div>
         <div class="metric-body">
-            <p class="metric-label">{{ metric.label }}</p>
-            <h2>{{ metric.value }}</h2>
+            <p class="metric-label">Today's Production</p>
+            <h2><span data-live="dashboard.production_tons" data-format="tons">{{ state.dashboard.production_tons }}</span></h2>
             <div class="metric-footer">
-                <span>{{ metric.footer_label }}</span>
-                {% if metric.footer_link_href %}
-                <a href="{{ metric.footer_link_href }}">{{ metric.footer_link_label }}</a>
-                {% else %}
-                <strong class="{{ metric.footer_class }}">{{ metric.footer_value }}</strong>
-                {% endif %}
+                <span>Target: <span data-live="dashboard.production_target_tons" data-format="tons">{{ state.dashboard.production_target_tons }}</span></span>
+                <strong class="good-text"><span data-live="dashboard.production_percent" data-format="percent">{{ state.dashboard.production_percent }}</span></strong>
             </div>
-            {% if metric.progress %}
-            <div class="metric-progress">
-                <span style="--value: {{ metric.progress }};"></span>
-            </div>
-            {% endif %}
+            <div class="metric-progress"><span data-live-style="dashboard.production_percent" data-style-prop="--value" data-style-format="percent" style="--value: {{ state.dashboard.production_percent }}%;"></span></div>
         </div>
     </article>
-    {% endfor %}
+
+    <article class="metric-card owner-metric">
+        <div class="metric-icon metric-revenue"></div>
+        <div class="metric-body">
+            <p class="metric-label">Today's Revenue</p>
+            <h2 data-live="dashboard.revenue_today" data-format="currency">{{ state.dashboard.revenue_today }}</h2>
+            <div class="metric-footer"><span>Live simulated value</span><strong class="good-text">Updating</strong></div>
+        </div>
+    </article>
+
+    <article class="metric-card owner-metric">
+        <div class="metric-icon metric-profit"></div>
+        <div class="metric-body">
+            <p class="metric-label">Estimated Profit</p>
+            <h2 data-live="dashboard.estimated_profit" data-format="currency">{{ state.dashboard.estimated_profit }}</h2>
+            <div class="metric-footer"><span>Margin</span><strong class="good-text"><span data-live="dashboard.profit_margin_percent" data-format="percent">{{ state.dashboard.profit_margin_percent }}</span></strong></div>
+        </div>
+    </article>
+
+    <article class="metric-card owner-metric">
+        <div class="metric-icon metric-downtime"></div>
+        <div class="metric-body">
+            <p class="metric-label">Downtime Cost</p>
+            <h2 data-live="dashboard.downtime_cost" data-format="currency">{{ state.dashboard.downtime_cost }}</h2>
+            <div class="metric-footer"><span>Today</span><strong class="bad-text">Live</strong></div>
+        </div>
+    </article>
+
+    <article class="metric-card owner-metric">
+        <div class="metric-icon metric-opportunity"></div>
+        <div class="metric-body">
+            <p class="metric-label">Lost Profit Opportunity</p>
+            <h2 data-live="dashboard.lost_profit_opportunity" data-format="currency">{{ state.dashboard.lost_profit_opportunity }}</h2>
+            <div class="metric-footer"><span>If bottlenecks cleared</span><a href="/reports">View Details</a></div>
+        </div>
+    </article>
 </section>
 
 <section class="dashboard-layout">
@@ -32,168 +58,117 @@
         <section class="panel process-panel">
             <div class="panel-header process-panel-header">
                 <div>
-                    <h2>{{ plant.dashboard.process_overview.title }}</h2>
-                    <p>{{ plant.dashboard.process_overview.subtitle }}</p>
+                    <h2>Process Flow Overview</h2>
+                    <p>Receiving hopper to packaging line</p>
                 </div>
-        
                 <div class="process-header-actions">
                     <span class="live-dot">Live</span>
                     <a class="small-action-button" href="/process-flow">View Full Process</a>
                 </div>
             </div>
-        
+
             <div class="process-flow-css process-flow-mockup">
-                {% for step in plant.dashboard.process_overview.steps %}
                 <div class="process-step">
                     <div class="process-visual">
-                        <span class="step-status {{ step.status_class }}"></span>
-
-                        {% if step.kind == "bin" %}
-                        <div class="plant-bin {{ step.visual_class }}" style="--fill: {{ step.fill }};">
-                            <div class="plant-bin-fill"></div>
-                            <div class="plant-bin-shine"></div>
+                        <span class="step-status ok"></span>
+                        <div class="plant-bin hopper-bin" data-live-style="process.hopper_fill" data-style-prop="--fill" data-style-format="percent" style="--fill: {{ state.process.hopper_fill }}%;">
+                            <div class="plant-bin-fill"></div><div class="plant-bin-shine"></div>
                         </div>
-                        {% if step.legs %}
                         <div class="bin-legs"></div>
-                        {% endif %}
-
-                        {% elif step.kind == "dryer" %}
-                        <div class="plant-dryer">
-                            <div class="dryer-input-tube"></div>
-                            <div class="dryer-fire"></div>
-                        </div>
-
-                        {% elif step.kind == "packager" %}
-                        <div class="plant-packager {% if step.running %}is-running{% endif %}">
-                            <div class="packager-head"></div>
-                            <div class="package-box"></div>
-                            <div class="conveyor-belt"></div>
-                        </div>
-                        {% endif %}
                     </div>
-
-                    <h3>{{ step.title }}</h3>
-                    <p>{{ step.line1 }}</p>
-                    <span class="{{ step.line2_class | default('') }}">{{ step.line2 }}</span>
+                    <h3>Receiving Hopper</h3>
+                    <p><span data-live="process.receiving_rate_ton_hr" data-format="rate-ton">{{ state.process.receiving_rate_ton_hr }}</span></p>
+                    <span class="status-text good-text">Running</span>
                 </div>
-
-                {% if not loop.last %}
                 <div class="flow-arrow">→</div>
-                {% endif %}
-                {% endfor %}
+
+                <div class="process-step">
+                    <div class="process-visual">
+                        <span class="step-status ok"></span>
+                        <div class="plant-bin wet-bin" data-live-style="process.wet_bin_fill" data-style-prop="--fill" data-style-format="percent" style="--fill: {{ state.process.wet_bin_fill }}%;">
+                            <div class="plant-bin-fill"></div><div class="plant-bin-shine"></div>
+                        </div>
+                        <div class="bin-legs"></div>
+                    </div>
+                    <h3>Wet Bin</h3>
+                    <p>Level: <span data-live="process.wet_bin_fill" data-format="percent">{{ state.process.wet_bin_fill }}</span></p>
+                    <span>18.2% Moisture</span>
+                </div>
+                <div class="flow-arrow">→</div>
+
+                <div class="process-step">
+                    <div class="process-visual">
+                        <span class="step-status warning"></span>
+                        <div class="plant-dryer"><div class="dryer-input-tube"></div><div class="dryer-fire"></div></div>
+                    </div>
+                    <h3>Dryer</h3>
+                    <p>Temp: <span data-live="process.dryer_temp_f" data-format="temp-f">{{ state.process.dryer_temp_f }}</span></p>
+                    <span class="status-text warning-text">Outlet: <span data-live="process.dryer_outlet_moisture" data-format="percent">{{ state.process.dryer_outlet_moisture }}</span></span>
+                </div>
+                <div class="flow-arrow">→</div>
+
+                <div class="process-step">
+                    <div class="process-visual">
+                        <span class="step-status ok"></span>
+                        <div class="plant-bin dry-bin" data-live-style="process.dry_bin_fill" data-style-prop="--fill" data-style-format="percent" style="--fill: {{ state.process.dry_bin_fill }}%;">
+                            <div class="plant-bin-fill"></div><div class="plant-bin-shine"></div>
+                        </div>
+                    </div>
+                    <h3>Dry Bin</h3>
+                    <p>Level: <span data-live="process.dry_bin_fill" data-format="percent">{{ state.process.dry_bin_fill }}</span></p>
+                    <span>12.0% Moisture</span>
+                </div>
+                <div class="flow-arrow">→</div>
+
+                <div class="process-step">
+                    <div class="process-visual">
+                        <span class="step-status ok"></span>
+                        <div class="plant-packager is-running"><div class="packager-head"></div><div class="package-box"></div><div class="conveyor-belt"></div></div>
+                    </div>
+                    <h3>Packaging Line</h3>
+                    <p><span data-live="process.packaging_bag_hr" data-format="bags-hour">{{ state.process.packaging_bag_hr }}</span></p>
+                    <span class="status-text good-text">Running</span>
+                </div>
             </div>
-        
+
             <div class="bottleneck-banner">
                 <div class="banner-icon">i</div>
                 <div class="banner-text">
-                    <strong>{{ plant.dashboard.process_overview.bottleneck.title }}</strong>
-                    <span>{{ plant.dashboard.process_overview.bottleneck.subtitle }}</span>
+                    <strong>Current Bottleneck: <span data-live="dashboard.bottleneck">{{ state.dashboard.bottleneck }}</span></strong>
+                    <span>Limiting overall production by ~<span data-live="dashboard.bottleneck_loss_percent" data-format="percent">{{ state.dashboard.bottleneck_loss_percent }}</span></span>
                 </div>
-                <a class="banner-button" href="{{ plant.dashboard.process_overview.bottleneck.href }}">
-                    {{ plant.dashboard.process_overview.bottleneck.link_label }}
-                </a>
+                <a class="banner-button" href="/reports">View Bottleneck Analysis</a>
             </div>
         </section>
 
         <section class="lower-grid dashboard-lower-cards">
             <article class="panel lower-card">
-                <div class="panel-header">
-                    <h2>Equipment At A Glance</h2>
-                    <a href="/equipment">View All</a>
-                </div>
-        
+                <div class="panel-header"><h2>Equipment At A Glance</h2><a href="/equipment">View All</a></div>
                 <table class="data-table compact-data-table">
-                    <thead>
-                        <tr>
-                            <th>Equipment</th>
-                            <th>Status</th>
-                            <th>Runtime</th>
-                            <th>Health</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for item in plant.dashboard.equipment %}
-                        <tr>
-                            <td>{{ item.name }}</td>
-                            <td><span class="dot {{ item.status_dot }}"></span>{{ item.status }}</td>
-                            <td>{{ item.runtime }}</td>
-                            <td><span class="health {{ item.health_class }}" style="--health: {{ item.health }};"></span></td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
+                    <thead><tr><th>Equipment</th><th>Status</th><th>Runtime</th><th>Health</th></tr></thead>
+                    <tbody data-live-list="equipment-summary"></tbody>
                 </table>
             </article>
-        
+
             <article class="panel lower-card">
-                <div class="panel-header">
-                    <h2>Production Trend (Today)</h2>
-                </div>
-        
-                <div class="trend-legend">
-                    <span><i class="legend-line actual"></i>Actual (ton/hr)</span>
-                    <span><i class="legend-line target"></i>Target (ton/hr)</span>
-                </div>
-        
-                <div class="mini-chart">
-                    <svg viewBox="0 0 420 190" preserveAspectRatio="none">
-                        <line x1="25" y1="25" x2="25" y2="160" class="chart-axis"/>
-                        <line x1="25" y1="160" x2="400" y2="160" class="chart-axis"/>
-        
-                        <line x1="25" y1="55" x2="400" y2="55" class="chart-target"/>
-        
-                        <polyline class="chart-line"
-                            points="25,140 60,115 95,92 130,112 165,82 200,70 235,95 270,76 305,90 340,72 375,78 400,70"/>
-                        <g class="chart-points">
-                            <circle cx="25" cy="140" r="3"/>
-                            <circle cx="60" cy="115" r="3"/>
-                            <circle cx="95" cy="92" r="3"/>
-                            <circle cx="130" cy="112" r="3"/>
-                            <circle cx="165" cy="82" r="3"/>
-                            <circle cx="200" cy="70" r="3"/>
-                            <circle cx="235" cy="95" r="3"/>
-                            <circle cx="270" cy="76" r="3"/>
-                            <circle cx="305" cy="90" r="3"/>
-                            <circle cx="340" cy="72" r="3"/>
-                            <circle cx="375" cy="78" r="3"/>
-                            <circle cx="400" cy="70" r="3"/>
-                        </g>
-                    </svg>
-        
-                    <div class="chart-x-labels">
-                        <span>12 AM</span>
-                        <span>4 AM</span>
-                        <span>8 AM</span>
-                        <span>12 PM</span>
-                        <span>4 PM</span>
-                        <span>8 PM</span>
-                        <span>12 AM</span>
-                    </div>
-                </div>
-        
+                <div class="panel-header"><h2>Production Trend (Today)</h2></div>
+                <div class="trend-legend"><span><i class="legend-line actual"></i>Actual (ton/hr)</span><span><i class="legend-line target"></i>Target</span></div>
+                <div class="simple-live-chart" data-live-chart="production"></div>
                 <div class="trend-summary">
-                    {% for item in plant.dashboard.trend_summary %}
-                    <div>
-                        <span>{{ item.label }}</span>
-                        <strong>{{ item.value }}</strong>
-                    </div>
-                    {% endfor %}
+                    <div><span>Current Rate</span><strong data-live="process.flow.dry_to_packaging" data-format="rate-ton">{{ state.process.flow.dry_to_packaging }}</strong></div>
+                    <div><span>YTD Revenue</span><strong>$6.21M</strong></div>
+                    <div><span>YTD Profit</span><strong>$1.23M</strong></div>
                 </div>
             </article>
-        
+
             <article class="panel lower-card">
-                <div class="panel-header">
-                    <h2>Maintenance Overview</h2>
-                    <a href="/maintenance">View All</a>
-                </div>
-        
+                <div class="panel-header"><h2>Maintenance Overview</h2><a href="/maintenance">View All</a></div>
                 <div class="maintenance-list">
-                    {% for item in plant.dashboard.maintenance %}
-                    <div>
-                        <span class="maint-icon {{ item.icon_class }}">{{ item.icon }}</span>
-                        <span>{{ item.label }}</span>
-                        <strong>{{ item.value }}</strong>
-                    </div>
-                    {% endfor %}
+                    <div><span class="maint-icon blue">▣</span><span>Open Work Orders</span><strong data-live="maintenance.open_work_orders">{{ state.maintenance.open_work_orders }}</strong></div>
+                    <div><span class="maint-icon red">▣</span><span>Overdue Work Orders</span><strong data-live="maintenance.overdue_work_orders">{{ state.maintenance.overdue_work_orders }}</strong></div>
+                    <div><span class="maint-icon purple">▣</span><span>Planned Maintenance (7 days)</span><strong data-live="maintenance.planned_7_days">{{ state.maintenance.planned_7_days }}</strong></div>
+                    <div><span class="maint-icon green">◷</span><span>MTTR (30 days)</span><strong><span data-live="maintenance.mttr_minutes">{{ state.maintenance.mttr_minutes }}</span> min</strong></div>
+                    <div><span class="maint-icon sky">⌁</span><span>MTBF (30 days)</span><strong><span data-live="maintenance.mtbf_hours">{{ state.maintenance.mtbf_hours }}</span> h</strong></div>
                 </div>
             </article>
         </section>
@@ -201,73 +176,27 @@
 
     <aside class="dashboard-rail">
         <section class="panel rail-panel">
-            <div class="rail-header">
-                <h2>Active Alarms ({{ plant.dashboard.alarms | length }})</h2>
-                <a href="/alarms">View All</a>
-            </div>
-    
-            <div class="rail-alarm-list">
-                {% for alarm in plant.dashboard.alarms %}
-                <div class="rail-alarm {{ alarm.severity_class }}">
-                    <div>
-                        <strong>{{ alarm.title }}</strong>
-                        <span>{{ alarm.subtitle }}</span>
-                    </div>
-                    <div class="alarm-meta">
-                        <span>{{ alarm.age }}</span>
-                        <em>{{ alarm.severity }}</em>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-    
-            <a class="rail-wide-button" href="/alarms">Acknowledge All</a>
+            <div class="rail-header"><h2>Active Alarms (<span data-live-count="alarms">{{ state.alarms|length }}</span>)</h2><a href="/alarms">View All</a></div>
+            <div class="rail-alarm-list" data-live-list="alarm-rail"></div>
+            <a class="rail-wide-button" href="/alarms">Review Alarms</a>
         </section>
-    
+
         <section class="panel rail-panel">
-            <div class="rail-header">
-                <h2>LOTO Status</h2>
-                <a href="/loto">View All</a>
-            </div>
-    
-            <div class="loto-primary">
-                <span class="loto-icon"></span>
-                <strong>{{ plant.dashboard.loto.primary.value }}</strong>
-                <span>{{ plant.dashboard.loto.primary.label }}</span>
-            </div>
-            
+            <div class="rail-header"><h2>LOTO Status</h2><a href="/loto">View All</a></div>
+            <div class="loto-primary"><span class="loto-icon"></span><strong data-live="loto.locked_out">{{ state.loto.locked_out }}</strong><span>Locked Out</span></div>
             <div class="loto-grid">
-                {% for item in plant.dashboard.loto.secondary %}
-                <div>
-                    <span class="loto-icon"></span>
-                    <strong>{{ item.value }}</strong>
-                    <span>{{ item.label }}</span>
-                </div>
-                {% endfor %}
-            </div> 
+                <div><span class="loto-icon"></span><strong data-live="loto.tagged_out">{{ state.loto.tagged_out }}</strong><span>Tagged Out</span></div>
+                <div><span class="loto-icon"></span><strong data-live="loto.in_progress">{{ state.loto.in_progress }}</strong><span>In Progress</span></div>
+                <div><span class="loto-icon"></span><strong data-live="loto.verification">{{ state.loto.verification }}</strong><span>Verification</span></div>
+            </div>
         </section>
-    
+
         <section class="panel rail-panel profit-rail">
-            <div class="rail-header">
-                <h2>Profit Summary</h2>
-                <a href="/reports">View Details</a>
-            </div>
-    
-            <div class="profit-block">
-                <span>{{ plant.dashboard.profit.estimated.label }}</span>
-                <strong>{{ plant.dashboard.profit.estimated.value }}</strong>
-                <p>{{ plant.dashboard.profit.estimated.note }}</p>
-            </div>
-    
-            <div class="profit-block optimized">
-                <span>{{ plant.dashboard.profit.optimized.label }}</span>
-                <strong>{{ plant.dashboard.profit.optimized.value }}</strong>
-                <p>{{ plant.dashboard.profit.optimized.note }}</p>
-            </div>
-    
+            <div class="rail-header"><h2>Profit Summary</h2><a href="/reports">View Details</a></div>
+            <div class="profit-block"><span>Estimated End of Day</span><strong data-live="dashboard.end_of_day_profit" data-format="currency">{{ state.dashboard.end_of_day_profit }}</strong><p>If current rate continues</p></div>
+            <div class="profit-block optimized"><span>Potential With Optimization</span><strong data-live="dashboard.optimized_profit" data-format="currency">{{ state.dashboard.optimized_profit }}</strong><p>Eliminate downtime + clear bottleneck</p></div>
             <a class="what-if-button" href="/reports">What-If Analysis</a>
         </section>
     </aside>
-
 </section>
 {% endblock %}

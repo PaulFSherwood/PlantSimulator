@@ -1,4 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="panel"><h2>Help</h2><p>This first draft contains all planned pages with shared styling and icons. Next steps are PostgreSQL models, authentication, demo data services, and the simulation engine.</p><h3>Role Lenses</h3><ul><li>Owner: profit, downtime cost, bottlenecks.</li><li>Operator: what is running, what alarm matters now.</li><li>Maintenance: what failed, likely cause, safe repair workflow.</li><li>Senior Tech: failure tuning and vendor part reliability.</li></ul></section>
+<section class="ops-page-grid two-col-ops">
+  <article class="panel"><h2>Current Architecture</h2><div class="summary-list"><div><span>Config</span><strong>JSON plant template</strong></div><div><span>Engine</span><strong>In-memory simulator</strong></div><div><span>Live UI</span><strong>/api/state polling</strong></div><div><span>Database</span><strong>Not added yet</strong></div></div></article>
+  <article class="panel"><h2>Controls</h2><p class="muted">Use the bottom control dock to pause, resume, or reset. Equipment controls are on the Equipment page. Fault scenarios are on Fault Tuning and Training.</p></article>
+</section>
 {% endblock %}

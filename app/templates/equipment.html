@@ -1,14 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
-<section class="card-grid">
-  {% for name, status, detail in [("Dryer Line 1", "Warning", "Outlet moisture drifting high"), ("Auger 2", "Critical", "Bearing temp above limit"), ("Wet Bin Fan", "Running", "Normal"), ("Packaging Line", "Running", "Normal")] %}
-  <article class="equipment-card">
-    <div class="panel-header"><h2>{{ name }}</h2><span class="tag {{ 'critical' if status == 'Critical' else 'warning' if status == 'Warning' else 'ok' }}">{{ status }}</span></div>
-    <p>{{ detail }}</p>
-    <div class="sensor-row"><span>Runtime</span><strong>{{ 200 + loop.index * 74 }} hrs</strong></div>
-    <div class="sensor-row"><span>Motor Current</span><strong>{{ 5 + loop.index }}.{{ loop.index }} A</strong></div>
-    <div class="sensor-row"><span>Bearing Temp</span><strong>{{ 98 + loop.index * 11 }}°F</strong></div>
+<section class="ops-page-grid">
+  <article class="panel ops-wide-panel">
+    <div class="panel-header"><div><h2>Equipment Status</h2><p>Live equipment state from the in-memory simulator.</p></div><span class="live-dot">Live</span></div>
+    <div class="table-wrap">
+      <table class="data-table ops-table">
+        <thead><tr><th>Equipment</th><th>Kind</th><th>Status</th><th>Runtime</th><th>Health</th><th>Load</th><th>Temp</th><th>Actions</th></tr></thead>
+        <tbody data-live-list="equipment-full"></tbody>
+      </table>
+    </div>
   </article>
-  {% endfor %}
+  <article class="panel"><h2>Operator Notes</h2><p class="muted">Start/stop changes are immediate. Lockout blocks start commands until cleared.</p><div class="event-log" data-live-list="event-log"></div></article>
 </section>
 {% endblock %}
