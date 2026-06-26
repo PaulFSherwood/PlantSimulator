@@ -2,6 +2,8 @@
 
 A no-npm FastAPI/Jinja2 first draft for a web-based plant operations simulator.
 
+![Dashboard.png](/home/sherwood/Documents/src/projects/PlantSimulator/screenshots/Dashboard.png)
+
 ## Run
 
 ```bash
